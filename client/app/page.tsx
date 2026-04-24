@@ -1,10 +1,10 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div>
+    <div className="w-full">
       <main>
-        <div> test </div>
+        <Link href="/project">Project</Link>
       </main>
     </div>
   );
