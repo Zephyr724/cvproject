@@ -1,11 +1,10 @@
-import Image from "next/image";
-import ProjectPage from "./projects/page";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <div className="w-full">
       <main>
-        <ProjectPage />
+        <Link href="/project">Project</Link>
       </main>
     </div>
   );
