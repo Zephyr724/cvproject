@@ -3,7 +3,7 @@ import React from "react";
 
 const ProjectPage = () => {
   return (
-    <>
+    <div className="flex flex-col items-center">
       <header className="grid grid-cols-[1fr_auto_1fr] w-full p-4">
         {/* div: just a placeholder for grid columns = 3*/}
         <div></div>
@@ -24,12 +24,12 @@ const ProjectPage = () => {
         </div>
       </header>
 
-      <main>
+      <main className="">
         <div>Tech Stack</div>
         <div>Responsibilities</div>
         <div>Implementation</div>
       </main>
-    </>
+    </div>
   );
 };
 
