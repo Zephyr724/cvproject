@@ -1,9 +1,18 @@
-import React from 'react'
+import React from "react";
 
 const ProjectPage = () => {
   return (
-    <div>Project page</div>
-  )
-}
+    <>
+      <header className="flex justify-between w-full p-4">
+        <div className="flex gap-1">
+          <h1>Title</h1> <h2>Subtitle</h2>
+        </div>
+        <div>Close BTN</div>
+      </header>
 
-export default ProjectPage
+      <main></main>
+    </>
+  );
+};
+
+export default ProjectPage;

@@ -3,7 +3,7 @@ import ProjectPage from "./projects/page";
 
 export default function Home() {
   return (
-    <div>
+    <div className="w-full">
       <main>
         <ProjectPage />
       </main>
