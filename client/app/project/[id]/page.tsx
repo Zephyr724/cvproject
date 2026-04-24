@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { projectData } from "./mockData";
 import CloseButton from "@/app/components/CloseButton";
+import { FaGithub } from "react-icons/fa";
 
 interface Props {
   searchParams: Promise<{ id: string }>;
@@ -34,10 +35,14 @@ const ProjectPage = async ({ searchParams }: Props) => {
           </div>
         </div>
 
-        <div className="flex gap-0 p-1 justify-end text-xs flex-wrap">
+        <div className="flex gap-1 p-1 justify-end text-xs flex-wrap">
           {/* right coner */}
-          <Link href={projectUrl}>Project Page</Link>
-          <Link href={githubUrl}>Github page</Link>
+          <Link href={projectUrl} className="underline">
+            Website
+          </Link>
+          <Link href={githubUrl} className="underline">
+            <FaGithub />
+          </Link>
           <CloseButton />
         </div>
       </header>
