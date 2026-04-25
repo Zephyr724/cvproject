@@ -34,7 +34,7 @@ const ProjectPage = async ({ searchParams }: Props) => {
           <div className="flex gap-2 m-1 text-xs text-white">
             {tags.map((tag) => (
               <div
-                className=" bg-gray-400 rounded-2xl px-2 py-0.3  min-w-10 whitespace-nowrap"
+                className=" bg-gray-400 rounded-2xl px-2 py-0.3  min-w-10 whitespace-nowrap text-center"
                 key={tag.id}
               >
                 {tag.name}
