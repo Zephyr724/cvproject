@@ -28,7 +28,7 @@ const Implementations = ({ implementations }: Props) => {
       <div className="flex gap-x-2  pt-2">
         {implementations.map((implementation) => (
           <div
-            className=" bg-gray-400 rounded-2xl px-2 min-w-10 whitespace-nowrap text-center"
+            className=" bg-gray-400 rounded px-2 min-w-10 whitespace-nowrap text-center"
             key={implementation.id}
           >
             {implementation.title}
