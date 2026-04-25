@@ -28,7 +28,7 @@ const ProjectPage = async ({ searchParams }: Props) => {
       <div className="absolute -top-4 -right-4">
         <CloseButton />
       </div>
-      <header className="grid grid-cols-[1fr_auto_1fr] w-full p-4">
+      <header className="grid grid-cols-[1fr_auto_1fr] w-full px-4 py-2">
         {/* div: just a placeholder for grid columns = 3*/}
         <div></div>
         <div className="flex flex-col items-center">
@@ -56,7 +56,7 @@ const ProjectPage = async ({ searchParams }: Props) => {
         </div>
       </header>
 
-      <main className="w-full p-4 ">
+      <main className="w-full px-4 ">
         {techStack &&
           (techStack.frontend.length || techStack.backend.length) > 0 && (
             <div>
