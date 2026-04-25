@@ -18,7 +18,7 @@ const ProjectPage = async ({ searchParams }: Props) => {
     tags,
     projectUrl,
     githubUrl,
-    techStacks,
+    techStack,
     responsibilities,
     implementations,
   } = await projectData;
@@ -56,12 +56,13 @@ const ProjectPage = async ({ searchParams }: Props) => {
         </div>
       </header>
 
-      <main className="">
-        {techStacks && techStacks.length > 0 && (
-          <div>
-            <TechStack techStacks={techStacks} />
-          </div>
-        )}
+      <main className="w-full p-4 ">
+        {techStack &&
+          (techStack.frontend.length || techStack.backend.length) > 0 && (
+            <div>
+              <TechStack techStack={techStack} />
+            </div>
+          )}
 
         <div>Responsibilities</div>
         <div>Implementation</div>

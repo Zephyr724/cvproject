@@ -8,7 +8,7 @@ export const projectData = {
     },
     {
       id: 2,
-      name: "Go",
+      name: "Svelte",
     },
     {
       id: 3,
@@ -21,24 +21,44 @@ export const projectData = {
   ],
   projectUrl: "https://github.com/Zephyr724/cvproject",
   githubUrl: "https://github.com/Zephyr724/cvproject",
-  techStacks: [
-    {
-      id: 1,
-      name: "React",
-    },
-    {
-      id: 2,
-      name: "Next",
-    },
-    {
-      id: 3,
-      name: "Websocket",
-    },
-    {
-      id: 4,
-      name: "Typescript",
-    },
-  ],
+  techStack: {
+    frontend: [
+      { id: 1, name: "React", slug: "react" },
+      {
+        id: 2,
+        name: "Next",
+        slug: "next",
+      },
+      {
+        id: 3,
+        name: "Svelte",
+        slug: "svelte",
+      },
+      {
+        id: 4,
+        name: "Three.js",
+        slug: "threejs",
+      },
+    ],
+    backend: [
+      { id: 1, name: "Node.js", slug: "nodejs" },
+      {
+        id: 2,
+        name: "Next",
+        slug: "next",
+      },
+      {
+        id: 3,
+        name: "Go",
+        slug: "go",
+      },
+      {
+        id: 4,
+        name: "Typescript",
+        slug: "typescript",
+      },
+    ],
+  },
   responsibilities: [
     {
       id: 1,
