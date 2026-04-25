@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { projectData } from "./mockData";
 import CloseButton from "@/app/components/CloseButton";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaExternalLinkSquareAlt } from "react-icons/fa";
 
 interface Props {
   searchParams: Promise<{ id: string }>;
@@ -43,11 +43,13 @@ const ProjectPage = async ({ searchParams }: Props) => {
           </div>
         </div>
 
-        <div className="flex gap-1 p-1 justify-end text-xs flex-wrap underline">
+        <div className="flex gap-1.5 p-1 justify-end text-xs flex-wrap underline">
           {/* right coner */}
-          <Link href={projectUrl}>Website</Link>
+          <Link href={projectUrl}>
+            <FaExternalLinkSquareAlt className="size-4" />
+          </Link>
           <Link href={githubUrl}>
-            <FaGithub />
+            <FaGithub className="size-4" />
           </Link>
         </div>
       </header>
