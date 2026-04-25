@@ -87,7 +87,7 @@ export const projectData = {
       name: "QA",
     },
   ],
-  implementations: [
+  sections: [
     {
       id: 1,
       order: 1,

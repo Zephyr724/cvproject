@@ -4,7 +4,7 @@ import CloseButton from "@/app/components/CloseButton";
 import { FaGithub, FaExternalLinkSquareAlt } from "react-icons/fa";
 import TechStack from "../TechStack";
 import Responsibilities from "../Responsibilities";
-import Implementations from "../Implementations";
+import Sections from "../Sections";
 
 interface Props {
   searchParams: Promise<{ id: string }>;
@@ -22,7 +22,7 @@ const ProjectPage = async ({ searchParams }: Props) => {
     githubUrl,
     techStack,
     responsibilities,
-    implementations,
+    sections,
   } = await projectData;
 
   return (
@@ -69,9 +69,7 @@ const ProjectPage = async ({ searchParams }: Props) => {
           <Responsibilities responsibilities={responsibilities} />
         )}
 
-        {implementations && implementations.length > 0 && (
-          <Implementations implementations={implementations} />
-        )}
+        {sections && sections.length > 0 && <Sections sections={sections} />}
       </main>
     </div>
   );

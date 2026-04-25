@@ -1,5 +1,5 @@
 interface Props {
-  implementations: {
+  sections: {
     id: number;
     order: number;
     title: string;
@@ -19,19 +19,19 @@ interface Props {
   }[];
 }
 
-const Implementations = ({ implementations }: Props) => {
-  if (!implementations) return null;
+const Sections = ({ sections }: Props) => {
+  if (!sections) return null;
 
   return (
     <div className="bg-gray-600 rounded text-white p-3">
       <h2 className="text-lg font-semibold">Responsibilities</h2>
       <div className="flex gap-x-2  pt-2">
-        {implementations.map((implementation) => (
+        {sections.map((section) => (
           <div
             className=" bg-gray-400 rounded px-2 min-w-10 whitespace-nowrap text-center"
-            key={implementation.id}
+            key={section.id}
           >
-            {implementation.title}
+            {section.title}
           </div>
         ))}
       </div>
@@ -39,4 +39,4 @@ const Implementations = ({ implementations }: Props) => {
   );
 };
 
-export default Implementations;
+export default Sections;
