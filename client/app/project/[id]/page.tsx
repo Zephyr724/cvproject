@@ -2,6 +2,7 @@ import Link from "next/link";
 import { projectData } from "./mockData";
 import CloseButton from "@/app/components/CloseButton";
 import { FaGithub, FaExternalLinkSquareAlt } from "react-icons/fa";
+import TechStack from "../TechStack";
 
 interface Props {
   searchParams: Promise<{ id: string }>;
@@ -17,6 +18,7 @@ const ProjectPage = async ({ searchParams }: Props) => {
     tags,
     projectUrl,
     githubUrl,
+    techStacks,
     responsibilities,
     implementations,
   } = await projectData;
@@ -55,7 +57,12 @@ const ProjectPage = async ({ searchParams }: Props) => {
       </header>
 
       <main className="">
-        <div>Tech Stack</div>
+        {techStacks && techStacks.length > 0 && (
+          <div>
+            <TechStack techStacks={techStacks} />
+          </div>
+        )}
+
         <div>Responsibilities</div>
         <div>Implementation</div>
       </main>
