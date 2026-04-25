@@ -23,37 +23,43 @@ export const projectData = {
   githubUrl: "https://github.com/Zephyr724/cvproject",
   techStack: {
     frontend: [
-      { id: 1, name: "React", slug: "react" },
+      { id: 1, order: 3, name: "React", slug: "react" },
       {
         id: 2,
+        order: 1,
         name: "Next",
         slug: "next",
       },
       {
         id: 3,
+        order: 2,
         name: "Svelte",
         slug: "svelte",
       },
       {
         id: 4,
+        order: 4,
         name: "Three.js",
         slug: "threejs",
       },
     ],
     backend: [
-      { id: 1, name: "Node.js", slug: "nodejs" },
+      { id: 1, order: 4, name: "Node.js", slug: "nodejs" },
       {
         id: 2,
+        order: 1,
         name: "Next",
         slug: "next",
       },
       {
         id: 3,
+        order: 3,
         name: "Go",
         slug: "go",
       },
       {
         id: 4,
+        order: 2,
         name: "Typescript",
         slug: "typescript",
       },
@@ -62,24 +68,28 @@ export const projectData = {
   responsibilities: [
     {
       id: 1,
+      order: 4,
       name: "Frontend developer",
     },
     {
       id: 2,
+      order: 2,
       name: "Backend developer",
     },
     {
       id: 3,
+      order: 1,
       name: "UI designer",
     },
     {
       id: 4,
+      order: 99,
       name: "QA",
     },
   ],
   implementations: [
     {
-      contentCardId: 1,
+      id: 1,
       order: 1,
       title: "Project Introduction",
       layoutType: "img-top-text-bottom",
@@ -123,7 +133,7 @@ export const projectData = {
       ],
     },
     {
-      contentCardId: 2,
+      id: 2,
       order: 2,
       title: "Problem",
       layoutType: "img-left-text-right",
@@ -167,7 +177,7 @@ export const projectData = {
       ],
     },
     {
-      contentCardId: 3,
+      id: 3,
       order: 3,
       title: "Tasks",
       layoutType: "img-right-text-left",
@@ -211,9 +221,9 @@ export const projectData = {
       ],
     },
     {
-      contentCardId: 4,
+      id: 4,
       order: 4,
-      title: "Tasks",
+      title: "Actions",
       layoutType: "img-left-text-right",
       contentText: [
         {
@@ -255,7 +265,7 @@ export const projectData = {
       ],
     },
     {
-      contentCardId: 5,
+      id: 5,
       order: 5,
       title: "Results",
       layoutType: "img-top-img-middle-text-bottom",

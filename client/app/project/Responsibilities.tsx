@@ -1,13 +1,18 @@
 interface Props {
-  responsibilities: { id: number; name: String }[];
+  responsibilities: { id: number; order: number; name: String }[];
 }
 
 const Responsibilities = ({ responsibilities }: Props) => {
+  if (responsibilities.length === 0) return null;
+  const sortedResponsibilities = [...responsibilities].sort(
+    (a, b) => a.order - b.order,
+  );
+
   return (
     <div className="bg-gray-600 rounded text-white p-3">
       <h2 className="text-lg font-semibold">Responsibilities</h2>
       <div className="flex gap-x-2  pt-2">
-        {responsibilities.map((reponsibility) => (
+        {sortedResponsibilities.map((reponsibility) => (
           <div
             className=" bg-gray-400 rounded-2xl px-2 min-w-10 whitespace-nowrap text-center"
             key={reponsibility.id}
