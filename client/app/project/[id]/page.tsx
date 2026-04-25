@@ -4,7 +4,7 @@ import CloseButton from "@/app/components/CloseButton";
 import { FaGithub, FaExternalLinkSquareAlt } from "react-icons/fa";
 import TechStack from "../TechStack";
 import Responsibilities from "../Responsibilities";
-import Sections from "../Sections";
+import Sections from "../_components/Sections";
 
 interface Props {
   searchParams: Promise<{ id: string }>;
