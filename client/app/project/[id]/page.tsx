@@ -22,28 +22,33 @@ const ProjectPage = async ({ searchParams }: Props) => {
   } = await projectData;
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col mx-auto items-center max-w-3xl border-solid border border-gray-300 p-1 relative ">
+      <div className="absolute -top-4 -right-4">
+        <CloseButton />
+      </div>
       <header className="grid grid-cols-[1fr_auto_1fr] w-full p-4">
         {/* div: just a placeholder for grid columns = 3*/}
         <div></div>
-        <div className="flex flex-col items-center gap-1">
-          <h1>{title}</h1>
-          <div className="flex">
+        <div className="flex flex-col items-center">
+          <h1 className="font-bold text-2xl mt-1 mb-1">{title}</h1>
+          <div className="flex gap-2 m-1 text-xs text-white">
             {tags.map((tag) => (
-              <div key={tag.id}>{tag.name}</div>
+              <div
+                className=" bg-gray-400 rounded-2xl px-2 py-0.3  min-w-10 whitespace-nowrap"
+                key={tag.id}
+              >
+                {tag.name}
+              </div>
             ))}
           </div>
         </div>
 
-        <div className="flex gap-1 p-1 justify-end text-xs flex-wrap">
+        <div className="flex gap-1 p-1 justify-end text-xs flex-wrap underline">
           {/* right coner */}
-          <Link href={projectUrl} className="underline">
-            Website
-          </Link>
-          <Link href={githubUrl} className="underline">
+          <Link href={projectUrl}>Website</Link>
+          <Link href={githubUrl}>
             <FaGithub />
           </Link>
-          <CloseButton />
         </div>
       </header>
 
