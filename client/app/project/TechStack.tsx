@@ -20,16 +20,16 @@ const TechStack = ({ techStack }: Props) => {
   if (categories.length === 0) return null;
 
   return (
-    <div className="bg-gray-600 rounded text-white p-2">
+    <div className="bg-gray-600 rounded text-white p-3">
       <h2 className="text-lg font-semibold">Tech Stack</h2>
       <div className="flex gap-x-2">
         {categories.map((categorie) => (
           <div
             key={categorie.title}
-            className="flex flex-1 flex-col  p-2 rounded m-1"
+            className="flex flex-1 flex-col  pr-2  rounded m-1"
           >
             <h3 className="font-bold">{categorie.title}</h3>
-            <div className="flex gap-2 mr-10 ">
+            <div className="flex gap-2 mr-10 pt-1 ">
               {categorie.items?.map((item) => (
                 <div
                   className=" bg-gray-400 rounded-2xl px-2 min-w-10 whitespace-nowrap text-center"
