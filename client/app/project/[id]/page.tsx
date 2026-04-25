@@ -3,6 +3,7 @@ import { projectData } from "./mockData";
 import CloseButton from "@/app/components/CloseButton";
 import { FaGithub, FaExternalLinkSquareAlt } from "react-icons/fa";
 import TechStack from "../TechStack";
+import Responsibilities from "../Responsibilities";
 
 interface Props {
   searchParams: Promise<{ id: string }>;
@@ -56,15 +57,17 @@ const ProjectPage = async ({ searchParams }: Props) => {
         </div>
       </header>
 
-      <main className="w-full px-4 ">
+      <main className="w-full px-4 flex flex-col  gap-y-2">
         {techStack &&
           (techStack.frontend.length || techStack.backend.length) > 0 && (
             <div>
               <TechStack techStack={techStack} />
             </div>
           )}
+        {responsibilities && responsibilities.length > 0 && (
+          <Responsibilities responsibilities={responsibilities} />
+        )}
 
-        <div>Responsibilities</div>
         <div>Implementation</div>
       </main>
     </div>

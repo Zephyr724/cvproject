@@ -1,5 +1,3 @@
-import React from "react";
-
 interface TechItem {
   id: number;
   name: string;
@@ -28,12 +26,17 @@ const TechStack = ({ techStack }: Props) => {
         {categories.map((categorie) => (
           <div
             key={categorie.title}
-            className="flex flex-1 flex-col  bg-gray-300 p-2 rounded m-1"
+            className="flex flex-1 flex-col  p-2 rounded m-1"
           >
             <h3 className="font-bold">{categorie.title}</h3>
-            <div className="flex gap-1 mr-10">
+            <div className="flex gap-2 mr-10 ">
               {categorie.items?.map((item) => (
-                <div key={item.slug}>{item.name}</div>
+                <div
+                  className=" bg-gray-400 rounded-2xl px-2 min-w-10 whitespace-nowrap text-center"
+                  key={item.slug}
+                >
+                  {item.name}
+                </div>
               ))}
             </div>
           </div>
