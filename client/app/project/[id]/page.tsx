@@ -35,7 +35,7 @@ const ProjectPage = async ({ searchParams }: Props) => {
         <div></div>
         <div className="flex flex-col items-center">
           <h1 className="font-bold text-2xl mt-1 mb-1">{title}</h1>
-          <div className="flex gap-2 m-1 text-xs text-white">
+          <div className="flex flex-wrap gap-2 m-1 text-xs text-white">
             {tags.map((tag) => (
               <div
                 className=" bg-gray-400 rounded-2xl px-2 py-0.3  min-w-10 whitespace-nowrap text-center"
@@ -47,7 +47,7 @@ const ProjectPage = async ({ searchParams }: Props) => {
           </div>
         </div>
 
-        <div className="flex gap-1.5 p-1 justify-end text-xs flex-wrap underline">
+        <div className="flex gap-1.5 p-1 justify-end text-xs  underline">
           {/* right coner */}
           <Link href={projectUrl}>
             <FaExternalLinkSquareAlt className="size-4" />

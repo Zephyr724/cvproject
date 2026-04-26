@@ -15,7 +15,7 @@ export default function ImageTopTextBottom({
   return (
     <div className="space-y-4">
       {contentImages.length > 0 && (
-        <div className="relative w-full h-64">
+        <div className="relative w-full aspect-16/9">
           <Image
             src={contentImages[0].url}
             alt=""
