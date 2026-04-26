@@ -127,11 +127,11 @@ export const projectData = {
       contentVideos: [
         {
           id: 1,
-          url: "https://picsum.photos/400/300",
+          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
         },
         {
           id: 2,
-          url: "https://picsum.photos/400/300",
+          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
         },
       ],
     },
@@ -174,11 +174,11 @@ export const projectData = {
       contentVideos: [
         {
           id: 1,
-          url: "https://picsum.photos/400/300",
+          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
         },
         {
           id: 2,
-          url: "https://picsum.photos/400/300",
+          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
         },
       ],
     },
@@ -221,11 +221,11 @@ export const projectData = {
       contentVideos: [
         {
           id: 1,
-          url: "https://picsum.photos/400/300",
+          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
         },
         {
           id: 2,
-          url: "https://picsum.photos/400/300",
+          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
         },
       ],
     },
@@ -268,11 +268,11 @@ export const projectData = {
       contentVideos: [
         {
           id: 1,
-          url: "https://picsum.photos/400/300",
+          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
         },
         {
           id: 2,
-          url: "https://picsum.photos/400/300",
+          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
         },
       ],
     },
@@ -315,11 +315,11 @@ export const projectData = {
       contentVideos: [
         {
           id: 1,
-          url: "https://picsum.photos/400/300",
+          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
         },
         {
           id: 2,
-          url: "https://picsum.photos/400/300",
+          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
         },
       ],
     },

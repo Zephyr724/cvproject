@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ReactPlayer from "react-player";
 import { ContentText, ContentImage, ContentVideo } from "../types";
 
 interface Props {
@@ -15,7 +16,7 @@ export default function ImageTopTextBottom({
   return (
     <div className="space-y-4">
       {contentImages.length > 0 && (
-        <div className="relative w-full aspect-16/9">
+        <div className="relative w-full aspect-video">
           <Image
             src={contentImages[0].url}
             alt=""
@@ -31,8 +32,15 @@ export default function ImageTopTextBottom({
         </p>
       ))}
       {contentVideos.length > 0 && (
-        <div className="text-sm text-gray-300">
-          Videos: {contentVideos.length} item(s)
+        <div className="relative w-full aspect-video">
+          <ReactPlayer
+            src={contentVideos[0].url}
+            className="absolute inset-0"
+            width="100%"
+            height="100%"
+            controls
+            light={true}
+          />
         </div>
       )}
     </div>
