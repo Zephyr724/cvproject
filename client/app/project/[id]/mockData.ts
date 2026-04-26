@@ -280,7 +280,7 @@ export const projectData = {
       id: 5,
       order: 5,
       title: "Results",
-      layoutType: "img-top-img-middle-text-bottom",
+      layoutType: "text-top-img-middle-text-bottom",
       contentText: [
         {
           id: 1,
