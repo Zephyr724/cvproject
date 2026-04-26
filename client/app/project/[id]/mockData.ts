@@ -113,22 +113,27 @@ export const projectData = {
       contentImages: [
         {
           id: 1,
+          alt: "image",
           url: "https://picsum.photos/2560/1440",
         },
         {
           id: 2,
+          alt: "image",
           url: "https://picsum.photos/1280/720",
         },
         {
           id: 3,
+          alt: "image",
           url: "https://picsum.photos/1920/1080",
         },
         {
           id: 4,
+          alt: "image",
           url: "https://picsum.photos/2560/1420",
         },
         {
           id: 5,
+          alt: "image",
           url: "https://picsum.photos/1440/2560",
         },
       ],
@@ -168,22 +173,27 @@ export const projectData = {
       contentImages: [
         {
           id: 2,
+          alt: "image",
           url: "https://picsum.photos/2560/1440",
         },
         {
           id: 1,
+          alt: "image",
           url: "https://picsum.photos/1280/720",
         },
         {
           id: 3,
+          alt: "image",
           url: "https://picsum.photos/1920/1080",
         },
         {
           id: 4,
+          alt: "image",
           url: "https://picsum.photos/2560/1420",
         },
         {
           id: 5,
+          alt: "image",
           url: "https://picsum.photos/1440/2560",
         },
       ],
@@ -223,22 +233,27 @@ export const projectData = {
       contentImages: [
         {
           id: 4,
+          alt: "image",
           url: "https://picsum.photos/2560/1440",
         },
         {
           id: 2,
+          alt: "image",
           url: "https://picsum.photos/1280/720",
         },
         {
           id: 3,
+          alt: "image",
           url: "https://picsum.photos/1920/1080",
         },
         {
           id: 1,
+          alt: "image",
           url: "https://picsum.photos/2560/1420",
         },
         {
           id: 5,
+          alt: "image",
           url: "https://picsum.photos/1440/2560",
         },
       ],
@@ -278,22 +293,27 @@ export const projectData = {
       contentImages: [
         {
           id: 5,
+          alt: "image",
           url: "https://picsum.photos/2560/1440",
         },
         {
           id: 2,
+          alt: "image",
           url: "https://picsum.photos/1280/720",
         },
         {
           id: 3,
+          alt: "image",
           url: "https://picsum.photos/1920/1080",
         },
         {
           id: 4,
+          alt: "image",
           url: "https://picsum.photos/2560/1420",
         },
         {
           id: 1,
+          alt: "image",
           url: "https://picsum.photos/1440/2560",
         },
       ],
@@ -333,22 +353,27 @@ export const projectData = {
       contentImages: [
         {
           id: 3,
+          alt: "image",
           url: "https://picsum.photos/2560/1440",
         },
         {
           id: 2,
+          alt: "image",
           url: "https://picsum.photos/1280/720",
         },
         {
           id: 1,
+          alt: "image",
           url: "https://picsum.photos/1920/1080",
         },
         {
           id: 4,
+          alt: "image",
           url: "https://picsum.photos/2560/1420",
         },
         {
           id: 5,
+          alt: "image",
           url: "https://picsum.photos/1440/2560",
         },
       ],

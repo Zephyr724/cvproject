@@ -5,6 +5,7 @@ export interface ContentText {
 
 export interface ContentImage {
   id: number;
+  alt: string;
   url: string;
 }
 

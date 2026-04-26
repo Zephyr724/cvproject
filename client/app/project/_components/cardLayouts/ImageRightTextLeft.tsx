@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { ContentText, ContentImage, ContentVideo } from "../types";
+import { ImageCarousel } from "@/app/components/ImageCarousel";
 
 interface Props {
   contentText: ContentText[];
@@ -29,13 +30,7 @@ export default function ImageRightTextLeft({
       <div className="md:w-1/2 order-1 md:order-2">
         {contentImages.length > 0 && (
           <div className="relative w-full h-64">
-            <Image
-              src={contentImages[0].url}
-              alt=""
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover rounded"
-            />
+            <ImageCarousel images={contentImages} />
           </div>
         )}
       </div>
