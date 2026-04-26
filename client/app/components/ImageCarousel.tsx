@@ -17,18 +17,6 @@ interface Props {
   images: ContentImage[];
 }
 
-const images = [
-  { id: 1, src: "https://picsum.photos/2560/1440", alt: "风景照 1" },
-  { id: 2, src: "https://picsum.photos/1920/1080", alt: "风景照 2" },
-  { id: 3, src: "https://picsum.photos/720/1024", alt: "风景照 3" },
-  { id: 4, src: "https://picsum.photos/720/1024", alt: "风景照 3" },
-  { id: 5, src: "https://picsum.photos/1920/1080", alt: "风景照 3" },
-  { id: 6, src: "https://picsum.photos/1920/1080", alt: "风景照 3" },
-  { id: 7, src: "https://picsum.photos/1920/1080", alt: "风景照 3" },
-  { id: 8, src: "https://picsum.photos/1920/1080", alt: "风景照 3" },
-  { id: 9, src: "https://picsum.photos/2560/1440", alt: "风景照 3" },
-];
-
 const Dots = () => {
   const { api } = useCarousel();
   const [selectedIndex, setSelectedIndex] = React.useState(0);
