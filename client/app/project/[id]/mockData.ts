@@ -113,15 +113,23 @@ export const projectData = {
       contentImages: [
         {
           id: 1,
-          url: "https://picsum.photos/400/300",
+          url: "https://picsum.photos/2560/1440",
         },
         {
           id: 2,
-          url: "https://picsum.photos/400/300",
+          url: "https://picsum.photos/1280/720",
         },
         {
           id: 3,
-          url: "https://picsum.photos/400/300",
+          url: "https://picsum.photos/1920/1080",
+        },
+        {
+          id: 4,
+          url: "https://picsum.photos/2560/1420",
+        },
+        {
+          id: 5,
+          url: "https://picsum.photos/1440/2560",
         },
       ],
       contentVideos: [
@@ -159,16 +167,24 @@ export const projectData = {
       ],
       contentImages: [
         {
-          id: 1,
-          url: "https://picsum.photos/400/300",
+          id: 2,
+          url: "https://picsum.photos/2560/1440",
         },
         {
-          id: 2,
-          url: "https://picsum.photos/400/300",
+          id: 1,
+          url: "https://picsum.photos/1280/720",
         },
         {
           id: 3,
-          url: "https://picsum.photos/400/300",
+          url: "https://picsum.photos/1920/1080",
+        },
+        {
+          id: 4,
+          url: "https://picsum.photos/2560/1420",
+        },
+        {
+          id: 5,
+          url: "https://picsum.photos/1440/2560",
         },
       ],
       contentVideos: [
@@ -206,16 +222,24 @@ export const projectData = {
       ],
       contentImages: [
         {
-          id: 1,
-          url: "https://picsum.photos/400/300",
+          id: 4,
+          url: "https://picsum.photos/2560/1440",
         },
         {
           id: 2,
-          url: "https://picsum.photos/400/300",
+          url: "https://picsum.photos/1280/720",
         },
         {
           id: 3,
-          url: "https://picsum.photos/400/300",
+          url: "https://picsum.photos/1920/1080",
+        },
+        {
+          id: 1,
+          url: "https://picsum.photos/2560/1420",
+        },
+        {
+          id: 5,
+          url: "https://picsum.photos/1440/2560",
         },
       ],
       contentVideos: [
@@ -253,16 +277,24 @@ export const projectData = {
       ],
       contentImages: [
         {
-          id: 1,
-          url: "https://picsum.photos/400/300",
+          id: 5,
+          url: "https://picsum.photos/2560/1440",
         },
         {
           id: 2,
-          url: "https://picsum.photos/400/300",
+          url: "https://picsum.photos/1280/720",
         },
         {
           id: 3,
-          url: "https://picsum.photos/400/300",
+          url: "https://picsum.photos/1920/1080",
+        },
+        {
+          id: 4,
+          url: "https://picsum.photos/2560/1420",
+        },
+        {
+          id: 1,
+          url: "https://picsum.photos/1440/2560",
         },
       ],
       contentVideos: [
@@ -300,16 +332,24 @@ export const projectData = {
       ],
       contentImages: [
         {
-          id: 1,
-          url: "https://picsum.photos/400/300",
+          id: 3,
+          url: "https://picsum.photos/2560/1440",
         },
         {
           id: 2,
-          url: "https://picsum.photos/400/300",
+          url: "https://picsum.photos/1280/720",
         },
         {
-          id: 3,
-          url: "https://picsum.photos/400/300",
+          id: 1,
+          url: "https://picsum.photos/1920/1080",
+        },
+        {
+          id: 4,
+          url: "https://picsum.photos/2560/1420",
+        },
+        {
+          id: 5,
+          url: "https://picsum.photos/1440/2560",
         },
       ],
       contentVideos: [
