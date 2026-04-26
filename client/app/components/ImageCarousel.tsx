@@ -84,8 +84,8 @@ export function ImageCarousel({ images }: Props) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="left-2 z-10 bg-black/15 text-white/15 hover:bg-black/50 hover:text-white/50" />
+      <CarouselNext className="right-2 z-10 bg-black/15 text-white/15 hover:bg-black/50 hover:text-white/50" />
       <Dots />
     </Carousel>
   );
