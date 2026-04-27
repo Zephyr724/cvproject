@@ -61,11 +61,24 @@ export function ImageCarousel({ images }: Props) {
     Autoplay({ delay: 4000, stopOnInteraction: true }),
   );
 
+  // if only one image return <Image>
+  if (images.length === 1)
+    return (
+      <Image
+        src={images[0].url}
+        alt={images[0].alt}
+        fill
+        priority
+        sizes="(max-width: 768px) 100vw, 50vw"
+        className="object-cover "
+      />
+    );
+
   return (
-    <div className="absolute inset-0 overflow-hidden rounded-md ">
+    <div className="absolute inset-0 overflow-hidden rounded">
       <Carousel
         plugins={[plugin.current]}
-        className="w-full h-full *:data-[slot=carousel-content]:h-full"
+        className="w-full h-full rounded *:data-[slot=carousel-content]:h-full"
         onMouseEnter={() => plugin.current.stop()}
         onMouseLeave={() => plugin.current.play()}
         opts={{ align: "start", loop: true }}
@@ -73,14 +86,14 @@ export function ImageCarousel({ images }: Props) {
         <CarouselContent className="h-full">
           {images.map((image) => (
             <CarouselItem key={image.id}>
-              <div className=" relative w-full h-full rounded-md">
+              <div className=" relative w-full h-full rounded">
                 <Image
                   src={image.url}
                   alt={image.alt}
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover "
+                  className="object-contain"
                 />
               </div>
             </CarouselItem>
