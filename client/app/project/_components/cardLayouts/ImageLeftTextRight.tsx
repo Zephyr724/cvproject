@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   ContentText,
   ContentImage,
@@ -25,6 +24,7 @@ export default function ImageLeftTextRight({
 }: Props) {
   return (
     <div className="flex flex-col md:flex-row gap-3 items-center">
+      {/* left section */}
       <div style={{ flexGrow: splitRatio.left, flexBasis: 0 }}>
         {contentImages.length > 0 && (
           <div
@@ -37,7 +37,7 @@ export default function ImageLeftTextRight({
           </div>
         )}
       </div>
-
+      {/* right section */}
       <div
         style={{ flexGrow: splitRatio.right, flexBasis: 0 }}
         className="space-y-4"

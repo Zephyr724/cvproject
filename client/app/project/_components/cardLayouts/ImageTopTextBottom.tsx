@@ -1,4 +1,3 @@
-import Image from "next/image";
 import ReactPlayer from "react-player";
 import { ContentText, ContentImage, ContentVideo } from "../types";
 import { ImageCarousel } from "@/app/components/ImageCarousel";
@@ -16,16 +15,19 @@ export default function ImageTopTextBottom({
 }: Props) {
   return (
     <div className="space-y-4">
+      {/* Top Section: images */}
       {contentImages.length > 0 && (
         <div className="relative w-full aspect-video">
           <ImageCarousel images={contentImages} />
         </div>
       )}
+      {/* Middle Section: Text */}
       {contentText.map((text) => (
         <p key={text.id} className="text-gray-200">
           {text.content}
         </p>
       ))}
+      {/* Buttom Section: video */}
       {contentVideos.length > 0 && (
         <div className="relative w-full aspect-video">
           <ReactPlayer
