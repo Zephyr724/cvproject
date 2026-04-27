@@ -32,7 +32,7 @@ const TechStack = ({ techStack }: Props) => {
   return (
     <div className="bg-gray-600 rounded text-white p-3">
       <h2 className="text-lg font-semibold">Tech Stack</h2>
-      <div className="flex gap-x-2">
+      <div className="flex gap-x-2 flex-wrap">
         {categories.map((categorie) => {
           const sortedItems = [...categorie.items].sort(
             (a, b) => a.order - b.order,
@@ -43,7 +43,7 @@ const TechStack = ({ techStack }: Props) => {
               className="flex flex-1 flex-col  pr-2  rounded m-1"
             >
               <h3 className="font-bold">{categorie.title}</h3>
-              <div className="flex gap-2 mr-10 pt-1 ">
+              <div className="flex flex-wrap gap-2 mr-10 pt-1 ">
                 {sortedItems.map((item) => (
                   <div
                     className=" bg-gray-400 rounded-2xl px-2 min-w-10 whitespace-nowrap text-center"

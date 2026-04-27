@@ -1,7 +1,7 @@
 import ImageTopTextBottom from "./ImageTopTextBottom";
 import ImageLeftTextRight from "./ImageLeftTextRight";
 import ImageRightTextLeft from "./ImageRightTextLeft";
-import ComplexLayout from "./ComplexLayout";
+import TextTopBottomImgMiddle from "./TextTopBottomImgMiddle";
 import { ContentText, ContentImage, ContentVideo } from "../types";
 
 interface LayoutProps {
@@ -17,7 +17,7 @@ export const layoutMap: Record<string, LayoutComponent> = {
   "img-top-text-bottom": ImageTopTextBottom,
   "img-left-text-right": ImageLeftTextRight,
   "img-right-text-left": ImageRightTextLeft,
-  "img-top-img-middle-text-bottom": ComplexLayout,
+  "text-top-img-middle-text-bottom": TextTopBottomImgMiddle,
 };
 
 // default layout

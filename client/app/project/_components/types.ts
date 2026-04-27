@@ -5,6 +5,7 @@ export interface ContentText {
 
 export interface ContentImage {
   id: number;
+  alt: string;
   url: string;
 }
 
@@ -18,7 +19,16 @@ export interface Section {
   order: number;
   title: string;
   layoutType: string;
-  contentText: ContentText[];
-  contentImages: ContentImage[];
-  contentVideos: ContentVideo[];
+  contentText?: ContentText[];
+  contentImages?: ContentImage[];
+  contentVideos?: ContentVideo[];
+}
+
+export interface ImageRatio {
+  width: number;
+  height: number;
+}
+export interface SplitRatio {
+  left: number;
+  right: number;
 }
