@@ -93,7 +93,7 @@ export function ImageCarousel({ images }: Props) {
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-contain"
+                  className="object-contain rounded"
                 />
               </div>
             </CarouselItem>
