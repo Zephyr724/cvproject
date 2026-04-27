@@ -162,39 +162,38 @@ export const projectData = {
         {
           id: 2,
           content:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
         },
         {
           id: 3,
-          content:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          content: "When an unknown printer took a galley of type.",
         },
         {
           id: 4,
           content:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ",
         },
         {
           id: 5,
           content:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
         },
       ],
       contentImages: [
         {
-          id: 2,
-          alt: "image",
-          url: "https://picsum.photos/2560/1440",
-        },
-        {
           id: 1,
           alt: "image",
-          url: "https://picsum.photos/1280/720",
+          url: "https://picsum.photos/400/300",
+        },
+        {
+          id: 2,
+          alt: "image",
+          url: "https://picsum.photos/1920/1080",
         },
         {
           id: 3,
           alt: "image",
-          url: "https://picsum.photos/1920/1080",
+          url: "https://picsum.photos/1600/1200",
         },
         {
           id: 4,

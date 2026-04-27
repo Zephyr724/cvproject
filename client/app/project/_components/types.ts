@@ -23,3 +23,12 @@ export interface Section {
   contentImages?: ContentImage[];
   contentVideos?: ContentVideo[];
 }
+
+export interface ImageRatio {
+  width: number;
+  height: number;
+}
+export interface SplitRatio {
+  left: number;
+  right: number;
+}
