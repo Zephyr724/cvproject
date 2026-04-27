@@ -26,7 +26,7 @@ const ProjectPage = async ({ searchParams }: Props) => {
   } = await projectData;
 
   return (
-    <div className="flex flex-col mx-auto items-center max-w-3xl border-solid border border-gray-300 p-1 relative ">
+    <div className="flex flex-col mx-auto items-center max-w-4xl border-solid border border-gray-300 p-1 relative ">
       <div className="absolute -top-4 -right-4">
         <CloseButton />
       </div>
