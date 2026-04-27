@@ -62,32 +62,34 @@ export function ImageCarousel({ images }: Props) {
   );
 
   return (
-    <Carousel
-      plugins={[plugin.current]}
-      className="w-full overflow-hidden"
-      onMouseEnter={() => plugin.current.stop()}
-      onMouseLeave={() => plugin.current.play()}
-      opts={{ align: "start", loop: true }}
-    >
-      <CarouselContent>
-        {images.map((image) => (
-          <CarouselItem key={image.id}>
-            <div className="relative aspect-video overflow-hidden rounded-md">
-              <Image
-                src={image.url}
-                alt={image.alt}
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-contain "
-              />
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious className="left-2 z-10 border-white/10 bg-black/15 text-white/15  hover:border-white/20 hover:bg-black/50 hover:text-white/50" />
-      <CarouselNext className="right-2 z-10  border-white/10 bg-black/15 text-white/15  hover:border-white/20 hover:bg-black/50 hover:text-white/50" />
-      <Dots />
-    </Carousel>
+    <div className="absolute inset-0 overflow-hidden rounded-md ">
+      <Carousel
+        plugins={[plugin.current]}
+        className="w-full h-full *:data-[slot=carousel-content]:h-full"
+        onMouseEnter={() => plugin.current.stop()}
+        onMouseLeave={() => plugin.current.play()}
+        opts={{ align: "start", loop: true }}
+      >
+        <CarouselContent className="h-full">
+          {images.map((image) => (
+            <CarouselItem key={image.id}>
+              <div className=" relative w-full h-full rounded-md">
+                <Image
+                  src={image.url}
+                  alt={image.alt}
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover "
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="left-2 z-10 border-white/10 bg-black/15 text-white/15  hover:border-white/20 hover:bg-black/50 hover:text-white/50" />
+        <CarouselNext className="right-2 z-10  border-white/10 bg-black/15 text-white/15  hover:border-white/20 hover:bg-black/50 hover:text-white/50" />
+        <Dots />
+      </Carousel>
+    </div>
   );
 }
