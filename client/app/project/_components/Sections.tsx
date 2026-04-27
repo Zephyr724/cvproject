@@ -8,7 +8,15 @@ interface Props {
 const Sections = ({ sections }: Props) => {
   if (!sections || sections.length === 0) return null;
 
-  const sortedSections = [...sections].sort((a, b) => a.order - b.order);
+  //sort the elements and replace the null|undefined elements with []
+  const sortedSections = [...sections]
+    .sort((a, b) => a.order - b.order)
+    .map((section) => ({
+      ...section,
+      contentText: section.contentText ?? [],
+      contentImages: section.contentImages ?? [],
+      contentVideos: section.contentVideos ?? [],
+    }));
 
   return (
     <div className="bg-gray-600 rounded text-white p-3">

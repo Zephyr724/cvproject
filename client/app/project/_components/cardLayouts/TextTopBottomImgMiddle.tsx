@@ -22,7 +22,6 @@ export default function ComplexLayout({
             fill
             className="object-cover rounded"
           />
-
         </div>
       )}
       <div className="space-y-4">

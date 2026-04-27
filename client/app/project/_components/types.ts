@@ -19,7 +19,7 @@ export interface Section {
   order: number;
   title: string;
   layoutType: string;
-  contentText: ContentText[];
-  contentImages: ContentImage[];
-  contentVideos: ContentVideo[];
+  contentText?: ContentText[];
+  contentImages?: ContentImage[];
+  contentVideos?: ContentVideo[];
 }
