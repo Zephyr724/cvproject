@@ -41,12 +41,12 @@ const Dots = () => {
   if (!api || scrollSnaps.length === 0) return null;
 
   return (
-    <div className="flex justify-center gap-2 py-3">
+    <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-2">
       {scrollSnaps.map((_, idx) => (
         <button
           key={idx}
-          className={`h-2 rounded-full transition-all duration-300 ${
-            selectedIndex === idx ? "bg-white w-4" : "bg-gray-200 w-2"
+          className={`h-2 rounded-full transition-all duration-300 hover:bg-white ${
+            selectedIndex === idx ? "bg-white/50 w-4" : "bg-gray-200/50 w-2"
           }`}
           onClick={() => api.scrollTo(idx)}
           aria-label={`Go to slide ${idx + 1}`}
