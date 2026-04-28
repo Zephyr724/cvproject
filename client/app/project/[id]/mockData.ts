@@ -1,5 +1,5 @@
 export const projectData = {
-  projectID: 1,
+  id: 1,
   title: "My first Project",
   tags: [
     {
@@ -92,7 +92,7 @@ export const projectData = {
       id: 1,
       order: 1,
       title: "Project Introduction",
-      layoutType: "img-top-text-bottom",
+      layoutType: "imgTopTextBottom",
       contentText: [
         {
           id: 1,
@@ -152,7 +152,7 @@ export const projectData = {
       id: 2,
       order: 2,
       title: "Problem",
-      layoutType: "img-left-text-right",
+      layoutType: "imgLeftTextRight",
       contentText: [
         {
           id: 1,
@@ -221,7 +221,7 @@ export const projectData = {
       id: 3,
       order: 3,
       title: "Tasks",
-      layoutType: "img-right-text-left",
+      layoutType: "imgRightTextLeft",
       contentText: [
         {
           id: 1,
@@ -280,7 +280,7 @@ export const projectData = {
       id: 4,
       order: 4,
       title: "Actions",
-      layoutType: "img-left-text-right",
+      layoutType: "imgLeftTextRight",
       contentText: [
         {
           id: 1,
@@ -349,7 +349,7 @@ export const projectData = {
       id: 5,
       order: 5,
       title: "Results",
-      layoutType: "text-top-img-middle-text-bottom",
+      layoutType: "textTopImgMiddleTextBottom",
       contentText: [
         {
           id: 1,

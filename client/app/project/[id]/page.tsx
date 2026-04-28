@@ -15,7 +15,7 @@ const ProjectPage = async ({ searchParams }: Props) => {
 
   //mock data
   const {
-    projectID,
+    id: projectId,
     title,
     tags,
     projectUrl,
