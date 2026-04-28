@@ -5,7 +5,7 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../lib/generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -113,7 +113,7 @@ enum LayoutType {
 
 model ContentText {
   id        Int     @id @default(autoincrement())
-  content   String
+  content   String  @db.LongText
   sectionId Int
   section   Section @relation(fields: [sectionId], references: [id])
 
@@ -122,7 +122,7 @@ model ContentText {
 
 model ContentImage {
   id        Int     @id @default(autoincrement())
-  url       String
+  url       String  @db.Text
   alt       String?
   sectionId Int
   section   Section @relation(fields: [sectionId], references: [id])
@@ -132,7 +132,7 @@ model ContentImage {
 
 model ContentVideo {
   id        Int     @id @default(autoincrement())
-  url       String
+  url       String  @db.Text
   sectionId Int
   section   Section @relation(fields: [sectionId], references: [id])
 

@@ -1,5 +1,5 @@
 // lib/prisma.ts
-import { PrismaClient } from "@/lib/generated/prisma/client";
+import { PrismaClient } from "@generated/prisma";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 
 const adapter = new PrismaMariaDb({
