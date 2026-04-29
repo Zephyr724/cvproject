@@ -5,7 +5,7 @@ import TextTopBottomImgMiddle from "./TextTopBottomImgMiddle";
 import { ContentText, ContentImage, ContentVideo } from "../types";
 
 interface LayoutProps {
-  contentText: ContentText[];
+  contentTexts: ContentText[];
   contentImages: ContentImage[];
   contentVideos: ContentVideo[];
 }

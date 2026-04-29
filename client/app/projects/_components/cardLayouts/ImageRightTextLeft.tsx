@@ -8,7 +8,7 @@ import {
 import { ImageCarousel } from "@/app/components/ImageCarousel";
 
 interface Props {
-  contentText: ContentText[];
+  contentTexts: ContentText[];
   contentImages: ContentImage[];
   contentVideos: ContentVideo[];
   imageRatio?: ImageRatio;
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function ImageRightTextLeft({
-  contentText,
+  contentTexts,
   contentImages,
   contentVideos,
   imageRatio = { width: 4, height: 3 },
@@ -29,7 +29,7 @@ export default function ImageRightTextLeft({
         style={{ flexGrow: splitRatio.right, flexBasis: 0 }}
         className="space-y-4"
       >
-        {contentText.map((text) => (
+        {contentTexts.map((text) => (
           <p key={text.id} className="text-gray-200 text-left">
             {text.content}
           </p>

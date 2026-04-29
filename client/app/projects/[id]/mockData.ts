@@ -93,7 +93,7 @@ export const projectData = {
       order: 1,
       title: "Project Introduction",
       layoutType: "imgTopTextBottom",
-      contentText: [
+      contentTexts: [
         {
           id: 1,
           content:
@@ -153,7 +153,7 @@ export const projectData = {
       order: 2,
       title: "Problem",
       layoutType: "imgLeftTextRight",
-      contentText: [
+      contentTexts: [
         {
           id: 1,
           content:
@@ -222,7 +222,7 @@ export const projectData = {
       order: 3,
       title: "Tasks",
       layoutType: "imgRightTextLeft",
-      contentText: [
+      contentTexts: [
         {
           id: 1,
           content:
@@ -281,7 +281,7 @@ export const projectData = {
       order: 4,
       title: "Actions",
       layoutType: "imgLeftTextRight",
-      contentText: [
+      contentTexts: [
         {
           id: 1,
           content:
@@ -350,7 +350,7 @@ export const projectData = {
       order: 5,
       title: "Results",
       layoutType: "textTopImgMiddleTextBottom",
-      contentText: [
+      contentTexts: [
         {
           id: 1,
           content:

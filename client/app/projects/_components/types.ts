@@ -1,3 +1,37 @@
+export interface Project {
+  id: number;
+  title: string;
+  tags: Tag[];
+  projectUrl: string;
+  githubUrl: string;
+  responsibilities: Role[];
+  techStack: {
+    frontend: TechItem[];
+    backend: TechItem[];
+  };
+  sections: Section[];
+}
+
+export interface Tag {
+  id: number;
+  name: string;
+  order: number;
+}
+
+export interface TechItem {
+  id: number;
+  name: string;
+  order: number;
+
+  slug: string;
+}
+
+export interface Role {
+  id: number;
+  order: number;
+  name: string;
+}
+
 export interface ContentText {
   id: number;
   content: string;
@@ -19,7 +53,7 @@ export interface Section {
   order: number;
   title: string;
   layoutType: string;
-  contentText?: ContentText[];
+  contentTexts?: ContentText[];
   contentImages?: ContentImage[];
   contentVideos?: ContentVideo[];
 }

@@ -52,6 +52,21 @@ export function toProjectResponse(project: ProjectWithIncludes) {
       order: r.order,
       name: r.role.name,
     })),
-    sections: project.sections,
+    sections: project.sections.map((s) => ({
+      id: s.id,
+      order: s.order,
+      title: s.title,
+      layoutType: s.layoutType,
+      contentTexts: s.contentTexts.map((t) => ({
+        id: t.id,
+        content: t.content,
+      })),
+      contentImages: s.contentImages.map((img) => ({
+        id: img.id,
+        alt: img.alt ?? "",
+        url: img.url,
+      })),
+      contentVideos: s.contentVideos.map((v) => ({ id: v.id, url: v.url })),
+    })),
   };
 }

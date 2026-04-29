@@ -3,13 +3,13 @@ import { ContentText, ContentImage, ContentVideo } from "../types";
 import { ImageCarousel } from "@/app/components/ImageCarousel";
 
 interface Props {
-  contentText: ContentText[];
+  contentTexts: ContentText[];
   contentImages: ContentImage[];
   contentVideos: ContentVideo[];
 }
 
 export default function ImageTopTextBottom({
-  contentText,
+  contentTexts,
   contentImages,
   contentVideos,
 }: Props) {
@@ -22,7 +22,7 @@ export default function ImageTopTextBottom({
         </div>
       )}
       {/* Middle Section: Text */}
-      {contentText.map((text) => (
+      {contentTexts.map((text) => (
         <p key={text.id} className="text-gray-200">
           {text.content}
         </p>
