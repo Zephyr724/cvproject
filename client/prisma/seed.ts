@@ -21,18 +21,22 @@ const projectData = {
     {
       id: 1,
       name: "React",
+      order: 1,
     },
     {
       id: 2,
       name: "Svelte",
+      order: 2,
     },
     {
       id: 3,
       name: "Full Stack",
+      order: 3,
     },
     {
       id: 4,
       name: "Serverless",
+      order: 4,
     },
   ],
   projectUrl: "https://github.com/Zephyr724/cvproject",
@@ -437,10 +441,10 @@ function generateProject(id: number, title: string) {
 
   // 修改 tags（保持原有标签，也可适当变化）
   newProject.tags = [
-    { id: 1, name: "React" },
-    { id: 2, name: "Vue" }, // 示例变化
-    { id: 3, name: "Full Stack" },
-    { id: 4, name: "GraphQL" },
+    { id: 1, name: "React", order: 1 },
+    { id: 2, name: "Vue", order: 2 }, // 示例变化
+    { id: 3, name: "Full Stack", order: 3 },
+    { id: 4, name: "GraphQL", order: 4 },
   ];
 
   // 修改 techStack（稍微更改名称和顺序）
@@ -590,6 +594,7 @@ async function main() {
           data: {
             projectId: project.id,
             tagId: tag.id,
+            order: tagInput.order,
           },
         });
       }
