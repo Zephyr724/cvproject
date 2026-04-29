@@ -31,10 +31,7 @@ export async function PUT(
 
   const product = await prisma.project.update({
     where: { id: idNumber },
-    data: {
-      name: body.title,
-      projectUrl: body.projectUrl,
-    },
+    data: {},
   });
 
   if (!product)
