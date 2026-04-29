@@ -1,17 +1,5 @@
-import type { Prisma, Project, TechItem } from "@/src/generated/prisma/client";
+import type { Prisma, TechItem } from "@/src/generated/prisma/client";
 import type { ProjectInclude } from "./project-includes";
-
-// interface TechItemInput {
-//   category: "frontend" | "backend";
-//   order: number;
-//   techItem: {
-//     id: number;
-//     name: string;
-//     slug: string;
-//     isFronted: boolean;
-//     isBackend: boolean;
-//   };
-// }
 
 type ProjectWithIncludes = Prisma.ProjectGetPayload<{
   include: ProjectInclude;
