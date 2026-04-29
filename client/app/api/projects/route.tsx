@@ -1,33 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { toProjectResponse } from "@/lib/project-mapper";
+import { projectInclude } from "@/lib/project-includes";
 
 export async function GET(request: NextRequest) {
   const projects = await prisma.project.findMany({
-    include: {
-      tags: {
-        include: {
-          tag: true, // ProjectTag → Tag
-        },
-      },
-      techItems: {
-        include: {
-          techItem: true, // ProjectTechItem → TechItem
-        },
-      },
-      roles: {
-        include: {
-          role: true, // ProjectRole → Role
-        },
-      },
-      sections: {
-        include: {
-          contentTexts: true,
-          contentImages: true,
-          contentVideos: true,
-        },
-      },
-    },
+    include:projectInclude
   });
 
-  return NextResponse.json(projects);
+  return NextResponse.json(projects.map(toProjectResponse));
 }
