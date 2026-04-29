@@ -14,6 +14,7 @@ function mapTechItems(techItems: TechItemWithDetails[]) {
   const backend: TechItem[] = [];
 
   for (const { category, order, techItem } of techItems) {
+    //destruct and flatten Data
     const item = {
       id: techItem.id,
       order,
@@ -35,12 +36,17 @@ export function toProjectResponse(project: ProjectWithIncludes) {
     title: project.title,
     projectUrl: project.projectUrl,
     githubUrl: project.githubUrl,
+
+    //Data Flattening
     tags: project.tags.map((t) => ({
       id: t.tag.id,
       name: t.tag.name,
       order: t.order,
     })),
+
     techStack: mapTechItems(project.techItems),
+
+    //Data Flattening
     responsibilities: project.roles.map((r) => ({
       id: r.role.id,
       order: r.order,
