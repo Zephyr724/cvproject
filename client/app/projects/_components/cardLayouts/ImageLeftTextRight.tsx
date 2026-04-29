@@ -42,7 +42,7 @@ export default function ImageLeftTextRight({
         style={{ flexGrow: splitRatio.right, flexBasis: 0 }}
         className="space-y-4"
       >
-        {contentTexts.map((text) => (
+        { contentTexts[0] && contentTexts.map((text) => (
           <p key={text.id} className="text-gray-200 text-left">
             {text.content}
           </p>
