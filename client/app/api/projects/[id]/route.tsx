@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { number } from "zod";
 import { projectInclude } from "@/lib/project-includes";
 import { toProjectResponse } from "@/lib/project-mapper";
 

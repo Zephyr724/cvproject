@@ -16,8 +16,8 @@ model Project {
   id         Int               @id @default(autoincrement())
   title      String
   tags       ProjectTag[]
-  projectUrl String
-  githubUrl  String
+  projectUrl String?
+  githubUrl  String?
   techItems  ProjectTechItem[]
   roles      ProjectRole[]
   sections   Section[]
@@ -27,7 +27,7 @@ model Project {
 
 model Tag {
   id       Int          @id @default(autoincrement())
-  name     String       @unique
+  name     String       
   projects ProjectTag[]
 
   @@map("tag")
