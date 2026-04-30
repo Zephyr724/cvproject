@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 
 ### Features
+- !Important: Finish the MVP of project page
+- Connect to mySql db
 
 * add Implementations component ([e6125dc](https://github.com/Zephyr724/cvproject/commit/e6125dce1e9b0f3cebba2743c161099846f91947))
 * add Responsiblities component layout ([e08c8fa](https://github.com/Zephyr724/cvproject/commit/e08c8fabb4f947e58ff38d5ada6f877804c712ed))
