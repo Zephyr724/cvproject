@@ -11,7 +11,7 @@ import {
   useCarousel,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import { ContentImage } from "../project/_components/types";
+import { ContentImage } from "../projects/_components/types";
 
 interface Props {
   images: ContentImage[];

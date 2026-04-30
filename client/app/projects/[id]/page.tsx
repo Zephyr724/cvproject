@@ -5,17 +5,26 @@ import { FaGithub, FaExternalLinkSquareAlt } from "react-icons/fa";
 import TechStack from "../TechStack";
 import Responsibilities from "../Responsibilities";
 import Sections from "../_components/Sections";
+import { Project } from "../_components/types";
 
 interface Props {
-  searchParams: Promise<{ id: string }>;
+  params: Promise<{ id: string }>;
 }
 
-const ProjectPage = async ({ searchParams }: Props) => {
-  const { id } = await searchParams;
+const ProjectPage = async ({ params }: Props) => {
+  const { id } = await params;
 
-  //mock data
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects/${id}`,
+  );
+
+  if (!res.ok) {
+    return <div> Project not found</div>;
+  }
+
+  const project = (await res.json()) as Project;
+
   const {
-    projectID,
     title,
     tags,
     projectUrl,
@@ -23,7 +32,7 @@ const ProjectPage = async ({ searchParams }: Props) => {
     techStack,
     responsibilities,
     sections,
-  } = await projectData;
+  } = project;
 
   return (
     <div className="flex flex-col mx-auto items-center max-w-4xl border-solid border border-gray-300 p-1 relative ">

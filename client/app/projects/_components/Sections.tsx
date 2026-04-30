@@ -13,7 +13,7 @@ const Sections = ({ sections }: Props) => {
     .sort((a, b) => a.order - b.order)
     .map((section) => ({
       ...section,
-      contentText: section.contentText ?? [],
+      contentTexts: section.contentTexts ?? [],
       contentImages: section.contentImages ?? [],
       contentVideos: section.contentVideos ?? [],
     }));
@@ -32,7 +32,7 @@ const Sections = ({ sections }: Props) => {
             <div key={section.id} className="bg-gray-400  p-4">
               <h3 className="text-md font-bold mb-3">{section.title}</h3>
               <LayoutComponent
-                contentText={section.contentText}
+                contentTexts={section.contentTexts}
                 contentImages={section.contentImages}
                 contentVideos={section.contentVideos}
               />
