@@ -1,7 +1,7 @@
 // lib/mappers/project.mapper.ts
 import type { Prisma } from "@/src/generated/prisma/client";
 import type { ProjectWithIncludes } from "@/lib/repositories/project.repository";
-import type { CreateProjectDTO } from "../services/project.service"; 
+import type { CreateProjectDTO } from "../services/project.service";
 
 /**
 
@@ -17,24 +17,45 @@ export function toPrismaCreateInput(
     githubUrl: dto.githubUrl ?? null,
     tags: {
       create:
-        dto.tags?.map(({ id, order }) => ({
-          order,
-          tag: { connect: { id } },
+        dto.tags?.map((t) => ({
+          order: t.order,
+          tag: t.id
+            ? { connect: { id: t.id } }
+            : {
+                connectOrCreate: {
+                  where: { name: t.name! },
+                  create: { name: t.name! },
+                },
+              },
         })) ?? [],
     },
     techItems: {
       create:
-        dto.techItems?.map(({ id, category, order }) => ({
-          category,
-          order,
-          techItem: { connect: { id } },
+        dto.techItems?.map((ti) => ({
+          category: ti.category,
+          order: ti.order,
+          techItem: ti.id
+            ? { connect: { id: ti.id } }
+            : {
+                connectOrCreate: {
+                  where: { slug: ti.slug! },
+                  create: { name: ti.name!, slug: ti.slug! },
+                },
+              },
         })) ?? [],
     },
     roles: {
       create:
-        dto.roles?.map(({ id, order }) => ({
-          order,
-          role: { connect: { id } },
+        dto.roles?.map((r) => ({
+          order: r.order,
+          role: r.id
+            ? { connect: { id: r.id } }
+            : {
+                connectOrCreate: {
+                  where: { name: r.name! },
+                  create: { name: r.name! },
+                },
+              },
         })) ?? [],
     },
     sections: {

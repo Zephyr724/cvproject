@@ -27,7 +27,7 @@ model Project {
 
 model Tag {
   id       Int          @id @default(autoincrement())
-  name     String       
+  name     String       @unique
   projects ProjectTag[]
 
   @@map("tag")
