@@ -1,7 +1,7 @@
 // lib/mappers/project.mapper.ts
 import type { Prisma } from "@/src/generated/prisma/client";
 import type { ProjectWithIncludes } from "@/lib/repositories/project.repository";
-import type { CreateProjectDTO } from "../services/project.service";
+import type { CreateProjectDTO } from "@/app/api/projects/schema";
 
 /**
 
@@ -23,8 +23,8 @@ export function toPrismaCreateInput(
             ? { connect: { id: t.id } }
             : {
                 connectOrCreate: {
-                  where: { name: t.name! },
-                  create: { name: t.name! },
+                  where: { name: t.name as string },
+                  create: { name: t.name as string },
                 },
               },
         })) ?? [],
@@ -38,8 +38,8 @@ export function toPrismaCreateInput(
             ? { connect: { id: ti.id } }
             : {
                 connectOrCreate: {
-                  where: { slug: ti.slug! },
-                  create: { name: ti.name!, slug: ti.slug! },
+                  where: { slug: ti.slug as string },
+                  create: { name: ti.name as string, slug: ti.slug as string },
                 },
               },
         })) ?? [],
@@ -52,8 +52,8 @@ export function toPrismaCreateInput(
             ? { connect: { id: r.id } }
             : {
                 connectOrCreate: {
-                  where: { name: r.name! },
-                  create: { name: r.name! },
+                  where: { name: r.name as string },
+                  create: { name: r.name as string },
                 },
               },
         })) ?? [],

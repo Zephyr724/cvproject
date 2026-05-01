@@ -1,47 +1,46 @@
 import { z } from "zod";
 
-export const tagSchema = z.object({
-  id: z.number().optional(),
-  name: z.string().min(1).max(255),
-  order: z.number(),
-});
+export const tagSchema = z
+  .object({
+    id: z.number().optional(),
+    name: z.string().min(1).max(191).optional(),
+    order: z.number(),
+  })
+  .refine((data) => data.id !== undefined || data.name !== undefined, {
+    message: "have to provide id or name",
+  });
 
 //Alias: responsibility
-export const roleSchema = z.object({
-  id: z.number().optional(),
-  order: z.number(),
-  name: z.string().min(1).max(255),
-});
+export const roleSchema = z
+  .object({
+    id: z.number().optional(),
+    name: z.string().min(1).max(191).optional(),
+    order: z.number(),
+  })
+  .refine((data) => data.id !== undefined || data.name !== undefined, {
+    message: "have to provide id or name",
+  });
 
-export const techItemsSchema = z.object({
-  id: z.number().optional(),
-  name: z.string().min(1).max(255),
-  category: z.enum(["frontend", "backend"]),
-  order: z.number(),
-});
+export const techItemSchema = z
+  .object({
+    id: z.number().optional(),
+    name: z.string().min(1).max(191).optional(),
+    slug: z.string().min(1).max(191).optional(),
+    category: z.enum(["frontend", "backend"]),
+    order: z.number(),
+  })
+  .refine((data) => data.id !== undefined || data.name !== undefined, {
+    message: "have to provide id or name",
+  });
 
-export const techItemSchema = z.object({
-  id: z.number().optional(),
-  name: z.string().min(1).max(255),
-  order: z.number(),
-  slug: z.string().min(1),
-});
-
-export const contentTextSchema = z.object({
-  id: z.number().optional(),
-  content: z.string().optional(),
-});
+export const contentTextSchema = z.object({ content: z.string() });
 
 export const contentImagesSchema = z.object({
-  id: z.number().optional(),
-  alt: z.string().optional(),
-  url: z.url().optional(),
+  url: z.url(),
+  alt: z.string().max(191).optional(),
 });
 
-export const contentVideosSchema = z.object({
-  id: z.number().optional(),
-  url: z.url().optional(),
-});
+export const contentVideosSchema = z.object({ url: z.url() });
 
 export const layoutTypeEnum = z.enum([
   "imgTopTextBottom",
@@ -51,27 +50,23 @@ export const layoutTypeEnum = z.enum([
 ]);
 
 export const sectionSchema = z.object({
-  id: z.number().optional(),
   order: z.number(),
-  title: z.string().min(1).max(255),
+  title: z.string().min(1).max(191),
   layoutType: layoutTypeEnum,
-  contentTexts: z.array(contentTextSchema),
-  contentImages: z.array(contentImagesSchema),
-  contentVideos: z.array(contentVideosSchema),
+  contentTexts: z.array(contentTextSchema).optional(),
+  contentImages: z.array(contentImagesSchema).optional(),
+  contentVideos: z.array(contentVideosSchema).optional(),
 });
 
-export const createProjectInputSchema = z.object({
+//define api request DTO (also used for Zod validation)
+export const createProjectSchema = z.object({
   title: z.string().min(1),
-  tags: z.array(tagSchema).optional(),
   projectUrl: z.url().optional(),
   githubUrl: z.url().optional(),
-  techStack: z.object({
-    frontend: z.array(techItemsSchema).optional(),
-    backend: z.array(techItemsSchema).optional(),
-  }),
-
-  responsibilities: z.array(roleSchema),
+  tags: z.array(tagSchema).optional(),
+  techItems: z.array(techItemSchema).optional(),
+  roles: z.array(roleSchema).optional(),
   sections: z.array(sectionSchema).optional(),
 });
 
-export type CreateProjectInput = z.infer<typeof createProjectInputSchema>;
+export type CreateProjectDTO = z.infer<typeof createProjectSchema>;

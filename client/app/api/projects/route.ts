@@ -1,18 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { toProjectResponse } from "@/lib/project-mapper";
-import { projectInclude } from "@/lib/project-includes";
-import {
-  projectService,
-  createProjectSchema,
-} from "@/lib/services/project.service";
+import { toApiResponse } from "@/lib/mappers/project.mapper";
+import { projectInclude } from "@/lib/repositories/project.repository";
+import { projectService } from "@/lib/services/project.service";
+import { createProjectSchema } from "./schema";
 
 export async function GET() {
   const projects = await prisma.project.findMany({
     include: projectInclude,
   });
 
-  return NextResponse.json(projects.map(toProjectResponse));
+  return NextResponse.json(projects.map(toApiResponse));
 }
 
 export async function POST(request: NextRequest) {
