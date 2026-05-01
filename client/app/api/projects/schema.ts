@@ -13,6 +13,13 @@ export const roleSchema = z.object({
   name: z.string().min(1).max(255),
 });
 
+export const techItemsSchema = z.object({
+  id: z.number().optional(),
+  name: z.string().min(1).max(255),
+  category: z.enum(["frontend", "backend"]),
+  order: z.number(),
+});
+
 export const techItemSchema = z.object({
   id: z.number().optional(),
   name: z.string().min(1).max(255),
@@ -53,18 +60,18 @@ export const sectionSchema = z.object({
   contentVideos: z.array(contentVideosSchema),
 });
 
-export const projectSchema = z.object({
-  id: z.number().optional(),
+export const createProjectInputSchema = z.object({
   title: z.string().min(1),
   tags: z.array(tagSchema).optional(),
   projectUrl: z.url().optional(),
   githubUrl: z.url().optional(),
+  techStack: z.object({
+    frontend: z.array(techItemsSchema).optional(),
+    backend: z.array(techItemsSchema).optional(),
+  }),
+
   responsibilities: z.array(roleSchema),
-  techStack: z
-    .object({
-      frontend: z.array(techItemSchema).optional(),
-      backend: z.array(techItemSchema).optional(),
-    })
-    .optional(),
   sections: z.array(sectionSchema).optional(),
 });
+
+export type CreateProjectInput = z.infer<typeof createProjectInputSchema>;

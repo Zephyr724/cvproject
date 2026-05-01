@@ -46,7 +46,7 @@ model ProjectTag {
 
 model TechItem {
   id         Int               @id @default(autoincrement())
-  name       String
+  name       String           @unique
   slug       String            @unique
   isFrontend Boolean           @default(false)
   isBackend  Boolean           @default(false)

@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { toProjectResponse } from "@/lib/project-mapper";
 import { projectInclude } from "@/lib/project-includes";
-import { projectSchema } from "./schema";
+import {
+  projectService,
+  createProjectSchema,
+} from "@/lib/services/project.service";
 
 export async function GET() {
   const projects = await prisma.project.findMany({
@@ -14,8 +17,19 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const validation = projectSchema.safeParse(body);
+  const parse = createProjectSchema.safeParse(body);
+  if (!parse.success) {
+    return NextResponse.json({ error: parse.error.issues }, { status: 400 });
+  }
 
-  if (!validation.success)
-    return NextResponse.json(validation.error.issues, { status: 400 });
+  try {
+    const project = await projectService.createProject(parse.data);
+    return NextResponse.json(project, { status: 201 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
+  }
 }
