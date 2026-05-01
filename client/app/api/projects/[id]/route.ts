@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { projectInclude } from "@/lib/project-includes";
-import { toProjectResponse } from "@/lib/project-mapper";
+import { projectInclude } from "@/lib/repositories/project.repository";
+import { toApiResponse } from "@/lib/mappers/project.mapper";
 
 export async function GET(
   request: NextRequest,
@@ -18,7 +18,7 @@ export async function GET(
   if (!project)
     return NextResponse.json({ error: "Project not found." }, { status: 400 });
 
-  return NextResponse.json(toProjectResponse(project), { status: 200 });
+  return NextResponse.json(toApiResponse(project), { status: 200 });
 }
 
 export async function PUT(
