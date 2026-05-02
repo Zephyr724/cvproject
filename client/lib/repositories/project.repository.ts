@@ -28,5 +28,39 @@ export const projectRepository = {
       include: projectInclude,
     });
   },
+};
 
+export const tagRepository = {
+  async findById(id: number) {
+    return prisma.tag.findUnique({ where: { id } });
+  },
+  async upsertByName(name: string) {
+    return prisma.tag.upsert({ where: { name }, update: {}, create: { name } });
+  },
+};
+
+export const techItemRepository = {
+  async findById(id: number) {
+    return prisma.techItem.findUnique({ where: { id } });
+  },
+  async upsertBySlug(slug: string, name: string) {
+    return prisma.techItem.upsert({
+      where: { slug },
+      update: {},
+      create: { slug, name },
+    });
+  },
+};
+
+export const roleRepository = {
+  async findById(id: number) {
+    return prisma.role.findUnique({ where: { id } });
+  },
+  async upsertByName(name: string) {
+    return prisma.role.upsert({
+      where: { name },
+      update: {},
+      create: { name },
+    });
+  },
 };

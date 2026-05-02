@@ -1,5 +1,5 @@
 // lib/mappers/project.mapper.ts
-import type { Prisma } from "@/src/generated/prisma/client";
+import type { Prisma, TechCategory } from "@/src/generated/prisma/client";
 import type { ProjectWithIncludes } from "@/lib/repositories/project.repository";
 import type { ValidateCreateProjectSchema } from "@/app/api/projects/schema";
 
@@ -8,55 +8,39 @@ import type { ValidateCreateProjectSchema } from "@/app/api/projects/schema";
  * Transform API request body (CreateProject projectData) into Prisma's ProjectCreateInput
  * note: This is purely a format transformation, without any business logic (like deciding between connect or create)
  */
+
+interface ResolvedData {
+  tags: { id: number; order: number }[];
+  techItems: { id: number; category: TechCategory; order: number }[];
+  roles: { id: number; order: number }[];
+}
+
 export function toPrismaCreateInput(
   projectData: ValidateCreateProjectSchema,
+  resolvedData: ResolvedData,
 ): Prisma.ProjectCreateInput {
   return {
     title: projectData.title,
     projectUrl: projectData.projectUrl ?? null,
     githubUrl: projectData.githubUrl ?? null,
     tags: {
-      create:
-        projectData.tags?.map((t) => ({
-          order: t.order,
-          tag: t.id
-            ? { connect: { id: t.id } }
-            : {
-                connectOrCreate: {
-                  where: { name: t.name as string },
-                  create: { name: t.name as string },
-                },
-              },
-        })) ?? [],
+      create: resolvedData.tags.map(({ id, order }) => ({
+        order,
+        tag: { connect: { id } },
+      })),
     },
     techItems: {
-      create:
-        projectData.techItems?.map((ti) => ({
-          category: ti.category,
-          order: ti.order,
-          techItem: ti.id
-            ? { connect: { id: ti.id } }
-            : {
-                connectOrCreate: {
-                  where: { slug: ti.slug as string },
-                  create: { name: ti.name as string, slug: ti.slug as string },
-                },
-              },
-        })) ?? [],
+      create: resolvedData.techItems.map(({ id, category, order }) => ({
+        category,
+        order,
+        techItem: { connect: { id } },
+      })),
     },
     roles: {
-      create:
-        projectData.roles?.map((r) => ({
-          order: r.order,
-          role: r.id
-            ? { connect: { id: r.id } }
-            : {
-                connectOrCreate: {
-                  where: { name: r.name as string },
-                  create: { name: r.name as string },
-                },
-              },
-        })) ?? [],
+      create: resolvedData.roles.map(({ id, order }) => ({
+        order,
+        role: { connect: { id } },
+      })),
     },
     sections: {
       create:

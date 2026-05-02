@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { TechCategory } from "@/src/generated/prisma/client";
 
 export const tagSchema = z
   .object({
@@ -26,7 +27,7 @@ export const techItemSchema = z
     id: z.number().optional(),
     name: z.string().min(1).max(191).optional(),
     slug: z.string().min(1).max(191).optional(),
-    category: z.enum(["frontend", "backend"]),
+    category: z.enum(TechCategory),
     order: z.number(),
   })
   .refine((data) => data.id !== undefined || data.name !== undefined, {
