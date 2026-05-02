@@ -59,7 +59,7 @@ export const sectionSchema = z.object({
 });
 
 //define api request DTO (also used for Zod validation)
-export const createProjectSchema = z.object({
+export const validateCreateProjectSchema = z.object({
   title: z.string().min(1),
   projectUrl: z.url().optional(),
   githubUrl: z.url().optional(),
@@ -69,4 +69,4 @@ export const createProjectSchema = z.object({
   sections: z.array(sectionSchema).optional(),
 });
 
-export type CreateProjectDTO = z.infer<typeof createProjectSchema>;
+export type CreateProjectDTO = z.infer<typeof validateCreateProjectSchema>;

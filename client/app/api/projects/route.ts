@@ -3,7 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { toApiResponse } from "@/lib/mappers/project.mapper";
 import { projectInclude } from "@/lib/repositories/project.repository";
 import { projectService } from "@/lib/services/project.service";
-import { createProjectSchema } from "./schema";
+import { validateCreateProjectSchema } from "./schema";
+import { BusinessError } from "@/lib/errors";
 
 export async function GET() {
   const projects = await prisma.project.findMany({
@@ -15,16 +16,27 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const parse = createProjectSchema.safeParse(body);
-  if (!parse.success) {
-    return NextResponse.json({ error: parse.error.issues }, { status: 400 });
+  const validation = validateCreateProjectSchema.safeParse(body);
+  if (!validation.success) {
+    return NextResponse.json(
+      { error: validation.error.issues },
+      { status: 400 },
+    );
   }
 
   try {
-    const project = await projectService.createProject(parse.data);
+    const project = await projectService.createProject(validation.data);
     return NextResponse.json(project, { status: 201 });
   } catch (error) {
-    console.error(error);
+    // Business errors: return specific message and corresponding status code
+    if (error instanceof BusinessError) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: error.status },
+      );
+    }
+    // Unknown errors: log and return 500
+    console.error("Unexpected error:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },

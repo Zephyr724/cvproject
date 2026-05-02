@@ -1,9 +1,8 @@
 export class BusinessError extends Error {
-  constructor(
-    message: string,
-    public code = 400,
-  ) {
+  status: number;
+  constructor(message: string, status: number = 400) {
     super(message);
+    this.status = status;
     this.name = "BusinessError";
   }
 }
