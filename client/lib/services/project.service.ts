@@ -4,22 +4,21 @@ import {
   toPrismaCreateInput,
   toApiResponse,
 } from "@/lib/mappers/project.mapper";
-import { CreateProjectDTO } from "@/app/api/projects/schema";
+import { ValidateCreateProjectSchema } from "@/app/api/projects/schema";
 import { BusinessError } from "@/lib/errors";
 import { Prisma } from "@/src/generated/prisma/client";
 
-
 export const projectService = {
-  async createProject(dto: CreateProjectDTO) {
-    try{
-    //optional: add business validations (like unique title, checking if related IDs exist, etc.)
-    //transform DTO → Prisma Input
-    const prismaInput = toPrismaCreateInput(dto);
-    //call repository to write to database
-    const created = await projectRepository.create(prismaInput);
-    //transform database model → API response format
-    return toApiResponse(created);}
-     catch (error) {
+  async createProject(projectData: ValidateCreateProjectSchema) {
+    try {
+      //optional: add business validations (like unique title, checking if related IDs exist, etc.)
+      //transform projectData(DTO) → Prisma Input
+      const prismaInput = toPrismaCreateInput(projectData);
+      //call repository to write to database
+      const created = await projectRepository.create(prismaInput);
+      //transform database model → API response format
+      return toApiResponse(created);
+    } catch (error) {
       // Known Prisma errors
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         //P2025: Related record not found (e.g. invalid id in connect)
@@ -37,7 +36,6 @@ export const projectService = {
       //other errors: rethrow to be handled by route error handler (logged and return 500)
       throw error;
     }
-  
   },
 
   async getProject(id: number) {

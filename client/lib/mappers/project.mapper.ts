@@ -1,23 +1,23 @@
 // lib/mappers/project.mapper.ts
 import type { Prisma } from "@/src/generated/prisma/client";
 import type { ProjectWithIncludes } from "@/lib/repositories/project.repository";
-import type { CreateProjectDTO } from "@/app/api/projects/schema";
+import type { ValidateCreateProjectSchema } from "@/app/api/projects/schema";
 
 /**
 
- * Transform API request body (CreateProjectDTO) into Prisma's ProjectCreateInput
+ * Transform API request body (CreateProject projectData) into Prisma's ProjectCreateInput
  * note: This is purely a format transformation, without any business logic (like deciding between connect or create)
  */
 export function toPrismaCreateInput(
-  dto: CreateProjectDTO,
+  projectData: ValidateCreateProjectSchema,
 ): Prisma.ProjectCreateInput {
   return {
-    title: dto.title,
-    projectUrl: dto.projectUrl ?? null,
-    githubUrl: dto.githubUrl ?? null,
+    title: projectData.title,
+    projectUrl: projectData.projectUrl ?? null,
+    githubUrl: projectData.githubUrl ?? null,
     tags: {
       create:
-        dto.tags?.map((t) => ({
+        projectData.tags?.map((t) => ({
           order: t.order,
           tag: t.id
             ? { connect: { id: t.id } }
@@ -31,7 +31,7 @@ export function toPrismaCreateInput(
     },
     techItems: {
       create:
-        dto.techItems?.map((ti) => ({
+        projectData.techItems?.map((ti) => ({
           category: ti.category,
           order: ti.order,
           techItem: ti.id
@@ -46,7 +46,7 @@ export function toPrismaCreateInput(
     },
     roles: {
       create:
-        dto.roles?.map((r) => ({
+        projectData.roles?.map((r) => ({
           order: r.order,
           role: r.id
             ? { connect: { id: r.id } }
@@ -60,7 +60,7 @@ export function toPrismaCreateInput(
     },
     sections: {
       create:
-        dto.sections?.map((section) => ({
+        projectData.sections?.map((section) => ({
           order: section.order,
           title: section.title,
           layoutType: section.layoutType,
