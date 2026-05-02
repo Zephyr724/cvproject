@@ -5,18 +5,22 @@ export const projectData = {
     {
       id: 1,
       name: "React",
+      order: 1,
     },
     {
       id: 2,
       name: "Svelte",
+      order: 2,
     },
     {
       id: 3,
       name: "Full Stack",
+      order: 4,
     },
     {
       id: 4,
       name: "Serverless",
+      order: 3,
     },
   ],
   projectUrl: "https://github.com/Zephyr724/cvproject",
