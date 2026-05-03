@@ -58,6 +58,10 @@ export const projectService = {
     if (!project) return null;
     return toApiResponse(project);
   },
+  async getAllProjects() {
+    const projects = await projectRepository.findMany();
+    return projects.map(toApiResponse);
+  },
 };
 
 async function ensureTag(tag: { id?: number; name?: string; order: number }) {

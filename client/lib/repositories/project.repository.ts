@@ -28,6 +28,11 @@ export const projectRepository = {
       include: projectInclude,
     });
   },
+  async findMany(): Promise<ProjectWithIncludes[]> {
+    return prisma.project.findMany({
+      include: projectInclude,
+    });
+  },
 };
 
 export const tagRepository = {

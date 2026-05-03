@@ -7,11 +7,8 @@ import { validateCreateProjectSchema } from "./schema";
 import { BusinessError } from "@/lib/errors";
 
 export async function GET() {
-  const projects = await prisma.project.findMany({
-    include: projectInclude,
-  });
-
-  return NextResponse.json(projects.map(toApiResponse));
+  const projects = await projectService.getAllProjects();
+  return NextResponse.json(projects);
 }
 
 export async function POST(request: NextRequest) {
