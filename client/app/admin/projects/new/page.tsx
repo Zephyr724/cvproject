@@ -5,6 +5,7 @@ import type { ValidateCreateProjectSchema } from "@/app/api/projects/schema";
 import { useRouter } from "next/dist/client/components/navigation";
 import { useState } from "react";
 import form from "react";
+import { Button } from "@radix-ui/themes";
 
 const adminProjectPage = () => {
   const INITIAL_FORM: ValidateCreateProjectSchema = {
@@ -40,7 +41,7 @@ const adminProjectPage = () => {
             <div>
               <label>Project Title</label>
               <input className="input" name="query" />
-              <button type="submit">Submit</button>{" "}
+              <Button>New Project</Button>
             </div>
           </form>
         </div>
