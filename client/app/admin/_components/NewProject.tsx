@@ -3,8 +3,10 @@ import type { ValidateCreateProjectSchema } from "@/app/api/projects/schema";
 import { useRouter } from "next/dist/client/components/navigation";
 import { useState } from "react";
 import form from "react";
-import { Button, TextArea, TextField } from "@radix-ui/themes";
+import { Button, TextField } from "@radix-ui/themes";
 import Link from "next/link";
+import SimpleMDE from "react-simplemde-editor";
+import "easymde/dist/easymde.min.css";
 
 const INITIAL_FORM: ValidateCreateProjectSchema = {
   title: "",
@@ -33,10 +35,8 @@ const NewProject = () => {
           <TextField.Root placeholder="Title">
             <TextField.Slot />
           </TextField.Root>
-          <TextArea placeholder="Project implementation" />
-          <Button>
-           Submit New Project
-          </Button>
+          <SimpleMDE placeholder="Project implementation" />
+          <Button>Submit New Project</Button>
         </div>
       </form>
     </div>
