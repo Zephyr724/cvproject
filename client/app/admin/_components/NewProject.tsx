@@ -1,12 +1,15 @@
 "use client";
 import type { ValidateCreateProjectSchema } from "@/app/api/projects/schema";
-import { useRouter } from "next/dist/client/components/navigation";
+import { useForm, Controller } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import form from "react";
 import { Button, TextField } from "@radix-ui/themes";
 import Link from "next/link";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
+import axios from "axios";
+import { projectData } from "@/app/projects/[id]/mockData";
 
 const INITIAL_FORM: ValidateCreateProjectSchema = {
   title: "",
@@ -19,27 +22,32 @@ const INITIAL_FORM: ValidateCreateProjectSchema = {
 };
 
 const NewProject = () => {
-  const [formData, setFormData] =
-    useState<ValidateCreateProjectSchema>(INITIAL_FORM);
+  const { register, control, handleSubmit } =
+    useForm<ValidateCreateProjectSchema>();
   const router = useRouter();
+
   return (
-    <div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          //   handleSubmit();
-        }}
-      >
-        <div className="max-w-xl space-y-3">
-          <label>Project Title</label>
-          <TextField.Root placeholder="Title">
-            <TextField.Slot />
-          </TextField.Root>
-          <SimpleMDE placeholder="Project implementation" />
-          <Button>Submit New Project</Button>
-        </div>
-      </form>
-    </div>
+    <form
+      className="max-w-xl space-y-3"
+      onSubmit={handleSubmit(async (data) => {
+        await axios.post("/api/projects", projectData);
+        // router.push("/projects");
+      })}
+    >
+      <label>Project Title</label>
+      <TextField.Root placeholder="Title" {...register("title")}>
+        <TextField.Slot />
+      </TextField.Root>
+      <Controller
+        name="sections.0.contentTexts.0.content"
+        control={control}
+        render={({ field }) => (
+          <SimpleMDE placeholder="Project implementation" {...field} />
+        )}
+      />
+
+      <Button>Submit New Project</Button>
+    </form>
   );
 };
 
