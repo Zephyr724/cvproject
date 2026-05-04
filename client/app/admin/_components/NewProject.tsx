@@ -28,16 +28,23 @@ const NewProject = () => {
 
   return (
     <form
-      className="max-w-xl space-y-3"
+      className="max-w-xl space-y-3 p-1"
       onSubmit={handleSubmit(async (data) => {
-        await axios.post("/api/projects", projectData);
+        await axios.post("/api/projects", data);
         // router.push("/projects");
       })}
     >
       <label>Project Title</label>
-      <TextField.Root placeholder="Title" {...register("title")}>
-        <TextField.Slot />
-      </TextField.Root>
+      <TextField.Root placeholder="Title" {...register("title")} />
+      <TextField.Root placeholder="Tags" {...register("tags")} />
+      <TextField.Root placeholder="ProjectUrl" {...register("projectUrl")} />
+      <TextField.Root placeholder="GithubUrl" {...register("githubUrl")} />
+      {/* <TextField.Root placeholder="Frontend" {...register("techItems.0.name")} />
+      <TextField.Root placeholder="Backend" {...register("techItems.0.name")} /> */}
+      <TextField.Root placeholder="Responsibilities" {...register("roles")} />
+      <TextField.Root placeholder="Sections" {...register("sections")} />
+
+      
       <Controller
         name="sections.0.contentTexts.0.content"
         control={control}
