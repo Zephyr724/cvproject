@@ -14,6 +14,7 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import TagInput from "./TagInput";
+import RoleInput from "./RoleInput";
 
 const NewProject = () => {
   const {
@@ -49,14 +50,14 @@ const NewProject = () => {
         </Callout.Root>
       )}
       <form className="space-y-3 p-1" onSubmit={onSubmit}>
-        <label>Project Title</label>
         <div>
+          <label>Project Title</label>
           <TextField.Root placeholder="Title" {...register("title")} />
           <ErrorMessage> {errors.title?.message} </ErrorMessage>
         </div>
 
-        <label>Tags</label>
         <div>
+          <label>Tags</label>
           <Controller
             name="tags"
             control={control}
@@ -85,16 +86,31 @@ const NewProject = () => {
         </div>
         {/* <TextField.Root placeholder="Frontend" {...register("techItems.0.name")} />
       <TextField.Root placeholder="Backend" {...register("techItems.0.name")} /> */}
-        <TextField.Root placeholder="Responsibilities" {...register("roles")} />
-        <TextField.Root placeholder="Sections" {...register("sections")} />
 
-        <Controller
+        <div>
+          <label>Responsibility</label>
+          <Controller
+            name="roles"
+            control={control}
+            render={({ field }) => (
+              <RoleInput
+                value={field.value ?? []}
+                onChange={field.onChange}
+                placeholder="Input role and press Enter to confirm"
+              />
+            )}
+          />
+          <ErrorMessage>{errors.roles?.message}</ErrorMessage>
+        </div>
+        {/* <TextField.Root placeholder="Sections" {...register("sections")} /> */}
+
+        {/* <Controller
           name="sections.0.contentTexts.0.content"
           control={control}
           render={({ field }) => (
             <SimpleMDE placeholder="Project implementation" {...field} />
           )}
-        />
+        /> */}
 
         <Button>Submit New Project</Button>
       </form>
