@@ -12,6 +12,7 @@ import { Button, Callout, Text, TextField } from "@radix-ui/themes";
 import "easymde/dist/easymde.min.css";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
+import ErrorMessage from "@/app/components/ErrorMessage";
 
 const NewProject = () => {
   const {
@@ -50,18 +51,15 @@ const NewProject = () => {
       >
         <label>Project Title</label>
         <TextField.Root placeholder="Title" {...register("title")} />
-        {errors.title && (
-          <Text color="red" as="p">
-            {errors.title.message}
-          </Text>
-        )}
+        <ErrorMessage> {errors.title?.message} </ErrorMessage>
         <TextField.Root placeholder="Tags" {...register("tags")} />
         <TextField.Root placeholder="ProjectUrl" {...register("projectUrl")} />
-        {errors.projectUrl && (
+        <ErrorMessage>
           <Text color="red" as="p">
-            {errors.projectUrl.message}{" "}
+            {errors.projectUrl?.message}{" "}
           </Text>
-        )}
+        </ErrorMessage>
+
         <TextField.Root placeholder="GithubUrl" {...register("githubUrl")} />
         {/* <TextField.Root placeholder="Frontend" {...register("techItems.0.name")} />
       <TextField.Root placeholder="Backend" {...register("techItems.0.name")} /> */}
