@@ -71,6 +71,6 @@ export const validateCreateProjectSchema = z.object({
   sections: z.array(sectionSchema).optional(),
 });
 
-export type ValidateCreateProjectSchema = z.infer<
+export type ValidateCreateProjectType = z.infer<
   typeof validateCreateProjectSchema
 >;

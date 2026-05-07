@@ -1,7 +1,7 @@
 // lib/mappers/project.mapper.ts
 import type { Prisma, TechCategory } from "@/src/generated/prisma/client";
 import type { ProjectWithIncludes } from "@/lib/repositories/project.repository";
-import type { ValidateCreateProjectSchema } from "@/app/api/projects/validationSchema";
+import type { ValidateCreateProjectType } from "@/app/api/projects/validationSchema";
 
 /**
 
@@ -16,7 +16,7 @@ interface ResolvedData {
 }
 
 export function toPrismaCreateInput(
-  projectData: ValidateCreateProjectSchema,
+  projectData: ValidateCreateProjectType,
   resolvedData: ResolvedData,
 ): Prisma.ProjectCreateInput {
   return {
