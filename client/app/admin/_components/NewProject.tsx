@@ -39,7 +39,7 @@ const NewProject = () => {
         </Callout.Root>
       )}
       <form
-        className=" space-y-3 p-1"
+        className="space-y-3 p-1"
         onSubmit={handleSubmit(async (data) => {
           try {
             await axios.post("/api/projects", data);
@@ -50,14 +50,28 @@ const NewProject = () => {
         })}
       >
         <label>Project Title</label>
-        <TextField.Root placeholder="Title" {...register("title")} />
-        <ErrorMessage> {errors.title?.message} </ErrorMessage>
-        <TextField.Root placeholder="Tags" {...register("tags")} />
-        <ErrorMessage> {errors.tags?.message} </ErrorMessage>
-        <TextField.Root placeholder="ProjectUrl" {...register("projectUrl")} />
-        <ErrorMessage>{errors.projectUrl?.message} </ErrorMessage>
-        <TextField.Root placeholder="GithubUrl" {...register("githubUrl")} />
-        <ErrorMessage> {errors.githubUrl?.message} </ErrorMessage>
+        <div>
+          <TextField.Root placeholder="Title" {...register("title")} />
+          <ErrorMessage> {errors.title?.message} </ErrorMessage>
+        </div>
+
+        <div>
+          <TextField.Root placeholder="Tags" {...register("tags")} />
+          <ErrorMessage> {errors.tags?.message} </ErrorMessage>
+        </div>
+
+        <div>
+          <TextField.Root
+            placeholder="ProjectUrl"
+            {...register("projectUrl")}
+          />
+          <ErrorMessage>{errors.projectUrl?.message} </ErrorMessage>
+        </div>
+
+        <div>
+          <TextField.Root placeholder="GithubUrl" {...register("githubUrl")} />
+          <ErrorMessage> {errors.githubUrl?.message} </ErrorMessage>
+        </div>
         {/* <TextField.Root placeholder="Frontend" {...register("techItems.0.name")} />
       <TextField.Root placeholder="Backend" {...register("techItems.0.name")} /> */}
         <TextField.Root placeholder="Responsibilities" {...register("roles")} />
