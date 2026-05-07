@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { TechCategory } from "@/src/generated/prisma/client";
 
 export const tagSchema = z
   .object({
@@ -22,12 +21,14 @@ export const roleSchema = z
     message: "have to provide id or name",
   });
 
+const TechCategory = z.enum(["frontend", "backend"]);
+
 export const techItemSchema = z
   .object({
     id: z.number().optional(),
     name: z.string().min(1).max(191).optional(),
     slug: z.string().min(1).max(191).optional(),
-    category: z.enum(TechCategory),
+    category: TechCategory,
     order: z.number(),
   })
   .refine((data) => data.id !== undefined || data.name !== undefined, {

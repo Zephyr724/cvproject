@@ -1,16 +1,21 @@
 "use client";
-import type { ValidateCreateProjectSchema } from "@/app/api/projects/validationSchema";
+
+import dynamic from "next/dynamic";
+import {
+  validateCreateProjectSchema,
+  type ValidateCreateProjectSchema,
+} from "@/app/api/projects/validationSchema";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import form from "react";
 import { Button, Callout, TextField } from "@radix-ui/themes";
 import Link from "next/link";
-import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import axios from "axios";
 import { projectData } from "@/app/projects/[id]/mockData";
 import { IoCalculatorOutline } from "react-icons/io5";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const INITIAL_FORM: ValidateCreateProjectSchema = {
   title: "",
@@ -24,9 +29,16 @@ const INITIAL_FORM: ValidateCreateProjectSchema = {
 
 const NewProject = () => {
   const { register, control, handleSubmit } =
-    useForm<ValidateCreateProjectSchema>();
+    useForm<ValidateCreateProjectSchema>({
+      resolver: zodResolver(validateCreateProjectSchema),
+    });
   const router = useRouter();
   const [error, setError] = useState("");
+
+  const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+    ssr: false,
+    loading: () => <div className="h-40 bg-gray-100 animate-pulse rounded" />,
+  });
 
   return (
     <div className="max-w-xl">
