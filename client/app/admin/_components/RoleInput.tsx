@@ -11,7 +11,7 @@ interface RoleValue {
 
 interface RoleInputProps {
   value: RoleValue[];
-  onChange: (tags: RoleValue[]) => void;
+  onChange: (roles: RoleValue[]) => void;
   placeholder?: string;
 }
 
@@ -56,8 +56,8 @@ const RoleInput = ({
   const removeRole = (index: number) => {
     const newRoles = value
       .filter((_, i) => i !== index)
-      .map((tag, i) => ({
-        ...tag,
+      .map((role, i) => ({
+        ...role,
         order: i,
       }));
     onChange(newRoles);
@@ -81,16 +81,16 @@ const RoleInput = ({
 
       {value.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
-          {value.map((tag, index) => (
+          {value.map((role, index) => (
             <Badge key={index} size="2" variant="soft" color="indigo">
-              {tag.name}
+              {role.name}
               <IconButton
                 size="1"
                 variant="ghost"
                 color="indigo"
                 onClick={() => removeRole(index)}
                 className="ml-1 cursor-pointer"
-                aria-label={`Remove ${tag.name}`}
+                aria-label={`Remove ${role.name}`}
               >
                 <RxCrossCircled />
               </IconButton>
