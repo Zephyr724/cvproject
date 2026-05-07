@@ -74,7 +74,7 @@ const TechItemInput = ({
   };
 
   return (
-    <div>
+    <div className="space-y-0.5">
       <TextField.Root
         value={inputValue}
         onChange={(e) => {
