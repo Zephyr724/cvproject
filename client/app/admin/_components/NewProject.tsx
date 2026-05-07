@@ -8,31 +8,20 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import form from "react";
-import { Button, Callout, TextField } from "@radix-ui/themes";
-import Link from "next/link";
+import { Button, Callout, Text, TextField } from "@radix-ui/themes";
 import "easymde/dist/easymde.min.css";
 import axios from "axios";
-import { projectData } from "@/app/projects/[id]/mockData";
-import { IoCalculatorOutline } from "react-icons/io5";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-
-const INITIAL_FORM: ValidateCreateProjectType = {
-  title: "",
-  projectUrl: "",
-  githubUrl: "",
-  tags: [],
-  techItems: [],
-  roles: [],
-  sections: [],
-};
 
 const NewProject = () => {
-  const { register, control, handleSubmit } =
-    useForm<ValidateCreateProjectType>({
-      resolver: zodResolver(validateCreateProjectSchema),
-    });
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ValidateCreateProjectType>({
+    resolver: zodResolver(validateCreateProjectSchema),
+  });
   const router = useRouter();
   const [error, setError] = useState("");
 
@@ -61,8 +50,18 @@ const NewProject = () => {
       >
         <label>Project Title</label>
         <TextField.Root placeholder="Title" {...register("title")} />
+        {errors.title && (
+          <Text color="red" as="p">
+            {errors.title.message}
+          </Text>
+        )}
         <TextField.Root placeholder="Tags" {...register("tags")} />
         <TextField.Root placeholder="ProjectUrl" {...register("projectUrl")} />
+        {errors.projectUrl && (
+          <Text color="red" as="p">
+            {errors.projectUrl.message}{" "}
+          </Text>
+        )}
         <TextField.Root placeholder="GithubUrl" {...register("githubUrl")} />
         {/* <TextField.Root placeholder="Frontend" {...register("techItems.0.name")} />
       <TextField.Root placeholder="Backend" {...register("techItems.0.name")} /> */}
