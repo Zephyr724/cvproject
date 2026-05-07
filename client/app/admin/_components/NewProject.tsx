@@ -1,5 +1,5 @@
 "use client";
-import type { ValidateCreateProjectSchema } from "@/app/api/projects/schema";
+import type { ValidateCreateProjectSchema } from "@/app/api/projects/validationSchema";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

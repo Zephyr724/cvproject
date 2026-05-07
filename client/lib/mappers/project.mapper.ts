@@ -1,7 +1,7 @@
 // lib/mappers/project.mapper.ts
 import type { Prisma, TechCategory } from "@/src/generated/prisma/client";
 import type { ProjectWithIncludes } from "@/lib/repositories/project.repository";
-import type { ValidateCreateProjectSchema } from "@/app/api/projects/schema";
+import type { ValidateCreateProjectSchema } from "@/app/api/projects/validationSchema";
 
 /**
 

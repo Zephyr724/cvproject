@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { toApiResponse } from "@/lib/mappers/project.mapper";
 import { projectInclude } from "@/lib/repositories/project.repository";
 import { projectService } from "@/lib/services/project.service";
-import { validateCreateProjectSchema } from "./schema";
+import { validateCreateProjectSchema } from "./validationSchema";
 import { BusinessError } from "@/lib/errors";
 
 export async function GET() {

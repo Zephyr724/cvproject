@@ -9,7 +9,7 @@ import {
   toPrismaCreateInput,
   toApiResponse,
 } from "@/lib/mappers/project.mapper";
-import { ValidateCreateProjectSchema } from "@/app/api/projects/schema";
+import { ValidateCreateProjectSchema } from "@/app/api/projects/validationSchema";
 import { BusinessError } from "@/lib/errors";
 import { Prisma, TechCategory } from "@/src/generated/prisma/client";
 
