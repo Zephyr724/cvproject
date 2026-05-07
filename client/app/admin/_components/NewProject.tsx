@@ -13,6 +13,7 @@ import "easymde/dist/easymde.min.css";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
+import TagInput from "./TagInput";
 
 const NewProject = () => {
   const {
@@ -31,6 +32,15 @@ const NewProject = () => {
     loading: () => <div className="h-40 bg-gray-100 animate-pulse rounded" />,
   });
 
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      await axios.post("/api/projects", data);
+      // router.push("/projects");
+    } catch (error) {
+      setError("A unexpected error occurred.");
+    }
+  });
+
   return (
     <div className="max-w-xl">
       {error && (
@@ -38,26 +48,27 @@ const NewProject = () => {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form
-        className="space-y-3 p-1"
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            await axios.post("/api/projects", data);
-            // router.push("/projects");
-          } catch (error) {
-            setError("A unexpected error occurred.");
-          }
-        })}
-      >
+      <form className="space-y-3 p-1" onSubmit={onSubmit}>
         <label>Project Title</label>
         <div>
           <TextField.Root placeholder="Title" {...register("title")} />
           <ErrorMessage> {errors.title?.message} </ErrorMessage>
         </div>
 
+        <label>Tags</label>
         <div>
-          <TextField.Root placeholder="Tags" {...register("tags")} />
-          <ErrorMessage> {errors.tags?.message} </ErrorMessage>
+          <Controller
+            name="tags"
+            control={control}
+            render={({ field }) => (
+              <TagInput
+                value={field.value ?? []}
+                onChange={field.onChange}
+                placeholder="Input tag and press Enter to confirm"
+              />
+            )}
+          />
+          <ErrorMessage>{errors.tags?.message}</ErrorMessage>
         </div>
 
         <div>
