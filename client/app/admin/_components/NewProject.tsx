@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import {
   validateCreateProjectSchema,
   type ValidateCreateProjectType,
+  type TechItem,
 } from "@/app/api/projects/validationSchema";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -15,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import TagInput from "./TagInput";
 import RoleInput from "./RoleInput";
+import TechItemInput from "./TechItemInput";
 
 const NewProject = () => {
   const {
@@ -84,8 +86,63 @@ const NewProject = () => {
           <TextField.Root placeholder="GithubUrl" {...register("githubUrl")} />
           <ErrorMessage> {errors.githubUrl?.message} </ErrorMessage>
         </div>
-        {/* <TextField.Root placeholder="Frontend" {...register("techItems.0.name")} />
-      <TextField.Root placeholder="Backend" {...register("techItems.0.name")} /> */}
+
+        <Controller
+          name="techItems"
+          control={control}
+          render={({ field }) => {
+            const allItems: TechItem[] = field.value ?? [];
+            const frontendItems = allItems.filter(
+              (t) => t.category === "frontend",
+            );
+            const backendItems = allItems.filter(
+              (t) => t.category === "backend",
+            );
+
+            return (
+              <>
+                <div>
+                  <label>Frontend</label>
+                  <TechItemInput
+                    value={frontendItems}
+                    category="frontend"
+                    onChange={(newFrontend) => {
+                      const merged = [
+                        ...newFrontend,
+                        ...backendItems.map((item, i) => ({
+                          ...item,
+                          order: newFrontend.length + i,
+                        })),
+                      ];
+                      field.onChange(merged);
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label>Backend</label>
+                  <TechItemInput
+                    value={backendItems.map((item, i) => ({
+                      ...item,
+                      order: i,
+                    }))}
+                    category="backend"
+                    onChange={(newBackend) => {
+                      const merged = [
+                        ...frontendItems,
+                        ...newBackend.map((item, i) => ({
+                          ...item,
+                          order: frontendItems.length + i,
+                        })),
+                      ];
+                      field.onChange(merged);
+                    }}
+                  />
+                </div>
+              </>
+            );
+          }}
+        />
 
         <div>
           <label>Responsibility</label>

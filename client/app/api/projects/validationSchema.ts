@@ -74,3 +74,5 @@ export const validateCreateProjectSchema = z.object({
 export type ValidateCreateProjectType = z.infer<
   typeof validateCreateProjectSchema
 >;
+
+export type TechItem = z.infer<typeof techItemSchema>;
