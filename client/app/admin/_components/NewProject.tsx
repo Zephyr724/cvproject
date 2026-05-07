@@ -53,14 +53,11 @@ const NewProject = () => {
         <TextField.Root placeholder="Title" {...register("title")} />
         <ErrorMessage> {errors.title?.message} </ErrorMessage>
         <TextField.Root placeholder="Tags" {...register("tags")} />
+        <ErrorMessage> {errors.tags?.message} </ErrorMessage>
         <TextField.Root placeholder="ProjectUrl" {...register("projectUrl")} />
-        <ErrorMessage>
-          <Text color="red" as="p">
-            {errors.projectUrl?.message}{" "}
-          </Text>
-        </ErrorMessage>
-
+        <ErrorMessage>{errors.projectUrl?.message} </ErrorMessage>
         <TextField.Root placeholder="GithubUrl" {...register("githubUrl")} />
+        <ErrorMessage> {errors.githubUrl?.message} </ErrorMessage>
         {/* <TextField.Root placeholder="Frontend" {...register("techItems.0.name")} />
       <TextField.Root placeholder="Backend" {...register("techItems.0.name")} /> */}
         <TextField.Root placeholder="Responsibilities" {...register("roles")} />
