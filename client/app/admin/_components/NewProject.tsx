@@ -18,30 +18,29 @@ import TagInput from "./TagInput";
 import RoleInput from "./RoleInput";
 import TechItemInput from "./TechItemInput";
 
-const NewProject = () => {
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ValidateCreateProjectType>({
-    resolver: zodResolver(validateCreateProjectSchema),
-  });
+import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
+import SectionInput from "./SectionInput";
+import SectionEditor from "./SectionEditor";
+
+interface NewProjectProps {
+  register: UseFormRegister<ValidateCreateProjectType>;
+  control: Control<ValidateCreateProjectType>;
+  errors: FieldErrors<ValidateCreateProjectType>;
+  onSubmit: (e: React.FormEvent) => void;
+}
+
+const NewProject = ({
+  register,
+  control,
+  errors,
+  onSubmit,
+}: NewProjectProps) => {
   const router = useRouter();
   const [error, setError] = useState("");
 
   const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
     ssr: false,
     loading: () => <div className="h-40 bg-gray-100 animate-pulse rounded" />,
-  });
-
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      await axios.post("/api/projects", data);
-      // router.push("/projects");
-    } catch (error) {
-      setError("A unexpected error occurred.");
-    }
   });
 
   return (
@@ -161,13 +160,31 @@ const NewProject = () => {
         </div>
         {/* <TextField.Root placeholder="Sections" {...register("sections")} /> */}
 
-        {/* <Controller
-          name="sections.0.contentTexts.0.content"
-          control={control}
-          render={({ field }) => (
-            <SimpleMDE placeholder="Project implementation" {...field} />
-          )}
-        /> */}
+        <div>
+          <label>Implementations</label>
+          <Controller
+            name="sections"
+            control={control}
+            render={({ field }) => {
+              return <SectionEditor sections={field.value??[]} onChange={field.onChange} />;
+            }}
+          />
+        </div>
+
+        {/* <div>
+          <label>Sections</label>
+          <Controller
+            name="sections"
+            control={control}
+            render={({ field }) => (
+              <SectionInput
+                value={field.value ?? []}
+                onChange={field.onChange}
+              />
+            )}
+          />
+          <ErrorMessage>{errors.sections?.message}</ErrorMessage>
+        </div> */}
 
         <Button>Submit New Project</Button>
       </form>

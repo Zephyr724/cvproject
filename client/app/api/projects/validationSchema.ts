@@ -35,14 +35,21 @@ export const techItemSchema = z
     message: "have to provide id or name",
   });
 
-export const contentTextSchema = z.object({ content: z.string() });
+export const contentTextSchema = z.object({
+  id: z.number().optional(),
+  content: z.string(),
+});
 
 export const contentImagesSchema = z.object({
-  url: z.url(),
+  id: z.number().optional(),
+  url: z.string(),
   alt: z.string().max(191).optional(),
 });
 
-export const contentVideosSchema = z.object({ url: z.url() });
+export const contentVideosSchema = z.object({
+  id: z.number().optional(),
+  url: z.string(),
+});
 
 export const layoutTypeEnum = z.enum([
   "imgTopTextBottom",
@@ -52,7 +59,8 @@ export const layoutTypeEnum = z.enum([
 ]);
 
 export const sectionSchema = z.object({
-  order: z.number(),
+  id: z.number().optional(),
+  order: z.number().optional(),
   title: z.string().min(1).max(191),
   layoutType: layoutTypeEnum,
   contentTexts: z.array(contentTextSchema).optional(),
@@ -76,3 +84,5 @@ export type ValidateCreateProjectType = z.infer<
 >;
 
 export type TechItem = z.infer<typeof techItemSchema>;
+
+export type Section = z.infer<typeof sectionSchema>;
