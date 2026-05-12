@@ -1,8 +1,7 @@
 import { Section } from "@/app/api/projects/validationSchema";
 import { Button, TextField } from "@radix-ui/themes";
-
-import React, { SyntheticEvent, useEffect, useState } from "react";
-import { date } from "zod";
+import { useEffect } from "react";
+import SectionItem from "./SectionItem";
 
 interface Props {
   sections?: Section[];
@@ -10,17 +9,6 @@ interface Props {
 }
 
 const SectionEditor = ({ sections, onChange }: Props) => {
-  const updateTitle = (
-    section: Section,
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    onChange(
-      (sections ?? []).map((value) =>
-        value.id === section.id ? { ...value, title: e.target.value } : value,
-      ),
-    );
-  };
-
   const updateSection = (
     sectionIndex: number,
     updateData: Partial<Section>,
@@ -70,26 +58,17 @@ const SectionEditor = ({ sections, onChange }: Props) => {
   return (
     <>
       {sections?.map((section, index) => (
-        <div key={section.id}>
-          {/* <TextField.Root
-            placeholder="Title"
-            value={section.title}
-            onChange={(e) => updateTitle(section, e)}
-          /> */}
-
-          <TextField.Root
-            placeholder="New Title"
-            value={section.title}
-            onChange={(e) => {
-              updateSection(index, { title: e.target.value });
-            }}
-          />
-
-          <Button>Submit Section</Button>
-        </div>
+        <SectionItem
+          key={section.id}
+          section={section}
+          index={index}
+          addSection={addSection}
+          updateSection={updateSection}
+        />
       ))}
-      <div>SectionEditor</div>
-      <Button onClick={addSection}>Add Section</Button>
+      <Button className="w-fit!" onClick={addSection}>
+        Add Section
+      </Button>
     </>
   );
 };

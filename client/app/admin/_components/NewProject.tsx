@@ -160,13 +160,18 @@ const NewProject = ({
         </div>
         {/* <TextField.Root placeholder="Sections" {...register("sections")} /> */}
 
-        <div>
+        <div className="flex flex-col gap-1">
           <label>Implementations</label>
           <Controller
             name="sections"
             control={control}
             render={({ field }) => {
-              return <SectionEditor sections={field.value??[]} onChange={field.onChange} />;
+              return (
+                <SectionEditor
+                  sections={field.value ?? []}
+                  onChange={field.onChange}
+                />
+              );
             }}
           />
         </div>
