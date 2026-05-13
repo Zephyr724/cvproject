@@ -191,7 +191,7 @@ const NewProject = ({
           <ErrorMessage>{errors.sections?.message}</ErrorMessage>
         </div> */}
 
-        <Button>Submit New Project</Button>
+        <Button onClick={onSubmit}>Submit New Project</Button>
       </form>
     </div>
   );

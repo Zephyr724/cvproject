@@ -48,9 +48,19 @@ export function toPrismaCreateInput(
           order: section.order,
           title: section.title,
           layoutType: section.layoutType,
-          contentTexts: { create: section.contentTexts ?? [] },
-          contentImages: { create: section.contentImages ?? [] },
-          contentVideos: { create: section.contentVideos ?? [] },
+          contentTexts: {
+            create:
+              section.contentTexts?.map(({ content }) => ({ content })) ?? [],
+              //only create content without id (which automatically created by db)
+          },
+          contentImages: {
+            create:
+              section.contentImages?.map(({ url, alt }) => ({ url, alt })) ??
+              [],
+          },
+          contentVideos: {
+            create: section.contentVideos?.map(({ url }) => ({ url })) ?? [],
+          },
         })) ?? [],
     },
   };
