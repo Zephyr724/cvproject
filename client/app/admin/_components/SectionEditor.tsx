@@ -9,21 +9,6 @@ interface Props {
 }
 
 const SectionEditor = ({ sections, onChange }: Props) => {
-  const updateSection = (
-    sectionIndex: number,
-    updateData: Partial<Section>,
-  ) => {
-    onChange(
-      (sections ?? []).map((section, index) =>
-        index === sectionIndex ? { ...section, ...updateData } : section,
-      ),
-    );
-  };
-
-  useEffect(() => {
-    console.log("Monitoring FieldValue:", sections);
-  }, [sections]);
-
   const addSection = () => {
     onChange([
       ...(sections ?? []),
@@ -54,6 +39,21 @@ const SectionEditor = ({ sections, onChange }: Props) => {
       },
     ]);
   };
+
+  const updateSection = (
+    sectionIndex: number,
+    updateData: Partial<Section>,
+  ) => {
+    onChange(
+      (sections ?? []).map((section, index) =>
+        index === sectionIndex ? { ...section, ...updateData } : section,
+      ),
+    );
+  };
+
+  useEffect(() => {
+    console.log("Monitoring FieldValue:", sections);
+  }, [sections]);
 
   return (
     <>

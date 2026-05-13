@@ -86,3 +86,7 @@ export type ValidateCreateProjectType = z.infer<
 export type TechItem = z.infer<typeof techItemSchema>;
 
 export type Section = z.infer<typeof sectionSchema>;
+
+export type LayoutType = z.infer<typeof layoutTypeEnum>;
+
+export type ContentText = z.infer<typeof contentTextSchema>;
