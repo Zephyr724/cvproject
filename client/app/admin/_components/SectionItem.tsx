@@ -1,29 +1,26 @@
-import {
-  contentTextSchema,
-  Section,
-} from "@/app/api/projects/validationSchema";
+import { Section } from "@/app/api/projects/validationSchema";
 import { Button, TextField } from "@radix-ui/themes";
 import { Select } from "radix-ui";
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from "@radix-ui/react-icons";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 import {
   layoutTypeEnum,
   LayoutType,
   ContentText,
 } from "@/app/api/projects/validationSchema";
-import content from "*.avif";
 
 interface Props {
   section: Section;
-  index: number;
+  sectionIndex: number;
   updateSection: (sectionIndex: number, updateData: Partial<Section>) => void;
   addSection: () => void;
 }
 
-const SectionItem = ({ section, updateSection, addSection, index }: Props) => {
+const SectionItem = ({
+  section,
+  updateSection,
+  addSection,
+  sectionIndex,
+}: Props) => {
   const layoutLabel: Record<LayoutType, string> = {
     imgTopTextBottom: "Image on Top, Text on Bottom",
     imgLeftTextRight: "Image on Left, Text on Right",
@@ -31,21 +28,19 @@ const SectionItem = ({ section, updateSection, addSection, index }: Props) => {
     textTopImgMiddleTextBottom: "Text on Top and Bottom, Image in the Middle",
   } as const satisfies Record<LayoutType, string>;
 
-  const addContentText = (index: number) => {
+  const addContentText = (sectionIndex: number) => {
     const newContentText = {
       id: Date.now(),
       content: "",
     };
-    updateSection(index, {
+    updateSection(sectionIndex, {
       contentTexts: [...(section.contentTexts ?? []), newContentText],
     });
   };
 
   const updateContentText = (
-    index: number,
     contentTextIndex: number,
-    section: Section,
-    updateData: ContentText,
+    updateData: Partial<ContentText>,
   ) => {
     const updateContentTexts = (section.contentTexts ?? []).map(
       (contentText, i) =>
@@ -53,9 +48,7 @@ const SectionItem = ({ section, updateSection, addSection, index }: Props) => {
           ? { ...contentText, ...updateData }
           : contentText,
     );
-
-    updateSection(index, {
-      ...section,
+    updateSection(sectionIndex, {
       contentTexts: updateContentTexts,
     });
   };
@@ -67,7 +60,7 @@ const SectionItem = ({ section, updateSection, addSection, index }: Props) => {
         placeholder="Title"
         value={section.title}
         onChange={(e) => {
-          updateSection(index, { title: e.target.value });
+          updateSection(sectionIndex, { title: e.target.value });
         }}
       />
 
@@ -76,7 +69,7 @@ const SectionItem = ({ section, updateSection, addSection, index }: Props) => {
         placeholder="Order"
         value={section.order}
         onChange={(e) => {
-          updateSection(index, { order: parseInt(e.target.value) });
+          updateSection(sectionIndex, { order: parseInt(e.target.value) });
         }}
       />
 
@@ -84,7 +77,7 @@ const SectionItem = ({ section, updateSection, addSection, index }: Props) => {
       <Select.Root
         value={section.layoutType}
         onValueChange={(value) =>
-          updateSection(index, { layoutType: value as LayoutType })
+          updateSection(sectionIndex, { layoutType: value as LayoutType })
         }
       >
         <Select.Trigger className="inline-flex items-center justify-between gap-2  border rounded px-3 py-1 bg-white  text-left">
@@ -116,8 +109,7 @@ const SectionItem = ({ section, updateSection, addSection, index }: Props) => {
           <TextField.Root
             value={contentText.content}
             onChange={(e) =>
-              updateContentText(index, contentTextIndex, section, {
-                id: contentText.id,
+              updateContentText(contentTextIndex, {
                 content: e.target.value,
               })
             }
@@ -127,7 +119,7 @@ const SectionItem = ({ section, updateSection, addSection, index }: Props) => {
 
       <Button
         className="btn btn-primary w-fit!"
-        onClick={() => addContentText(index)}
+        onClick={() => addContentText(sectionIndex)}
       >
         Add paragraph
       </Button>

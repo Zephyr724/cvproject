@@ -61,7 +61,7 @@ const SectionEditor = ({ sections, onChange }: Props) => {
         <SectionItem
           key={section.id}
           section={section}
-          index={index}
+          sectionIndex={index}
           addSection={addSection}
           updateSection={updateSection}
         />
