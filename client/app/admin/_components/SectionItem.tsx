@@ -16,12 +16,14 @@ interface Props {
   sectionIndex: number;
   updateSection: (sectionIndex: number, updateData: Partial<Section>) => void;
   addSection: () => void;
+  deleteSection: (sectionIndex: number) => void;
 }
 
 const SectionItem = ({
   section,
   updateSection,
   addSection,
+  deleteSection,
   sectionIndex,
 }: Props) => {
   const layoutLabel: Record<LayoutType, string> = {
@@ -219,6 +221,13 @@ const SectionItem = ({
       </div>
 
       <Button className="w-fit!">Submit Section</Button>
+      <Button
+        color="red"
+        className="w-fit!"
+        onClick={() => deleteSection(sectionIndex)}
+      >
+        Delete this Section
+      </Button>
     </div>
   );
 };

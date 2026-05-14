@@ -83,7 +83,7 @@ export function ImageCarousel({ images }: Props) {
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-contain rounded"
-                /> */}
+                /> temporary fix*/}
                 <img
                   src={image.url}
                   alt={image.alt ?? ""}

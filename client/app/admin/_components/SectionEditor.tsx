@@ -51,6 +51,10 @@ const SectionEditor = ({ sections, onChange }: Props) => {
     );
   };
 
+  const deleteSection = (sectionIndex: number) => {
+    onChange((sections ?? []).filter((_, index) => index !== sectionIndex));
+  };
+
   useEffect(() => {
     console.log("Monitoring FieldValue:", sections);
   }, [sections]);
@@ -64,6 +68,7 @@ const SectionEditor = ({ sections, onChange }: Props) => {
           sectionIndex={index}
           addSection={addSection}
           updateSection={updateSection}
+          deleteSection={deleteSection}
         />
       ))}
       <Button className="w-fit!" onClick={addSection}>
