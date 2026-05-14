@@ -45,7 +45,7 @@ export function toPrismaCreateInput(
     sections: {
       create:
         projectData.sections?.map((section) => ({
-          order: section.order,
+            order: section.order ?? 0,
           title: section.title,
           layoutType: section.layoutType,
           contentTexts: {
