@@ -90,3 +90,7 @@ export type Section = z.infer<typeof sectionSchema>;
 export type LayoutType = z.infer<typeof layoutTypeEnum>;
 
 export type ContentText = z.infer<typeof contentTextSchema>;
+
+export type ContentImages = z.infer<typeof contentImagesSchema>;
+
+export type ContentVideos = z.infer<typeof contentVideosSchema>;

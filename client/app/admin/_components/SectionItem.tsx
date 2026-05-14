@@ -6,6 +6,8 @@ import {
   layoutTypeEnum,
   LayoutType,
   ContentText,
+  ContentImages,
+  ContentVideos,
 } from "@/app/api/projects/validationSchema";
 
 interface Props {
@@ -40,17 +42,41 @@ const SectionItem = ({
 
   const updateContentText = (
     contentTextIndex: number,
-    updateData: Partial<ContentText>,
+    updatedData: Partial<ContentText>,
   ) => {
     const updateContentTexts = (section.contentTexts ?? []).map(
       (contentText, i) =>
         i === contentTextIndex
-          ? { ...contentText, ...updateData }
+          ? { ...contentText, ...updatedData }
           : contentText,
     );
     updateSection(sectionIndex, {
       contentTexts: updateContentTexts,
     });
+  };
+
+  const addContentImage = (sectionIndex: number) => {
+    const newContentImage = {
+      id: Date.now(),
+      alt: "",
+      url: "",
+    };
+    updateSection(sectionIndex, {
+      contentImages: [...(section.contentImages ?? []), newContentImage],
+    });
+  };
+
+  const updateContentImage = (
+    contenImagesIndex: number,
+    updatedData: Partial<ContentImages>,
+  ) => {
+    const updatedContentImage = (section.contentImages ?? []).map(
+      (contentImage, i) =>
+        i === contenImagesIndex
+          ? { ...contentImage, ...updatedData }
+          : contentImage,
+    );
+    updateSection(sectionIndex, { contentImages: updatedContentImage });
   };
 
   return (
@@ -103,26 +129,49 @@ const SectionItem = ({
         </Select.Portal>
       </Select.Root>
 
-      {section.contentTexts?.map((contentText, contentTextIndex) => (
-        <div key={contentText.id}>
-          <label>Paragraph</label>
-          <TextField.Root
-            value={contentText.content}
-            onChange={(e) =>
-              updateContentText(contentTextIndex, {
-                content: e.target.value,
-              })
-            }
-          />
-        </div>
-      ))}
+      <div>
+        {section.contentTexts?.map((contentText, contentTextIndex) => (
+          <div key={contentText.id}>
+            <label>Paragraph</label>
+            <TextField.Root
+              value={contentText.content}
+              onChange={(e) =>
+                updateContentText(contentTextIndex, {
+                  content: e.target.value,
+                })
+              }
+            />
+          </div>
+        ))}
 
-      <Button
-        className="btn btn-primary w-fit!"
-        onClick={() => addContentText(sectionIndex)}
-      >
-        Add paragraph
-      </Button>
+        <Button
+          className="btn btn-primary w-fit!"
+          onClick={() => addContentText(sectionIndex)}
+        >
+          Add paragraph
+        </Button>
+      </div>
+
+      <div>
+        {section.contentImages?.map((contenImage, contentImageIndex) => (
+          <div key={contentImageIndex}>
+            <label>Image</label>
+            <TextField.Root
+              value={contenImage.url}
+              onChange={(e) =>
+                updateContentImage(contentImageIndex, { url: e.target.value })
+              }
+            />
+          </div>
+        ))}
+
+        <Button
+          className="btn btn-primary w-fit!"
+          onClick={() => addContentImage(sectionIndex)}
+        >
+          Add Image
+        </Button>
+      </div>
 
       <Button className="w-fit!">Submit Section</Button>
     </div>

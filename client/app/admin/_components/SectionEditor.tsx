@@ -42,11 +42,11 @@ const SectionEditor = ({ sections, onChange }: Props) => {
 
   const updateSection = (
     sectionIndex: number,
-    updateData: Partial<Section>,
+    updatedData: Partial<Section>,
   ) => {
     onChange(
       (sections ?? []).map((section, index) =>
-        index === sectionIndex ? { ...section, ...updateData } : section,
+        index === sectionIndex ? { ...section, ...updatedData } : section,
       ),
     );
   };
