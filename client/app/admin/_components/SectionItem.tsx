@@ -9,6 +9,7 @@ import {
   ContentImages,
   ContentVideos,
 } from "@/app/api/projects/validationSchema";
+import { ContentVideo } from "@/src/generated/prisma/client";
 
 interface Props {
   section: Section;
@@ -77,6 +78,29 @@ const SectionItem = ({
           : contentImage,
     );
     updateSection(sectionIndex, { contentImages: updatedContentImage });
+  };
+
+  const addContentVideo = (sectionIndex: number) => {
+    const newContentVideo = {
+      id: Date.now(),
+      url: "",
+    };
+    updateSection(sectionIndex, {
+      contentVideos: [...(section.contentVideos ?? []), newContentVideo],
+    });
+  };
+
+  const updateContentVideo = (
+    contentVideoIndex: number,
+    updatedData: Partial<ContentVideo>,
+  ) => {
+    const updatedContentVideo = (section.contentVideos ?? []).map(
+      (contentVideo, i) =>
+        i === contentVideoIndex
+          ? { ...contentVideo, ...updatedData }
+          : contentVideo,
+    );
+    updateSection(sectionIndex, { contentVideos: updatedContentVideo });
   };
 
   return (
@@ -170,6 +194,27 @@ const SectionItem = ({
           onClick={() => addContentImage(sectionIndex)}
         >
           Add Image
+        </Button>
+      </div>
+
+      <div>
+        {section.contentVideos?.map((contentVideo, contentVideoIndex) => (
+          <div key={contentVideoIndex}>
+            <label>Video</label>
+            <TextField.Root
+              value={contentVideo.url}
+              onChange={(e) =>
+                updateContentVideo(contentVideoIndex, { url: e.target.value })
+              }
+            />
+          </div>
+        ))}
+
+        <Button
+          className="btn btn-primary w-fit!"
+          onClick={() => addContentVideo(sectionIndex)}
+        >
+          Add Video
         </Button>
       </div>
 
