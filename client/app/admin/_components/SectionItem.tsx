@@ -58,6 +58,13 @@ const SectionItem = ({
     });
   };
 
+  const deleteContentText = (contentTextIndex: number) => {
+    const filteredContentTexts = (section.contentTexts ?? []).filter(
+      (_, i) => i !== contentTextIndex,
+    );
+    updateSection(sectionIndex, { contentTexts: filteredContentTexts });
+  };
+
   const addContentImage = (sectionIndex: number) => {
     const newContentImage = {
       id: Date.now(),
@@ -82,6 +89,13 @@ const SectionItem = ({
     updateSection(sectionIndex, { contentImages: updatedContentImage });
   };
 
+  const deleteContentImage = (contentImageIndex: number) => {
+    const filterContentImage = (section.contentImages ?? []).filter(
+      (_, i) => i !== contentImageIndex,
+    );
+    updateSection(sectionIndex, { contentImages: filterContentImage });
+  };
+
   const addContentVideo = (sectionIndex: number) => {
     const newContentVideo = {
       id: Date.now(),
@@ -103,6 +117,13 @@ const SectionItem = ({
           : contentVideo,
     );
     updateSection(sectionIndex, { contentVideos: updatedContentVideo });
+  };
+
+  const deleteContentVideo = (contentVideoIndex: number) => {
+    const filterContentVideo = (section.contentVideos ?? []).filter(
+      (_, i) => i !== contentVideoIndex,
+    );
+    updateSection(sectionIndex, { contentVideos: filterContentVideo });
   };
 
   return (
@@ -167,6 +188,13 @@ const SectionItem = ({
                 })
               }
             />
+            <Button
+              color="red"
+              className="w-fit!"
+              onClick={() => deleteContentText(contentTextIndex)}
+            >
+              Delete paragraph
+            </Button>
           </div>
         ))}
 
@@ -188,6 +216,13 @@ const SectionItem = ({
                 updateContentImage(contentImageIndex, { url: e.target.value })
               }
             />
+            <Button
+              color="red"
+              className="w-fit!"
+              onClick={() => deleteContentImage(contentImageIndex)}
+            >
+              Delete Image
+            </Button>
           </div>
         ))}
 
@@ -209,6 +244,13 @@ const SectionItem = ({
                 updateContentVideo(contentVideoIndex, { url: e.target.value })
               }
             />
+            <Button
+              color="red"
+              className="w-fit!"
+              onClick={() => deleteContentVideo(contentVideoIndex)}
+            >
+              Delete video
+            </Button>
           </div>
         ))}
 
