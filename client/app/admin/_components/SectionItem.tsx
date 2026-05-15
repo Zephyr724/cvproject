@@ -10,6 +10,8 @@ import {
   ContentVideos,
 } from "@/app/api/projects/validationSchema";
 import { ContentVideo } from "@/src/generated/prisma/client";
+import SimpleMDE from "react-simplemde-editor";
+import "easymde/dist/easymde.min.css";
 
 interface Props {
   section: Section;
@@ -174,26 +176,30 @@ const SectionItem = ({
         </Select.Portal>
       </Select.Root>
 
-      <div>
+      <div className="rounded bg-gray-300 p-1">
         {section.contentTexts?.map((contentText, contentTextIndex) => (
-          <div key={contentText.id}>
-            <label>Paragraph</label>
-            <TextField.Root
+          <div key={contentText.id} className="flex flex-col gap-y-1 ">
+            <div className="flex justify-between items-top">
+              <label>Paragraph</label>
+              <Button
+                color="red"
+                className="p-2! w-8 h-8"
+                onClick={() => deleteContentText(contentTextIndex)}
+              >
+                <Cross2Icon />
+              </Button>
+            </div>
+
+            <SimpleMDE
+              key={contentText.id}
+              placeholder="Write your paragraph here…"
               value={contentText.content}
-              onChange={(e) =>
+              onChange={(value) =>
                 updateContentText(contentTextIndex, {
-                  content: e.target.value,
+                  content: value,
                 })
               }
-              placeholder="Write your paragraph here…"
             />
-            <Button
-              color="red"
-              className="p-2! w-8 h-8"
-              onClick={() => deleteContentText(contentTextIndex)}
-            >
-              <Cross2Icon />
-            </Button>
           </div>
         ))}
         <div className="flex justify-center">
@@ -206,11 +212,11 @@ const SectionItem = ({
         </div>
       </div>
 
-      <div className="bg-gray-300 rounded">
+      <div className="bg-gray-300 rounded p-1">
         {section.contentImages?.map((contenImage, contentImageIndex) => (
           <div key={contentImageIndex}>
             <label>Image</label>
-            <div className="flex flex-row gap-x-1  space-y-1">
+            <div className="flex flex-row gap-x-1  space-y-1 ">
               <TextField.Root
                 value={contenImage.url}
                 className="flex-1"
@@ -239,7 +245,7 @@ const SectionItem = ({
         </div>
       </div>
 
-      <div className="bg-gray-300 rounded">
+      <div className="bg-gray-300 rounded p-1">
         {section.contentVideos?.map((contentVideo, contentVideoIndex) => (
           <div key={contentVideoIndex}>
             <label>Video</label>

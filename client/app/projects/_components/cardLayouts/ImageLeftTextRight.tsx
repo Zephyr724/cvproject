@@ -6,6 +6,9 @@ import {
   SplitRatio,
 } from "../types";
 import { ImageCarousel } from "@/app/components/ImageCarousel";
+import "@/app/styles/markdown.css";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface Props {
   contentTexts: ContentText[];
@@ -42,11 +45,15 @@ export default function ImageLeftTextRight({
         style={{ flexGrow: splitRatio.right, flexBasis: 0 }}
         className="space-y-4"
       >
-        { contentTexts[0] && contentTexts.map((text) => (
-          <p key={text.id} className="text-gray-200 text-left">
-            {text.content}
-          </p>
-        ))}
+        {contentTexts[0] &&
+          contentTexts.map((text) => (
+            <div
+              key={text.id}
+              className="text-gray-200 text-left markdown-content"
+            >
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{text.content}</ReactMarkdown>
+            </div>
+          ))}
       </div>
     </div>
   );

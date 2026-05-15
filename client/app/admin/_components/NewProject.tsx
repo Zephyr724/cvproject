@@ -2,24 +2,20 @@
 
 import dynamic from "next/dynamic";
 import {
-  validateCreateProjectSchema,
   type ValidateCreateProjectType,
   type TechItem,
 } from "@/app/api/projects/validationSchema";
-import { useForm, Controller } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Button, Callout, Text, TextField } from "@radix-ui/themes";
+import { Button, Callout, TextField } from "@radix-ui/themes";
 import "easymde/dist/easymde.min.css";
-import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import TagInput from "./TagInput";
 import RoleInput from "./RoleInput";
 import TechItemInput from "./TechItemInput";
 
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
-import SectionInput from "./SectionInput";
 import SectionEditor from "./SectionEditor";
 
 interface NewProjectProps {
