@@ -63,7 +63,7 @@ const SectionEditor = ({ sections, onChange }: Props) => {
     <div className="space-y-3">
       <div className=" bg-gray-200 rounded">
         {sections?.map((section, index) => (
-          <div>
+          <div key={section.id}>
             <div className="flex justify-between items-top">
               <label className="font-bold">Section {index + 1}</label>
               <Button
@@ -75,7 +75,6 @@ const SectionEditor = ({ sections, onChange }: Props) => {
               </Button>
             </div>
             <SectionItem
-              key={section.id}
               section={section}
               sectionIndex={index}
               addSection={addSection}

@@ -59,6 +59,8 @@ const Dots = () => {
 export function ImageCarousel({ images }: Props) {
   const validImages = images.filter((img) => img.url && img.url.length > 0);
 
+  if (validImages.length === 0) return null;
+
   const plugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: true }),
   );
