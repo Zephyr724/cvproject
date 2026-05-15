@@ -10,7 +10,10 @@ import {
   ContentVideos,
 } from "@/app/api/projects/validationSchema";
 import { ContentVideo } from "@/src/generated/prisma/client";
-import SimpleMDE from "react-simplemde-editor";
+import dynamic from "next/dynamic";
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+});
 import "easymde/dist/easymde.min.css";
 
 interface Props {
@@ -177,11 +180,47 @@ const SectionItem = ({
         </Select.Portal>
       </Select.Root>
 
-      <div className="rounded bg-gray-300 p-1">
+      <div className="bg-gray-300 rounded p-1 flex flex-col space-y-2 ">
+        {section.contentImages?.map((contenImage, contentImageIndex) => (
+          <div key={contentImageIndex} className=" bg-gray-200 rounded p-1">
+            <label>Image {contentImageIndex + 1}</label>
+            <div className="flex flex-row gap-x-1  space-y-1">
+              <TextField.Root
+                value={contenImage.url}
+                className="flex-1"
+                onChange={(e) =>
+                  updateContentImage(contentImageIndex, { url: e.target.value })
+                }
+                placeholder="https://example.com/image.jpg"
+              />
+              <Button
+                color="red"
+                className="p-2! w-8 h-8"
+                onClick={() => deleteContentImage(contentImageIndex)}
+              >
+                <Cross2Icon />
+              </Button>
+            </div>
+          </div>
+        ))}
+        <div className="flex justify-center">
+          <Button
+            className="px-8!"
+            onClick={() => addContentImage(sectionIndex)}
+          >
+            Add Image
+          </Button>
+        </div>
+      </div>
+
+      <div className="rounded bg-gray-300 p-1 flex flex-col space-y-2 ">
         {section.contentTexts?.map((contentText, contentTextIndex) => (
-          <div key={contentText.id} className="flex flex-col gap-y-1 ">
+          <div
+            key={contentText.id}
+            className="flex flex-col gap-y-1  bg-gray-200 rounded p-1 "
+          >
             <div className="flex justify-between items-top">
-              <label>Paragraph</label>
+              <label>Paragraph {contentTextIndex + 1}</label>
               <Button
                 color="red"
                 className="p-2! w-8 h-8"
@@ -213,71 +252,46 @@ const SectionItem = ({
         </div>
       </div>
 
-      <div className="bg-gray-300 rounded p-1">
-        {section.contentImages?.map((contenImage, contentImageIndex) => (
-          <div key={contentImageIndex}>
-            <label>Image</label>
-            <div className="flex flex-row gap-x-1  space-y-1 ">
-              <TextField.Root
-                value={contenImage.url}
-                className="flex-1"
-                onChange={(e) =>
-                  updateContentImage(contentImageIndex, { url: e.target.value })
-                }
-                placeholder="https://example.com/image.jpg"
-              />
+      {["imgTopTextBottom", "textTopImgMiddleTextBottom"].includes(
+        section.layoutType,
+      ) && (
+        <div className="bg-gray-300 rounded p-1">
+          {section.contentVideos?.map((contentVideo, contentVideoIndex) => (
+            <div key={contentVideoIndex}>
+              <label>Video</label>
+              <div className="flex flex-row gap-x-1  space-y-1">
+                <TextField.Root
+                  value={contentVideo.url}
+                  className="flex-1"
+                  onChange={(e) =>
+                    updateContentVideo(contentVideoIndex, {
+                      url: e.target.value,
+                    })
+                  }
+                  placeholder="https://youtube.com/watch?v=…"
+                />
+                <Button
+                  color="red"
+                  className="p-2! w-8 h-8"
+                  onClick={() => deleteContentVideo(contentVideoIndex)}
+                >
+                  <Cross2Icon />
+                </Button>
+              </div>
+            </div>
+          ))}
+          {section.contentVideos?.length === 0 && (
+            <div className="flex justify-center">
               <Button
-                color="red"
-                className="p-2! w-8 h-8"
-                onClick={() => deleteContentImage(contentImageIndex)}
+                className="px-8!"
+                onClick={() => addContentVideo(sectionIndex)}
               >
-                <Cross2Icon />
+                Add Video
               </Button>
             </div>
-          </div>
-        ))}
-        <div className="flex justify-center">
-          <Button
-            className="px-8!"
-            onClick={() => addContentImage(sectionIndex)}
-          >
-            Add Image
-          </Button>
+          )}
         </div>
-      </div>
-
-      <div className="bg-gray-300 rounded p-1">
-        {section.contentVideos?.map((contentVideo, contentVideoIndex) => (
-          <div key={contentVideoIndex}>
-            <label>Video</label>
-            <div className="flex flex-row gap-x-1  space-y-1">
-              <TextField.Root
-                value={contentVideo.url}
-                className="flex-1"
-                onChange={(e) =>
-                  updateContentVideo(contentVideoIndex, { url: e.target.value })
-                }
-                placeholder="https://youtube.com/watch?v=…"
-              />
-              <Button
-                color="red"
-                className="p-2! w-8 h-8"
-                onClick={() => deleteContentVideo(contentVideoIndex)}
-              >
-                <Cross2Icon />
-              </Button>
-            </div>
-          </div>
-        ))}
-        <div className="flex justify-center">
-          <Button
-            className="px-8!"
-            onClick={() => addContentVideo(sectionIndex)}
-          >
-            Add Video
-          </Button>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

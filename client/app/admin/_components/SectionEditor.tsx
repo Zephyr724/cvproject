@@ -30,12 +30,7 @@ const SectionEditor = ({ sections, onChange }: Props) => {
             url: "",
           },
         ],
-        contentVideos: [
-          {
-            id: Date.now(),
-            url: "",
-          },
-        ],
+        contentVideos: [],
       },
     ]);
   };

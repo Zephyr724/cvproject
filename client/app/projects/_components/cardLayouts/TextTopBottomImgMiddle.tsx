@@ -38,26 +38,25 @@ export default function TextTopBottomImgMiddle({
         </div>
       )}
       {/* Buttom Section:  Text[1] */}
-      {contentTexts[1] && (
-        <div
-          key={contentTexts[1].id}
-          className=" text-gray-200 markdown-content"
-        >
+      {contentTexts.slice(1).map((contentText, i) => (
+        <div key={contentText.id} className=" text-gray-200 markdown-content">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {contentTexts[1].content}
+            {contentText.content}
           </ReactMarkdown>
         </div>
-      )}
-      {contentTexts?.map((contentText, i) =>
-        i === 0 ? (
-          <></>
-        ) : (
-          <div key={contentText.id} className=" text-gray-200 markdown-content">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {contentText.content}
-            </ReactMarkdown>
-          </div>
-        ),
+      ))}
+      {/* Buttom Section: video */}
+      {contentVideos.length > 0 && (
+        <div className="relative w-full aspect-video">
+          <ReactPlayer
+            src={contentVideos[0].url}
+            className="absolute inset-0"
+            width="100%"
+            height="100%"
+            controls
+            light={true}
+          />
+        </div>
       )}
     </div>
   );
