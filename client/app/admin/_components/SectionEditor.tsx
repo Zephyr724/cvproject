@@ -60,21 +60,34 @@ const SectionEditor = ({ sections, onChange }: Props) => {
   }, [sections]);
 
   return (
-    <>
-      {sections?.map((section, index) => (
-        <SectionItem
-          key={section.id}
-          section={section}
-          sectionIndex={index}
-          addSection={addSection}
-          updateSection={updateSection}
-          deleteSection={deleteSection}
-        />
-      ))}
-      <Button className="w-fit!" onClick={addSection}>
-        Add Section
+    <div className="space-y-3">
+      <div className=" bg-gray-200 rounded">
+        {sections?.map((section, index) => (
+          <div>
+            <div className="flex justify-between items-top">
+              <label className="font-bold">Section {index + 1}</label>
+              <Button
+                color="red"
+                className="w-fit!"
+                onClick={() => deleteSection(index)}
+              >
+                Delete Section
+              </Button>
+            </div>
+            <SectionItem
+              key={section.id}
+              section={section}
+              sectionIndex={index}
+              addSection={addSection}
+              updateSection={updateSection}
+            />
+          </div>
+        ))}
+      </div>
+      <Button className="w-full!" onClick={addSection}>
+        Add an Implementation (or project detail)
       </Button>
-    </>
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 import { Section } from "@/app/api/projects/validationSchema";
 import { Button, TextField } from "@radix-ui/themes";
 import { Select } from "radix-ui";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { ChevronDownIcon, Cross2Icon } from "@radix-ui/react-icons";
 import {
   layoutTypeEnum,
   LayoutType,
@@ -16,14 +16,12 @@ interface Props {
   sectionIndex: number;
   updateSection: (sectionIndex: number, updateData: Partial<Section>) => void;
   addSection: () => void;
-  deleteSection: (sectionIndex: number) => void;
 }
 
 const SectionItem = ({
   section,
   updateSection,
   addSection,
-  deleteSection,
   sectionIndex,
 }: Props) => {
   const layoutLabel: Record<LayoutType, string> = {
@@ -127,7 +125,7 @@ const SectionItem = ({
   };
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1 p-1">
       <label>Title</label>
       <TextField.Root
         placeholder="E.g., Project Introduction"
@@ -191,88 +189,88 @@ const SectionItem = ({
             />
             <Button
               color="red"
-              className="w-fit!"
+              className="p-2! w-8 h-8"
               onClick={() => deleteContentText(contentTextIndex)}
             >
-              Delete paragraph
+              <Cross2Icon />
             </Button>
           </div>
         ))}
-
-        <Button
-          className="btn btn-primary w-fit!"
-          onClick={() => addContentText(sectionIndex)}
-        >
-          Add paragraph
-        </Button>
+        <div className="flex justify-center">
+          <Button
+            className="px-8!"
+            onClick={() => addContentText(sectionIndex)}
+          >
+            Add paragraph
+          </Button>
+        </div>
       </div>
 
-      <div>
+      <div className="bg-gray-300 rounded">
         {section.contentImages?.map((contenImage, contentImageIndex) => (
           <div key={contentImageIndex}>
             <label>Image</label>
-            <TextField.Root
-              value={contenImage.url}
-              onChange={(e) =>
-                updateContentImage(contentImageIndex, { url: e.target.value })
-              }
-              placeholder="https://example.com/image.jpg"
-            />
-            <Button
-              color="red"
-              className="w-fit!"
-              onClick={() => deleteContentImage(contentImageIndex)}
-            >
-              Delete Image
-            </Button>
+            <div className="flex flex-row gap-x-1  space-y-1">
+              <TextField.Root
+                value={contenImage.url}
+                className="flex-1"
+                onChange={(e) =>
+                  updateContentImage(contentImageIndex, { url: e.target.value })
+                }
+                placeholder="https://example.com/image.jpg"
+              />
+              <Button
+                color="red"
+                className="p-2! w-8 h-8"
+                onClick={() => deleteContentImage(contentImageIndex)}
+              >
+                <Cross2Icon />
+              </Button>
+            </div>
           </div>
         ))}
-
-        <Button
-          className="btn btn-primary w-fit!"
-          onClick={() => addContentImage(sectionIndex)}
-        >
-          Add Image
-        </Button>
+        <div className="flex justify-center">
+          <Button
+            className="px-8!"
+            onClick={() => addContentImage(sectionIndex)}
+          >
+            Add Image
+          </Button>
+        </div>
       </div>
 
-      <div>
+      <div className="bg-gray-300 rounded">
         {section.contentVideos?.map((contentVideo, contentVideoIndex) => (
           <div key={contentVideoIndex}>
             <label>Video</label>
-            <TextField.Root
-              value={contentVideo.url}
-              onChange={(e) =>
-                updateContentVideo(contentVideoIndex, { url: e.target.value })
-              }
-              placeholder="https://youtube.com/watch?v=…"
-            />
-            <Button
-              color="red"
-              className="w-fit!"
-              onClick={() => deleteContentVideo(contentVideoIndex)}
-            >
-              Delete video
-            </Button>
+            <div className="flex flex-row gap-x-1  space-y-1">
+              <TextField.Root
+                value={contentVideo.url}
+                className="flex-1"
+                onChange={(e) =>
+                  updateContentVideo(contentVideoIndex, { url: e.target.value })
+                }
+                placeholder="https://youtube.com/watch?v=…"
+              />
+              <Button
+                color="red"
+                className="p-2! w-8 h-8"
+                onClick={() => deleteContentVideo(contentVideoIndex)}
+              >
+                <Cross2Icon />
+              </Button>
+            </div>
           </div>
         ))}
-
-        <Button
-          className="btn btn-primary w-fit!"
-          onClick={() => addContentVideo(sectionIndex)}
-        >
-          Add Video
-        </Button>
+        <div className="flex justify-center">
+          <Button
+            className="px-8!"
+            onClick={() => addContentVideo(sectionIndex)}
+          >
+            Add Video
+          </Button>
+        </div>
       </div>
-
-      <Button className="w-fit!">Submit Section</Button>
-      <Button
-        color="red"
-        className="w-fit!"
-        onClick={() => deleteSection(sectionIndex)}
-      >
-        Delete this Section
-      </Button>
     </div>
   );
 };

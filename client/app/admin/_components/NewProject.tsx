@@ -44,13 +44,17 @@ const NewProject = ({
   });
 
   return (
-    <div className="max-w-xl">
+    <div className="max-w-xl  bg-gray-50">
       {error && (
         <Callout.Root color="red">
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form className="space-y-3 p-1" onSubmit={onSubmit}>
+      <form
+        id="new-project-form"
+        className="space-y-3 p-1 "
+        onSubmit={onSubmit}
+      >
         <div>
           <label>Project Title</label>
           <TextField.Root
@@ -171,7 +175,6 @@ const NewProject = ({
         {/* <TextField.Root placeholder="Sections" {...register("sections")} /> */}
 
         <div className="flex flex-col gap-1">
-          <label>Implementations</label>
           <Controller
             name="sections"
             control={control}
@@ -200,9 +203,13 @@ const NewProject = ({
           />
           <ErrorMessage>{errors.sections?.message}</ErrorMessage>
         </div> */}
-
-        <Button onClick={onSubmit}>Submit New Project</Button>
       </form>
+
+      <div className="flex justify-end bg-white px-1 py-3">
+        <Button type="submit" form="new-project-form" color="green">
+          Submit this Project
+        </Button>
+      </div>
     </div>
   );
 };

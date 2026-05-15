@@ -9,8 +9,13 @@ import {
 import ProjectDisplay from "@/app/components/ProjectDisplay";
 import NewProject from "./NewProject";
 import axios from "axios";
-import type { Project, Tag, TechItem, Role, Section } from "@/app/projects/_components/types";
-
+import type {
+  Project,
+  Tag,
+  TechItem,
+  Role,
+  Section,
+} from "@/app/projects/_components/types";
 
 function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
   const techItems = data.techItems ?? [];
@@ -54,11 +59,15 @@ function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
 }
 
 const NewProjectForm = () => {
-  const { register, control, handleSubmit, watch, formState: { errors } } =
-    useForm<ValidateCreateProjectType>({
-      resolver: zodResolver(validateCreateProjectSchema),
-    });
-
+  const {
+    register,
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<ValidateCreateProjectType>({
+    resolver: zodResolver(validateCreateProjectSchema),
+  });
 
   const formValues = watch();
   const liveProject = formDataToProject(formValues);
@@ -73,11 +82,9 @@ const NewProjectForm = () => {
 
   return (
     <div className="flex flex-row">
-
       <div className="flex-1 overflow-auto max-h-[calc(100vh-2rem)] p-5">
         <ProjectDisplay project={liveProject} showCloseButton={false} />
       </div>
-
 
       <div className="flex-1">
         <NewProject
