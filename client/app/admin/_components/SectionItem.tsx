@@ -130,16 +130,16 @@ const SectionItem = ({
     <div className="flex flex-col gap-1">
       <label>Title</label>
       <TextField.Root
-        placeholder="Title"
+        placeholder="E.g., Project Introduction"
         value={section.title}
         onChange={(e) => {
           updateSection(sectionIndex, { title: e.target.value });
         }}
       />
 
-      <label>Order</label>
+      <label>Section Order</label>
       <TextField.Root
-        placeholder="Order"
+        placeholder="Display order (number)"
         value={section.order}
         onChange={(e) => {
           updateSection(sectionIndex, { order: parseInt(e.target.value) });
@@ -187,6 +187,7 @@ const SectionItem = ({
                   content: e.target.value,
                 })
               }
+              placeholder="Write your paragraph here…"
             />
             <Button
               color="red"
@@ -215,6 +216,7 @@ const SectionItem = ({
               onChange={(e) =>
                 updateContentImage(contentImageIndex, { url: e.target.value })
               }
+              placeholder="https://example.com/image.jpg"
             />
             <Button
               color="red"
@@ -243,6 +245,7 @@ const SectionItem = ({
               onChange={(e) =>
                 updateContentVideo(contentVideoIndex, { url: e.target.value })
               }
+              placeholder="https://youtube.com/watch?v=…"
             />
             <Button
               color="red"

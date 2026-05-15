@@ -53,7 +53,10 @@ const NewProject = ({
       <form className="space-y-3 p-1" onSubmit={onSubmit}>
         <div>
           <label>Project Title</label>
-          <TextField.Root placeholder="Title" {...register("title")} />
+          <TextField.Root
+            placeholder="E.g., E-Commerce Platform"
+            {...register("title")}
+          />
           <ErrorMessage> {errors.title?.message} </ErrorMessage>
         </div>
 
@@ -66,7 +69,7 @@ const NewProject = ({
               <TagInput
                 value={field.value ?? []}
                 onChange={field.onChange}
-                placeholder="Input tag and press Enter to confirm"
+                placeholder="Enter tag , press Enter to confirm"
               />
             )}
           />
@@ -74,15 +77,20 @@ const NewProject = ({
         </div>
 
         <div>
+          <div>Project URL</div>
           <TextField.Root
-            placeholder="ProjectUrl"
+            placeholder="https://yourproject.com"
             {...register("projectUrl")}
           />
           <ErrorMessage>{errors.projectUrl?.message} </ErrorMessage>
         </div>
 
         <div>
-          <TextField.Root placeholder="GithubUrl" {...register("githubUrl")} />
+          <div>GithubURL URL</div>
+          <TextField.Root
+            placeholder="https://github.com/username/repo"
+            {...register("githubUrl")}
+          />
           <ErrorMessage> {errors.githubUrl?.message} </ErrorMessage>
         </div>
 
@@ -104,6 +112,7 @@ const NewProject = ({
                   <label>Frontend</label>
                   <TechItemInput
                     value={frontendItems}
+                    placeholder="Enter React, Vue, Next.js… press Enter to confirm"
                     category="frontend"
                     onChange={(newFrontend) => {
                       const merged = [
@@ -125,6 +134,7 @@ const NewProject = ({
                       ...item,
                       order: i,
                     }))}
+                    placeholder="Enter Node.js, Go, Python… press Enter to confirm"
                     category="backend"
                     onChange={(newBackend) => {
                       const merged = [
@@ -152,7 +162,7 @@ const NewProject = ({
               <RoleInput
                 value={field.value ?? []}
                 onChange={field.onChange}
-                placeholder="Input role and press Enter to confirm"
+                placeholder="E.g., Frontend developer... press Enter to confirm"
               />
             )}
           />
