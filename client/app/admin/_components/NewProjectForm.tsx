@@ -81,12 +81,12 @@ const NewProjectForm = () => {
   });
 
   return (
-    <div className="flex flex-row">
-      <div className="flex-1 overflow-auto max-h-[calc(100vh-2rem)] p-5">
+    <div className="flex flex-row flex-1">
+      <div className="flex-1 overflow-auto  h-full p-5">
         <ProjectDisplay project={liveProject} showCloseButton={false} />
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 overflow-auto">
         <NewProject
           register={register}
           control={control}

@@ -5,7 +5,7 @@ import NewProjectForm from "../../_components/NewProjectForm";
 
 const adminProjectPage = () => {
   return (
-    <>
+    <div className="h-screen flex flex-col">
       <h1>New Projectpage</h1>
       <NewProjectForm />
       {/* <div className="flex flex-row">
@@ -16,7 +16,7 @@ const adminProjectPage = () => {
           <NewProject />
         </div>
       </div> */}
-    </>
+    </div>
   );
 };
 

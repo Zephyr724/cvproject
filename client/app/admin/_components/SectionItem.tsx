@@ -142,7 +142,8 @@ const SectionItem = ({
         placeholder="Display order (number)"
         value={section.order}
         onChange={(e) => {
-          updateSection(sectionIndex, { order: parseInt(e.target.value) });
+          const num = parseInt(e.target.value);
+          updateSection(sectionIndex, { order: isNaN(num) ? 0 : num });
         }}
       />
 
