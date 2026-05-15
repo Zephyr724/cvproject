@@ -15,7 +15,7 @@ const SectionEditor = ({ sections, onChange }: Props) => {
       {
         id: Date.now(),
         order: sections?.length,
-        title: "",
+        title: "New Section",
         layoutType: "imgTopTextBottom",
         contentTexts: [
           {
