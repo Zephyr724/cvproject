@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { number } from "zod";
-import { projectInclude } from "@/lib/project-includes";
-import { toProjectResponse } from "@/lib/project-mapper";
+import { projectInclude } from "@/lib/repositories/project.repository";
+import { toApiResponse } from "@/lib/mappers/project.mapper";
+import { projectService } from "@/lib/services/project.service";
 
 export async function GET(
   request: NextRequest,
@@ -11,15 +11,12 @@ export async function GET(
   //
   const { id } = await params;
   const idNumber = parseInt(id);
-  const project = await prisma.project.findUnique({
-    where: { id: idNumber },
-    include: projectInclude,
-  });
+  const project = await projectService.getProject(idNumber);
 
   if (!project)
     return NextResponse.json({ error: "Project not found." }, { status: 400 });
 
-  return NextResponse.json(toProjectResponse(project), { status: 200 });
+  return NextResponse.json(project, { status: 200 });
 }
 
 export async function PUT(

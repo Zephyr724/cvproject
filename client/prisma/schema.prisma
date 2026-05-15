@@ -16,8 +16,8 @@ model Project {
   id         Int               @id @default(autoincrement())
   title      String
   tags       ProjectTag[]
-  projectUrl String
-  githubUrl  String
+  projectUrl String?
+  githubUrl  String?
   techItems  ProjectTechItem[]
   roles      ProjectRole[]
   sections   Section[]
@@ -46,7 +46,7 @@ model ProjectTag {
 
 model TechItem {
   id         Int               @id @default(autoincrement())
-  name       String
+  name       String           @unique
   slug       String            @unique
   isFrontend Boolean           @default(false)
   isBackend  Boolean           @default(false)
