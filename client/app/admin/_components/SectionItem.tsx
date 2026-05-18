@@ -15,20 +15,15 @@ const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
 });
 import "easymde/dist/easymde.min.css";
+import { useArrayItem } from "@/hooks/useArrayItem";
 
 interface Props {
   section: Section;
   sectionIndex: number;
   updateSection: (sectionIndex: number, updateData: Partial<Section>) => void;
-  addSection: () => void;
 }
 
-const SectionItem = ({
-  section,
-  updateSection,
-  addSection,
-  sectionIndex,
-}: Props) => {
+const SectionItem = ({ section, updateSection, sectionIndex }: Props) => {
   const layoutLabel: Record<LayoutType, string> = {
     imgTopTextBottom: "Image on Top, Text on Bottom",
     imgLeftTextRight: "Image on Left, Text on Right",
@@ -36,98 +31,40 @@ const SectionItem = ({
     textTopImgMiddleTextBottom: "Text on Top and Bottom, Image in the Middle",
   } as const satisfies Record<LayoutType, string>;
 
-  const addContentText = (sectionIndex: number) => {
-    const newContentText = {
+  const contentTextsHelper = useArrayItem(
+    section.contentTexts,
+    () => ({
       id: Date.now(),
       content: "",
-    };
-    updateSection(sectionIndex, {
-      contentTexts: [...(section.contentTexts ?? []), newContentText],
-    });
-  };
+    }),
+    (newContentTexts) =>
+      updateSection(sectionIndex, {
+        contentTexts: newContentTexts,
+      }),
+  );
 
-  const updateContentText = (
-    contentTextIndex: number,
-    updatedData: Partial<ContentText>,
-  ) => {
-    const updateContentTexts = (section.contentTexts ?? []).map(
-      (contentText, i) =>
-        i === contentTextIndex
-          ? { ...contentText, ...updatedData }
-          : contentText,
-    );
-    updateSection(sectionIndex, {
-      contentTexts: updateContentTexts,
-    });
-  };
-
-  const deleteContentText = (contentTextIndex: number) => {
-    const filteredContentTexts = (section.contentTexts ?? []).filter(
-      (_, i) => i !== contentTextIndex,
-    );
-    updateSection(sectionIndex, { contentTexts: filteredContentTexts });
-  };
-
-  const addContentImage = (sectionIndex: number) => {
-    const newContentImage = {
+  const contentImagesHelper = useArrayItem(
+    section.contentImages,
+    () => ({
       id: Date.now(),
+      url: "",
       alt: "",
-      url: "",
-    };
-    updateSection(sectionIndex, {
-      contentImages: [...(section.contentImages ?? []), newContentImage],
-    });
-  };
+    }),
+    (newContentImages) =>
+      updateSection(sectionIndex, {
+        contentImages: newContentImages,
+      }),
+  );
 
-  const updateContentImage = (
-    contenImagesIndex: number,
-    updatedData: Partial<ContentImages>,
-  ) => {
-    const updatedContentImage = (section.contentImages ?? []).map(
-      (contentImage, i) =>
-        i === contenImagesIndex
-          ? { ...contentImage, ...updatedData }
-          : contentImage,
-    );
-    updateSection(sectionIndex, { contentImages: updatedContentImage });
-  };
-
-  const deleteContentImage = (contentImageIndex: number) => {
-    const filterContentImage = (section.contentImages ?? []).filter(
-      (_, i) => i !== contentImageIndex,
-    );
-    updateSection(sectionIndex, { contentImages: filterContentImage });
-  };
-
-  const addContentVideo = (sectionIndex: number) => {
-    const newContentVideo = {
+  const contentVideosHelper = useArrayItem(
+    section.contentVideos,
+    () => ({
       id: Date.now(),
       url: "",
-    };
-    updateSection(sectionIndex, {
-      contentVideos: [...(section.contentVideos ?? []), newContentVideo],
-    });
-  };
-
-  const updateContentVideo = (
-    contentVideoIndex: number,
-    updatedData: Partial<ContentVideo>,
-  ) => {
-    const updatedContentVideo = (section.contentVideos ?? []).map(
-      (contentVideo, i) =>
-        i === contentVideoIndex
-          ? { ...contentVideo, ...updatedData }
-          : contentVideo,
-    );
-    updateSection(sectionIndex, { contentVideos: updatedContentVideo });
-  };
-
-  const deleteContentVideo = (contentVideoIndex: number) => {
-    const filterContentVideo = (section.contentVideos ?? []).filter(
-      (_, i) => i !== contentVideoIndex,
-    );
-    updateSection(sectionIndex, { contentVideos: filterContentVideo });
-  };
+    }),
+    (newcontentVideos) =>
+      updateSection(sectionIndex, { contentVideos: newcontentVideos }),
+  );
 
   return (
     <div className="flex flex-col gap-1 p-1">
@@ -180,41 +117,57 @@ const SectionItem = ({
         </Select.Portal>
       </Select.Root>
 
-      <div className="bg-gray-300 rounded p-1 flex flex-col space-y-2 ">
-        {section.contentImages?.map((contenImage, contentImageIndex) => (
-          <div key={contentImageIndex} className=" bg-gray-200 rounded p-1">
-            <label>Image {contentImageIndex + 1}</label>
-            <div className="flex flex-row gap-x-1  space-y-1">
-              <TextField.Root
-                value={contenImage.url}
-                className="flex-1"
-                onChange={(e) =>
-                  updateContentImage(contentImageIndex, { url: e.target.value })
-                }
-                placeholder="https://example.com/image.jpg"
-              />
+      <div className="bg-gray-300 rounded p-1 flex flex-col space-y-1 ">
+        {contentImagesHelper.items?.map((contenImage, contentImageIndex) => (
+          <div
+            key={contentImageIndex}
+            className=" bg-gray-200 rounded p-1 flex flex-col space-y-1"
+          >
+            <div className="flex justify-between items-top">
+              <label>Image {contentImageIndex + 1}</label>
               <Button
                 color="red"
                 className="p-2! w-8 h-8"
-                onClick={() => deleteContentImage(contentImageIndex)}
+                onClick={() =>
+                  contentImagesHelper.deleteItem(contentImageIndex)
+                }
               >
                 <Cross2Icon />
               </Button>
             </div>
+            <div className="flex flex-row gap-x-1  space-y-1">
+              <TextField.Root
+                value={contenImage.url}
+                className="flex-8"
+                onChange={(e) =>
+                  contentImagesHelper.updateItem(contentImageIndex, {
+                    url: e.target.value,
+                  })
+                }
+                placeholder="https://example.com/image.jpg"
+              />
+              <TextField.Root
+                value={contenImage.alt}
+                className="flex-2"
+                onChange={(e) =>
+                  contentImagesHelper.updateItem(contentImageIndex, {
+                    alt: e.target.value,
+                  })
+                }
+                placeholder="Alternate text"
+              />
+            </div>
           </div>
         ))}
         <div className="flex justify-center">
-          <Button
-            className="px-8!"
-            onClick={() => addContentImage(sectionIndex)}
-          >
+          <Button className="px-8!" onClick={contentImagesHelper.addItem}>
             Add Image
           </Button>
         </div>
       </div>
 
       <div className="rounded bg-gray-300 p-1 flex flex-col space-y-2 ">
-        {section.contentTexts?.map((contentText, contentTextIndex) => (
+        {contentTextsHelper.items?.map((contentText, contentTextIndex) => (
           <div
             key={contentText.id}
             className="flex flex-col gap-y-1  bg-gray-200 rounded p-1 "
@@ -224,7 +177,7 @@ const SectionItem = ({
               <Button
                 color="red"
                 className="p-2! w-8 h-8"
-                onClick={() => deleteContentText(contentTextIndex)}
+                onClick={() => contentTextsHelper.deleteItem(contentTextIndex)}
               >
                 <Cross2Icon />
               </Button>
@@ -235,7 +188,7 @@ const SectionItem = ({
               placeholder="Write your paragraph here…"
               value={contentText.content}
               onChange={(value) =>
-                updateContentText(contentTextIndex, {
+                contentTextsHelper.updateItem(contentTextIndex, {
                   content: value,
                 })
               }
@@ -243,10 +196,7 @@ const SectionItem = ({
           </div>
         ))}
         <div className="flex justify-center">
-          <Button
-            className="px-8!"
-            onClick={() => addContentText(sectionIndex)}
-          >
+          <Button className="px-8!" onClick={contentTextsHelper.addItem}>
             Add paragraph
           </Button>
         </div>
@@ -256,7 +206,7 @@ const SectionItem = ({
         section.layoutType,
       ) && (
         <div className="bg-gray-300 rounded p-1">
-          {section.contentVideos?.map((contentVideo, contentVideoIndex) => (
+          {contentVideosHelper.items?.map((contentVideo, contentVideoIndex) => (
             <div key={contentVideoIndex}>
               <label>Video</label>
               <div className="flex flex-row gap-x-1  space-y-1">
@@ -264,7 +214,7 @@ const SectionItem = ({
                   value={contentVideo.url}
                   className="flex-1"
                   onChange={(e) =>
-                    updateContentVideo(contentVideoIndex, {
+                    contentVideosHelper.updateItem(contentVideoIndex, {
                       url: e.target.value,
                     })
                   }
@@ -273,19 +223,18 @@ const SectionItem = ({
                 <Button
                   color="red"
                   className="p-2! w-8 h-8"
-                  onClick={() => deleteContentVideo(contentVideoIndex)}
+                  onClick={() =>
+                    contentVideosHelper.deleteItem(contentVideoIndex)
+                  }
                 >
                   <Cross2Icon />
                 </Button>
               </div>
             </div>
           ))}
-          {section.contentVideos?.length === 0 && (
+          {contentVideosHelper.items?.length === 0 && (
             <div className="flex justify-center">
-              <Button
-                className="px-8!"
-                onClick={() => addContentVideo(sectionIndex)}
-              >
+              <Button className="px-8!" onClick={contentVideosHelper.addItem}>
                 Add Video
               </Button>
             </div>

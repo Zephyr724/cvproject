@@ -72,7 +72,6 @@ const SectionEditor = ({ sections, onChange }: Props) => {
             <SectionItem
               section={section}
               sectionIndex={index}
-              addSection={addSection}
               updateSection={updateSection}
             />
           </div>
