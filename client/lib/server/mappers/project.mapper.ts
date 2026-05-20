@@ -1,6 +1,6 @@
 // lib/mappers/project.mapper.ts
 import type { Prisma, TechCategory } from "@/src/generated/prisma/client";
-import type { ProjectWithIncludes } from "@/lib/repositories/project.repository";
+import type { ProjectWithIncludes } from "@/lib/server/repositories/project.repository";
 import type { ValidateCreateProjectType } from "@/app/api/projects/validationSchema";
 
 /**
@@ -45,13 +45,13 @@ export function toPrismaCreateInput(
     sections: {
       create:
         projectData.sections?.map((section) => ({
-            order: section.order ?? 0,
+          order: section.order ?? 0,
           title: section.title,
           layoutType: section.layoutType,
           contentTexts: {
             create:
               section.contentTexts?.map(({ content }) => ({ content })) ?? [],
-              //only create content without id (which automatically created by db)
+            //only create content without id (which automatically created by db)
           },
           contentImages: {
             create:

@@ -4,13 +4,13 @@ import {
   roleRepository,
   tagRepository,
   techItemRepository,
-} from "@/lib/repositories/project.repository";
+} from "@/lib/server/repositories/project.repository";
 import {
   toPrismaCreateInput,
   toApiResponse,
-} from "@/lib/mappers/project.mapper";
+} from "@/lib/server/mappers/project.mapper";
 import { ValidateCreateProjectType } from "@/app/api/projects/validationSchema";
-import { BusinessError } from "@/lib/errors";
+import { BusinessError } from "@/lib/server/errors";
 import { Prisma, TechCategory } from "@/src/generated/prisma/client";
 
 export const projectService = {

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { projectInclude } from "@/lib/repositories/project.repository";
-import { toApiResponse } from "@/lib/mappers/project.mapper";
-import { projectService } from "@/lib/services/project.service";
+import { projectInclude } from "@/lib/server/repositories/project.repository";
+import { toApiResponse } from "@/lib/server/mappers/project.mapper";
+import { projectService } from "@/lib/server/services/project.service";
 
 export async function GET(
   request: NextRequest,

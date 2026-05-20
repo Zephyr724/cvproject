@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { toApiResponse } from "@/lib/mappers/project.mapper";
-import { projectInclude } from "@/lib/repositories/project.repository";
-import { projectService } from "@/lib/services/project.service";
+import { toApiResponse } from "@/lib/server/mappers/project.mapper";
+import { projectInclude } from "@/lib/server/repositories/project.repository";
+import { projectService } from "@/lib/server/services/project.service";
 import { validateCreateProjectSchema } from "./validationSchema";
-import { BusinessError } from "@/lib/errors";
+import { BusinessError } from "@/lib/server/errors";
 
 export async function GET() {
   const projects = await projectService.getAllProjects();

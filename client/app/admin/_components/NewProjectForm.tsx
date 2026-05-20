@@ -8,7 +8,9 @@ import {
 } from "@/app/api/projects/validationSchema";
 import ProjectDisplay from "@/app/components/ProjectDisplay";
 import NewProject from "./NewProject";
-import axios from "axios";
+import apiClient from "@/lib/api/api-client";
+import projectApiService from "@/lib/api/project-api-service";
+
 import type {
   Project,
   Tag,
@@ -16,6 +18,9 @@ import type {
   Role,
   Section,
 } from "@/app/projects/_components/types";
+import { Button, Spinner } from "@radix-ui/themes";
+import useProjects from "@/hooks/useProjects";
+import { Watch } from "lucide-react";
 
 function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
   const techItems = data.techItems ?? [];
@@ -59,6 +64,8 @@ function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
 }
 
 const NewProjectForm = () => {
+  const { projects, setProjects, error, setError, isLoading } = useProjects();
+
   const {
     register,
     control,
@@ -72,17 +79,17 @@ const NewProjectForm = () => {
   const formValues = watch();
   const liveProject = formDataToProject(formValues);
 
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      await axios.post("/api/projects", data);
-    } catch {
-      // ...
-    }
+  const AddProjects = handleSubmit(async (data) => {
+    projectApiService.create<ValidateCreateProjectType>(data).catch((err) => {
+      setError(err.message);
+    });
   });
 
   return (
     <div className="flex flex-row flex-1">
       <div className="flex-1 overflow-auto  h-full p-5">
+        {error && <p className="text-red-500">{error}</p>}
+        {isLoading && <Spinner />}
         <ProjectDisplay project={liveProject} showCloseButton={false} />
       </div>
 
@@ -91,7 +98,7 @@ const NewProjectForm = () => {
           register={register}
           control={control}
           errors={errors}
-          onSubmit={onSubmit}
+          onSubmit={AddProjects}
         />
       </div>
     </div>
