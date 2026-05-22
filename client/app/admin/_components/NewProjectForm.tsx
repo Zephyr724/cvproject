@@ -8,19 +8,21 @@ import {
 } from "@/app/api/projects/validationSchema";
 import ProjectDisplay from "@/app/components/ProjectDisplay";
 import NewProject from "./NewProject";
-import apiClient from "@/lib/api/api-client";
 import projectApiService from "@/lib/api/project-api-service";
-
 import type {
   Project,
   Tag,
   TechItem,
   Role,
   Section,
+  LayoutType,
 } from "@/app/projects/_components/types";
-import { Button, Spinner } from "@radix-ui/themes";
-import useProjects from "@/hooks/useProjects";
-import { Watch } from "lucide-react";
+import { Spinner } from "@radix-ui/themes";
+import useFetchProjectById from "@/hooks/useFetchProjectById";
+
+interface Props {
+  projectId?: number;
+}
 
 function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
   const techItems = data.techItems ?? [];
@@ -63,8 +65,40 @@ function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
   };
 }
 
-const NewProjectForm = () => {
-  const { projects, setProjects, error, setError, isLoading } = useProjects();
+function projectToFormData(project: Project): ValidateCreateProjectType {
+  return {
+    title: project.title,
+    projectUrl: project.projectUrl,
+    githubUrl: project.githubUrl,
+    tags: project.tags.map((t, i) => ({ ...t, order: t.order ?? i })),
+    techItems: [
+      ...project.techStack.frontend.map((t) => ({
+        ...t,
+        category: "frontend" as const,
+        order: t.order ?? 0,
+      })),
+      ...project.techStack.backend.map((t) => ({
+        ...t,
+        category: "backend" as const,
+        order: t.order ?? 0,
+      })),
+    ],
+    roles: project.responsibilities.map((r, i) => ({
+      ...r,
+      order: r.order ?? i,
+    })),
+    sections: project.sections.map((s) => ({
+      ...s,
+      layoutType: s.layoutType as LayoutType,
+    })),
+  };
+}
+
+const NewProjectForm = ({ projectId }: Props) => {
+  const { project, setProject, error, setError, isLoading } =
+    useFetchProjectById(projectId);
+
+  const isEdit = projectId != null; //tell the component is edit mode or not
 
   const {
     register,
@@ -74,15 +108,24 @@ const NewProjectForm = () => {
     formState: { errors },
   } = useForm<ValidateCreateProjectType>({
     resolver: zodResolver(validateCreateProjectSchema),
+    values: project ? projectToFormData(project) : undefined,
   });
 
   const formValues = watch();
   const liveProject = formDataToProject(formValues);
 
-  const AddProjects = handleSubmit(async (data) => {
-    projectApiService.create<ValidateCreateProjectType>(data).catch((err) => {
-      setError(err.message);
-    });
+  const handleFormSubmit = handleSubmit(async (data) => {
+    if (isEdit) {
+      projectApiService
+        .update<ValidateCreateProjectType>(1, data)
+        .catch((err) => {
+          setError(err.message);
+        });
+    } else {
+      projectApiService.create<ValidateCreateProjectType>(data).catch((err) => {
+        setError(err.message);
+      });
+    }
   });
 
   return (
@@ -98,7 +141,8 @@ const NewProjectForm = () => {
           register={register}
           control={control}
           errors={errors}
-          onSubmit={AddProjects}
+          onSubmit={handleFormSubmit}
+          isEdit={isEdit}
         />
       </div>
     </div>

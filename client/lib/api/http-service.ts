@@ -17,8 +17,22 @@ class HttpService {
     return { request, cancel: () => controller.abort() };
   }
 
+  getById<T>(id: number) {
+    const controller = new AbortController();
+
+    const request = apiClient.get<T>(this.endpoint + "/" + id, {
+      signal: controller.signal,
+    });
+
+    return { request, cancel: () => controller.abort() };
+  }
+
   create<T>(entity: T) {
     return apiClient.post<T>(this.endpoint, entity);
+  }
+
+  update<T>(id: number, entity: T) {
+    return apiClient.patch<T>(this.endpoint + "/" + id, entity);
   }
 }
 

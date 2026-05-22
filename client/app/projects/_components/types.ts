@@ -66,3 +66,9 @@ export interface SplitRatio {
   left: number;
   right: number;
 }
+
+export type LayoutType =
+  | "imgTopTextBottom"
+  | "imgLeftTextRight"
+  | "imgRightTextLeft"
+  | "textTopImgMiddleTextBottom";

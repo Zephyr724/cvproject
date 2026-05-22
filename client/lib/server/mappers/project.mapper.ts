@@ -121,3 +121,82 @@ export function toApiResponse(project: ProjectWithIncludes) {
     })),
   };
 }
+
+// update's transformation is more complex,
+// because we need to handle the logic of connect vs create vs delete for related entities
+// (tags, techItems, roles, sections)
+// For simplicity, we assume the frontend sends the complete updated list of related entities
+// (with ids if they exist, without ids if new), and we do a full replace on the backend:
+export function toPrismaUpdateInput(
+  projectData: Partial<ValidateCreateProjectType>,
+  resolvedData?: Partial<ResolvedData>,
+): Prisma.ProjectUpdateInput {
+  const data: Prisma.ProjectUpdateInput = {};
+
+  if (projectData.title !== undefined) data.title = projectData.title;
+  if (projectData.projectUrl !== undefined)
+    data.projectUrl = projectData.projectUrl ?? null;
+  if (projectData.githubUrl !== undefined)
+    data.githubUrl = projectData.githubUrl ?? null;
+
+  // tags
+  if (projectData.tags !== undefined && resolvedData?.tags) {
+    data.tags = {
+      deleteMany: {},
+      create: resolvedData.tags.map(({ id, order }) => ({
+        order,
+        tag: { connect: { id } },
+      })),
+    };
+  }
+
+  // techItems
+  if (projectData.techItems !== undefined && resolvedData?.techItems) {
+    data.techItems = {
+      deleteMany: {},
+      create: resolvedData.techItems.map(({ id, category, order }) => ({
+        category,
+        order,
+        techItem: { connect: { id } },
+      })),
+    };
+  }
+
+  // roles
+  if (projectData.roles !== undefined && resolvedData?.roles) {
+    data.roles = {
+      deleteMany: {},
+      create: resolvedData.roles.map(({ id, order }) => ({
+        order,
+        role: { connect: { id } },
+      })),
+    };
+  }
+
+  // sections —— key difference: sections have their own content (texts, images, videos),
+  // so we also need to handle them
+  if (projectData.sections !== undefined) {
+    data.sections = {
+      deleteMany: {}, //delete all old sections (with CASCADE, child content auto-deleted)
+
+      create: projectData.sections.map((section) => ({
+        order: section.order ?? 0,
+        title: section.title,
+        layoutType: section.layoutType,
+        contentTexts: {
+          create:
+            section.contentTexts?.map(({ content }) => ({ content })) ?? [],
+        },
+        contentImages: {
+          create:
+            section.contentImages?.map(({ url, alt }) => ({ url, alt })) ?? [],
+        },
+        contentVideos: {
+          create: section.contentVideos?.map(({ url }) => ({ url })) ?? [],
+        },
+      })),
+    };
+  }
+
+  return data;
+}

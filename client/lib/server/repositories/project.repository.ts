@@ -22,6 +22,15 @@ export const projectRepository = {
   async create(data: Prisma.ProjectCreateInput): Promise<ProjectWithIncludes> {
     return prisma.project.create({ data, include: projectInclude });
   },
+
+  async update(id: number, data: Prisma.ProjectUpdateInput) {
+    return prisma.project.update({
+      where: { id },
+      data,
+      include: projectInclude,
+    });
+  },
+
   async findById(id: number): Promise<ProjectWithIncludes | null> {
     return prisma.project.findUnique({
       where: { id },

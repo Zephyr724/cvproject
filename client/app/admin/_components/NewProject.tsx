@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import {
   type ValidateCreateProjectType,
   type TechItem,
@@ -14,7 +13,6 @@ import ErrorMessage from "@/app/components/ErrorMessage";
 import TagInput from "./TagInput";
 import RoleInput from "./RoleInput";
 import TechItemInput from "./TechItemInput";
-
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import SectionEditor from "./SectionEditor";
 
@@ -23,6 +21,7 @@ interface NewProjectProps {
   control: Control<ValidateCreateProjectType>;
   errors: FieldErrors<ValidateCreateProjectType>;
   onSubmit: (e: React.FormEvent) => void;
+  isEdit?: boolean;
 }
 
 const NewProject = ({
@@ -30,14 +29,10 @@ const NewProject = ({
   control,
   errors,
   onSubmit,
+  isEdit,
 }: NewProjectProps) => {
   const router = useRouter();
   const [error, setError] = useState("");
-
-  const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-    ssr: false,
-    loading: () => <div className="h-40 bg-gray-100 animate-pulse rounded" />,
-  });
 
   return (
     <div className="max-w-xl  bg-gray-50">
@@ -203,7 +198,7 @@ const NewProject = ({
 
       <div className="flex justify-end bg-white px-1 py-3">
         <Button type="submit" form="new-project-form" color="green">
-          Submit this Project
+          {isEdit ? "Update Project" : "Submit this Project"}
         </Button>
       </div>
     </div>

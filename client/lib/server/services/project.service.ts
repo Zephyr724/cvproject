@@ -8,6 +8,7 @@ import {
 import {
   toPrismaCreateInput,
   toApiResponse,
+  toPrismaUpdateInput,
 } from "@/lib/server/mappers/project.mapper";
 import { ValidateCreateProjectType } from "@/app/api/projects/validationSchema";
 import { BusinessError } from "@/lib/server/errors";
@@ -34,22 +35,7 @@ export const projectService = {
       //transform database model → API response format
       return toApiResponse(created);
     } catch (error) {
-      // Known Prisma errors
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        //P2025: Related record not found (e.g. invalid id in connect)
-        if (error.code === "P2025") {
-          throw new BusinessError(
-            `Related record not found: ${error.meta?.cause || "please check the IDs in tags / techItems / roles"}`,
-            422,
-          );
-        }
-        // P2002: Unique constraint failed
-        if (error.code === "P2002") {
-          throw new BusinessError("Data already exists", 409);
-        }
-      }
-      //other errors: rethrow to be handled by route error handler (logged and return 500)
-      throw error;
+      handlePrismaError(error);
     }
   },
 
@@ -61,6 +47,39 @@ export const projectService = {
   async getAllProjects() {
     const projects = await projectRepository.findMany();
     return projects.map(toApiResponse);
+  },
+
+  async update(
+    projectId: number,
+    projectData: Partial<ValidateCreateProjectType>,
+  ) {
+    try {
+      const [tags, techItems, roles] = await Promise.all([
+        projectData.tags
+          ? Promise.all(projectData.tags.map(ensureTag))
+          : undefined,
+        projectData.techItems
+          ? Promise.all(projectData.techItems.map(ensureTechItem))
+          : undefined,
+        projectData.roles
+          ? Promise.all(projectData.roles.map(ensureRole))
+          : undefined,
+      ]);
+
+      //optional: add business validations (like unique title, checking if related IDs exist, etc.)
+      //transform projectData(DTO) → Prisma Input
+      const prismaInput = toPrismaUpdateInput(projectData, {
+        tags,
+        techItems,
+        roles,
+      });
+      //call repository to write to database
+      const updated = await projectRepository.update(projectId, prismaInput);
+      //transform database model → API response format
+      return toApiResponse(updated);
+    } catch (error) {
+      handlePrismaError(error);
+    }
   },
 };
 
@@ -104,4 +123,29 @@ async function ensureRole(role: { id?: number; name?: string; order: number }) {
   }
   const result = await roleRepository.upsertByName(role.name!);
   return { id: result.id, order: role.order };
+}
+
+function handlePrismaError(error: unknown): never {
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error.code === "P2025") {
+      throw new BusinessError(
+        `Related record not found: ${error.meta?.cause || "please check the IDs in tags / techItems / roles / sections"}`,
+        422,
+      );
+    }
+    if (error.code === "P2002") {
+      throw new BusinessError(
+        "A record with that unique value already exists",
+        409,
+      );
+    }
+    if (error.code === "P2014") {
+      // The change you are trying to make would violate the required relation
+      throw new BusinessError(
+        `Cannot delete: related records still exist. Remove them first.`,
+        409,
+      );
+    }
+  }
+  throw error; // unknown error → let global error handler handle → 500
 }

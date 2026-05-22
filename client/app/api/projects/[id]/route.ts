@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { projectInclude } from "@/lib/server/repositories/project.repository";
-import { toApiResponse } from "@/lib/server/mappers/project.mapper";
 import { projectService } from "@/lib/server/services/project.service";
 
 export async function GET(
@@ -19,7 +18,7 @@ export async function GET(
   return NextResponse.json(project, { status: 200 });
 }
 
-export async function PUT(
+export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
@@ -27,15 +26,12 @@ export async function PUT(
   const idNumber = parseInt(id);
   const body = await request.json();
 
-  const product = await prisma.project.update({
-    where: { id: idNumber },
-    data: {},
-  });
+  const project = await projectService.update(idNumber, body);
 
-  if (!product)
-    return NextResponse.json({ error: "Product not found." }, { status: 400 });
+  if (!project)
+    return NextResponse.json({ error: "Project not found." }, { status: 404 });
 
-  return NextResponse.json(product, { status: 200 });
+  return NextResponse.json(project, { status: 200 });
 }
 
 export async function DELETE(
@@ -45,16 +41,17 @@ export async function DELETE(
   const { id } = await params;
   const idNumber = parseInt(id);
 
-  const updateProducted = await prisma.project.findUnique({
+  const project = await prisma.project.findUnique({
     where: { id: idNumber },
+    include: projectInclude,
   });
 
-  if (!updateProducted)
-    return NextResponse.json({ error: "Product not found." }, { status: 404 });
+  if (!project)
+    return NextResponse.json({ error: "Project not found." }, { status: 404 });
 
   await prisma.project.delete({
     where: { id: idNumber },
   });
 
-  return NextResponse.json(updateProducted);
+  return NextResponse.json(project);
 }
