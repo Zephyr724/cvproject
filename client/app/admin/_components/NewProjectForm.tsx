@@ -22,6 +22,7 @@ import useFetchProjectById from "@/hooks/useFetchProjectById";
 
 interface Props {
   projectId?: number;
+  project?: Project | null;
 }
 
 function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
@@ -68,8 +69,8 @@ function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
 function projectToFormData(project: Project): ValidateCreateProjectType {
   return {
     title: project.title,
-    projectUrl: project.projectUrl,
-    githubUrl: project.githubUrl,
+    projectUrl: project.projectUrl ?? "",
+    githubUrl: project.githubUrl ?? "",
     tags: project.tags.map((t, i) => ({ ...t, order: t.order ?? i })),
     techItems: [
       ...project.techStack.frontend.map((t) => ({
@@ -89,14 +90,26 @@ function projectToFormData(project: Project): ValidateCreateProjectType {
     })),
     sections: project.sections.map((s) => ({
       ...s,
+      contentImages: s.contentImages?.map((ci) => ({
+        ...ci,
+        alt: ci.alt ?? undefined, // ← null → undefined
+      })),
       layoutType: s.layoutType as LayoutType,
     })),
   };
 }
 
-const NewProjectForm = ({ projectId }: Props) => {
-  const { project, setProject, error, setError, isLoading } =
-    useFetchProjectById(projectId);
+const NewProjectForm = ({ projectId, project: initialProject }: Props) => {
+  const {
+    project: fetchedProject,
+    setProject,
+    error,
+    setError,
+    isLoading,
+  } = useFetchProjectById(projectId);
+
+  // 3. Prioritize the externally passed project
+  const project = initialProject ?? fetchedProject;
 
   const isEdit = projectId != null; //tell the component is edit mode or not
 

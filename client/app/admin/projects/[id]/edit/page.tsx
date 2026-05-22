@@ -1,12 +1,25 @@
 import NewProjectForm from "@/app/admin/_components/NewProjectForm";
+import { projectService } from "@/lib/server/services/project.service";
+import { notFound } from "next/navigation";
 
-const page = () => {
+interface Props {
+  params: Promise<{ id: string }>;
+}
+
+const ProjectDetailPage = async ({ params }: Props) => {
+  const { id } = await params;
+  const idNumber = parseInt(id);
+
+  const project = await projectService.getProject(idNumber);
+
+  if (!project) notFound();
+
   return (
     <div className="h-screen flex flex-col">
       <h1>New Projectpage</h1>
-      <NewProjectForm projectId={1} />
+      <NewProjectForm project={project} />
     </div>
   );
 };
 
-export default page;
+export default ProjectDetailPage;

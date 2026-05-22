@@ -2,8 +2,8 @@ export interface Project {
   id: number;
   title: string;
   tags: Tag[];
-  projectUrl: string;
-  githubUrl: string;
+  projectUrl: string | null;
+  githubUrl: string | null;
   responsibilities: Role[];
   techStack: {
     frontend: TechItem[];
@@ -39,7 +39,7 @@ export interface ContentText {
 
 export interface ContentImage {
   id: number;
-  alt: string;
+  alt: string | null;
   url: string;
 }
 
