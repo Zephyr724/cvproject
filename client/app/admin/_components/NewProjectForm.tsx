@@ -130,7 +130,7 @@ const NewProjectForm = ({ projectId, project: initialProject }: Props) => {
   const handleFormSubmit = handleSubmit(async (data) => {
     if (isEdit) {
       projectApiService
-        .update<ValidateCreateProjectType>(1, data)
+        .update<ValidateCreateProjectType>(projectId, data)
         .catch((err) => {
           setError(err.message);
         });

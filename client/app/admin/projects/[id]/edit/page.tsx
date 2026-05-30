@@ -17,7 +17,7 @@ const ProjectDetailPage = async ({ params }: Props) => {
   return (
     <div className="h-screen flex flex-col">
       <h1>New Projectpage</h1>
-      <NewProjectForm project={project} />
+      <NewProjectForm projectId={idNumber} project={project} />
     </div>
   );
 };
