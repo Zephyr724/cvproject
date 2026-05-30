@@ -4,7 +4,6 @@ import { Project } from "@/app/projects/_components/types";
 import { Button, Link, Table } from "@radix-ui/themes";
 import { useState } from "react";
 import projectApiService from "@/lib/api/project-api-service";
-import useFetchProjectById from "@/hooks/useFetchProjectById";
 import { useRouter } from "next/navigation";
 
 interface Props {
