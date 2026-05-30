@@ -3,6 +3,9 @@
 import { Project } from "@/app/projects/_components/types";
 import { Button, Link, Table } from "@radix-ui/themes";
 import { useState } from "react";
+import projectApiService from "@/lib/api/project-api-service";
+import useFetchProjectById from "@/hooks/useFetchProjectById";
+import { useRouter } from "next/navigation";
 
 interface Props {
   projects: Project[];
@@ -19,6 +22,13 @@ const ProjectsListDisplay = ({ projects }: Props) => {
 
   const endIndex = startIndex + PAGE_SIZE;
 
+  const router = useRouter();
+
+  const handleDelete = async (projectId: number) => {
+    await projectApiService.delete(projectId);
+    router.refresh();
+  };
+
   return (
     <div className="flex flex-col">
       <Table.Root>
@@ -34,11 +44,15 @@ const ProjectsListDisplay = ({ projects }: Props) => {
             <Table.Row key={project.id}>
               <Table.RowHeaderCell>{project.id}</Table.RowHeaderCell>
               <Table.Cell>{project.title}</Table.Cell>
-              <Table.Cell>
+              <Table.Cell className="flex gap-2 items-center">
                 <Button asChild>
                   <Link href={`/admin/projects/${project.id}/edit`}>
                     Update
                   </Link>
+                </Button>
+
+                <Button color="red" onClick={() => handleDelete(project.id)}>
+                  Delete
                 </Button>
               </Table.Cell>
             </Table.Row>

@@ -42,6 +42,13 @@ export const projectRepository = {
       include: projectInclude,
     });
   },
+
+  async deleteById(projectId: number) {
+    return await prisma.project.delete({
+      where: { id: projectId },
+      include: projectInclude,
+    });
+  },
 };
 
 export const tagRepository = {

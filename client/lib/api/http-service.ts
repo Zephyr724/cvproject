@@ -34,6 +34,10 @@ class HttpService {
   update<T>(id: number, entity: T) {
     return apiClient.patch<T>(this.endpoint + "/" + id, entity);
   }
+
+  delete<T>(id: number) {
+    return apiClient.delete<T>(this.endpoint + "/" + id);
+  }
 }
 
 const create = (endpoint: string) => new HttpService(endpoint);

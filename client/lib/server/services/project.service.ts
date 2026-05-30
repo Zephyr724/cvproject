@@ -81,6 +81,15 @@ export const projectService = {
       handlePrismaError(error);
     }
   },
+
+  async deleteById(projectId: number) {
+    try {
+      const deleted = await projectRepository.deleteById(projectId);
+      return toApiResponse(deleted);
+    } catch (error) {
+      handlePrismaError(error);
+    }
+  },
 };
 
 async function ensureTag(tag: { id?: number; name?: string; order: number }) {
