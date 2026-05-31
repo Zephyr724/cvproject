@@ -135,7 +135,7 @@ const SectionItem = ({ section, updateSection, sectionIndex }: Props) => {
                 <Cross2Icon />
               </Button>
             </div>
-            <div className="flex flex-row gap-x-1  space-y-1">
+            <div className="flex gap-x-1  space-y-1">
               <TextField.Root
                 value={contenImage.url}
                 className="flex-8"
@@ -209,7 +209,7 @@ const SectionItem = ({ section, updateSection, sectionIndex }: Props) => {
           {contentVideosHelper.items?.map((contentVideo, contentVideoIndex) => (
             <div key={contentVideoIndex}>
               <label>Video</label>
-              <div className="flex flex-row gap-x-1  space-y-1">
+              <div className="flex  gap-x-1  space-y-1">
                 <TextField.Root
                   value={contentVideo.url}
                   className="flex-1"

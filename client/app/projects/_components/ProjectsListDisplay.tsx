@@ -62,7 +62,7 @@ const ProjectsListDisplay = ({ projects }: Props) => {
       <label>
         Page {page + 1} / {totalPages}
       </label>
-      <div>
+      <div className="flex p-2 gap-2">
         <Button
           disabled={page === 0}
           onClick={() => {

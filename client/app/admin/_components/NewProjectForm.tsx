@@ -142,7 +142,7 @@ const NewProjectForm = ({ projectId, project: initialProject }: Props) => {
   });
 
   return (
-    <div className="flex flex-row flex-1">
+    <div className="flex flex-1">
       <div className="flex-1 overflow-auto  h-full p-5">
         {error && <p className="text-red-500">{error}</p>}
         {isLoading && <Spinner />}

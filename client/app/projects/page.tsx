@@ -1,11 +1,14 @@
-import { redirect } from "next/navigation";
-import React from "react";
+import ProjectsListDisplay from "./_components/ProjectsListDisplay";
+import { projectService } from "@/lib/server/services/project.service";
 
-const page = () => {
-  redirect("/projects/1");
-  //redireact to project/1
+const ProjectsPage = async () => {
+  const projects = await projectService.getAllProjects();
 
-  return <div>Page is loading...</div>;
+  return (
+    <div>
+      <ProjectsListDisplay projects={projects} />
+    </div>
+  );
 };
 
-export default page;
+export default ProjectsPage;
