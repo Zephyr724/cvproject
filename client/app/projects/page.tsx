@@ -8,7 +8,7 @@ const ProjectsPage = async () => {
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(360px,1fr))] gap-3 place-items-center p-3">
       {projects?.map((project) => (
-        <ProjectCard project={project} />
+        <ProjectCard project={project} key={project.id} />
       ))}
     </div>
   );

@@ -5,6 +5,7 @@ import TechStack from "../projects/TechStack";
 import Responsibilities from "../projects/Responsibilities";
 import Sections from "../projects/_components/Sections";
 import { Project } from "../projects/_components/types";
+import ProjectLink from "./ProjectLink";
 
 interface ProjectDisplayProps {
   project: Project;
@@ -48,15 +49,8 @@ export const ProjectDisplay = ({
             ))}
           </div>
         </div>
-
-        <div className="flex gap-1.5 p-1 justify-end text-xs  underline">
-          {/* right coner */}
-          <Link href={projectUrl}>
-            <FaExternalLinkSquareAlt className="size-4" />
-          </Link>
-          <Link href={githubUrl}>
-            <FaGithub className="size-4" />
-          </Link>
+        <div className="flex justify-end">
+          <ProjectLink projectUrl={projectUrl} githubUrl={githubUrl} />
         </div>
       </header>
 

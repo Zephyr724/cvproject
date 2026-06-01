@@ -1,22 +1,28 @@
+"use client";
 import { Box, Card, Inset, Text, Strong, Flex, Badge } from "@radix-ui/themes";
 import { Project } from "../projects/_components/types";
-import Link from "next/link";
+import ProjectLink from "./ProjectLink";
+import { useRouter } from "next/navigation";
 
 interface Props {
   project: Project;
 }
 
 export const ProjectCard = ({ project }: Props) => {
+  const router = useRouter();
   return (
     <div>
       <Box maxWidth="480px" maxHeight="720px">
-        <Link href={`/projects/${project.id}`} passHref legacyBehavior={false}>
+        <div
+          onClick={() => router.push(`/projects/${project.id}`)}
+          className="block cursor-pointer transition-shadow hover:shadow-md rounded-[var(--radius-4)]"
+        >
           <Card size="3">
-            <Flex direction="column" gap="3">
+            <Flex direction="column" gap="2">
               <Inset clip="padding-box" side="top" pb="current">
                 <img
                   src={
-                    project.sections[0]?.contentImages?.[0]?.url ??
+                    project.sections[0]?.contentImages?.[0]?.url ||
                     "https://placehold.co/600x400?text=No+Image"
                   }
                   alt="Bold typography"
@@ -57,9 +63,18 @@ export const ProjectCard = ({ project }: Props) => {
                   </Badge>
                 ))}
               </Flex>
+              <div
+                className="flex justify-start"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ProjectLink
+                  projectUrl={project.projectUrl}
+                  githubUrl={project.githubUrl}
+                />
+              </div>
             </Flex>
           </Card>
-        </Link>
+        </div>
       </Box>
     </div>
   );
