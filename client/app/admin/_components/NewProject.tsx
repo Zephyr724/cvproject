@@ -179,21 +179,6 @@ const NewProject = ({
             }}
           />
         </div>
-
-        {/* <div>
-          <label>Sections</label>
-          <Controller
-            name="sections"
-            control={control}
-            render={({ field }) => (
-              <SectionInput
-                value={field.value ?? []}
-                onChange={field.onChange}
-              />
-            )}
-          />
-          <ErrorMessage>{errors.sections?.message}</ErrorMessage>
-        </div> */}
       </form>
 
       <div className="flex justify-end bg-white px-1 py-3">

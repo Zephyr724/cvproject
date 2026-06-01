@@ -280,7 +280,7 @@ const SectionInput = ({ value, onChange }: SectionInputProps) => {
                       />
                       <TextField.Root
                         placeholder="Alt text"
-                        value={img.alt}
+                        value={img.alt ?? undefined}
                         onChange={(e) =>
                           updateContentImage(
                             sectionIndex,
