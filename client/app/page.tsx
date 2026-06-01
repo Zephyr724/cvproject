@@ -1,6 +1,4 @@
 import { getServerSession } from "next-auth";
-import { getServerField } from "next/dist/server/lib/render-server";
-import Link from "next/link";
 import { authOptioins } from "./api/auth/[...nextauth]/route";
 
 export default async function Home() {
