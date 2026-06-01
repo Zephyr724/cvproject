@@ -7,7 +7,7 @@ import {
 import { Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Button, Callout, TextField } from "@radix-ui/themes";
+import { Button, Callout, TextArea, TextField } from "@radix-ui/themes";
 import "easymde/dist/easymde.min.css";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import TagInput from "./TagInput";
@@ -76,12 +76,8 @@ const NewProject = ({
             control={control}
             render={({ field }) => (
               <SimpleMDE
-                options={{
-                  minHeight: "160px",
-                  maxHeight: "200px",
-                }}
                 placeholder="Write your project introduction here…"
-                value={field.value ?? ""}
+                value={field.value}
                 onChange={(value) => {
                   if (value.length <= MAX_INTRO_LEN) {
                     field.onChange(value);
@@ -89,6 +85,7 @@ const NewProject = ({
                 }}
               />
             )}
+         
           />
           <ErrorMessage>{errors.introduction?.message}</ErrorMessage>
         </div>
