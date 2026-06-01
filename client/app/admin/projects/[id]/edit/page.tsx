@@ -6,6 +6,8 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+export const dynamic = "force-dynamic";
+
 const ProjectDetailPage = async ({ params }: Props) => {
   const { id } = await params;
   const idNumber = parseInt(id);
