@@ -510,6 +510,17 @@ async function main() {
   // await prisma.techItem.deleteMany();
   // await prisma.role.deleteMany();
 
+  // 0. 创建种子用户（用于 owner 关联）
+  const seedUser = await prisma.user.upsert({
+    where: { email: "admin@cvproject.dev" },
+    update: {},
+    create: {
+      name: "Seed Admin",
+      email: "admin@cvproject.dev",
+      role: "ADMIN",
+    },
+  });
+
   // 1. 预先创建标签(Tag)、技术项(TechItem)、角色(Role)实体（避免重复）
   // 此处为简化，采用 upsert 方式
 
@@ -577,10 +588,12 @@ async function main() {
     // 创建 Project
     const project = await prisma.project.create({
       data: {
-        id: proj.id,
         title: proj.title,
+        introduction: `An introduction about ${proj.title}.`,
+        coverImageUrl: `https://picsum.photos/seed/${proj.id}/800/400`,
         projectUrl: proj.projectUrl,
         githubUrl: proj.githubUrl,
+        ownerId: seedUser.id,
       },
     });
 
