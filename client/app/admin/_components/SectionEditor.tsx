@@ -50,10 +50,6 @@ const SectionEditor = ({ sections, onChange }: Props) => {
     onChange((sections ?? []).filter((_, index) => index !== sectionIndex));
   };
 
-  useEffect(() => {
-    console.log("Monitoring FieldValue:", sections);
-  }, [sections]);
-
   return (
     <div className="space-y-3">
       <div className=" bg-gray-200 rounded">
