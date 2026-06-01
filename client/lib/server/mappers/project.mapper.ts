@@ -18,11 +18,15 @@ interface ResolvedData {
 export function toPrismaCreateInput(
   projectData: ValidateCreateProjectType,
   resolvedData: ResolvedData,
+  ownerId: string,
 ): Prisma.ProjectCreateInput {
   return {
     title: projectData.title,
+    introduction: projectData.introduction,
+    coverImageUrl: projectData.coverImageUrl,
     projectUrl: projectData.projectUrl ?? null,
     githubUrl: projectData.githubUrl ?? null,
+    owner: { connect: { id: ownerId } },
     tags: {
       create: resolvedData.tags.map(({ id, order }) => ({
         order,
@@ -73,8 +77,12 @@ export function toApiResponse(project: ProjectWithIncludes) {
   return {
     id: project.id,
     title: project.title,
+    introduction: project.introduction,
+    coverImageUrl: project.coverImageUrl,
     projectUrl: project.projectUrl,
     githubUrl: project.githubUrl,
+    createdAt: project.createdAt.toISOString(),
+    updatedAt: project.updatedAt.toISOString(),
     tags: project.tags.map((t) => ({
       id: t.tag.id,
       name: t.tag.name,
@@ -134,6 +142,10 @@ export function toPrismaUpdateInput(
   const data: Prisma.ProjectUpdateInput = {};
 
   if (projectData.title !== undefined) data.title = projectData.title;
+  if (projectData.introduction !== undefined)
+    data.introduction = projectData.introduction;
+  if (projectData.coverImageUrl !== undefined)
+    data.coverImageUrl = projectData.coverImageUrl;
   if (projectData.projectUrl !== undefined)
     data.projectUrl = projectData.projectUrl ?? null;
   if (projectData.githubUrl !== undefined)

@@ -13,9 +13,14 @@ import {
 import { ValidateCreateProjectType } from "@/app/api/projects/validationSchema";
 import { BusinessError } from "@/lib/server/errors";
 import { Prisma, TechCategory } from "@/src/generated/prisma/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const projectService = {
   async createProject(projectData: ValidateCreateProjectType) {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) throw new BusinessError("Unauthorized", 401);
+
     try {
       const [tags, techItems, roles] = await Promise.all([
         Promise.all((projectData.tags ?? []).map(ensureTag)),
@@ -25,11 +30,15 @@ export const projectService = {
 
       //optional: add business validations (like unique title, checking if related IDs exist, etc.)
       //transform projectData(DTO) → Prisma Input
-      const prismaInput = toPrismaCreateInput(projectData, {
-        tags,
-        techItems,
-        roles,
-      });
+      const prismaInput = toPrismaCreateInput(
+        projectData,
+        {
+          tags,
+          techItems,
+          roles,
+        },
+        session.user.id,
+      );
       //call repository to write to database
       const created = await projectRepository.create(prismaInput);
       //transform database model → API response format
@@ -47,6 +56,25 @@ export const projectService = {
   async getAllProjects() {
     const projects = await projectRepository.findMany();
     return projects.map(toApiResponse);
+  },
+
+  async getAllProjectsList() {
+    const projects = await projectRepository.findManylight();
+    return projects.map((p) => ({
+      id: p.id,
+      title: p.title,
+      introduction: p.introduction,
+      coverImageUrl: p.coverImageUrl,
+      projectUrl: p.projectUrl ?? null, // ← undefined → null
+      githubUrl: p.githubUrl ?? null, // ← undefined → null
+      createdAt: p.createdAt.toISOString(),
+      updatedAt: p.updatedAt.toISOString(),
+      // List do not need tags/sections，default is []
+      tags: [],
+      techStack: { frontend: [], backend: [] },
+      responsibilities: [],
+      sections: [],
+    }));
   },
 
   async update(

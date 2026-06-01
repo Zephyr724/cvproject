@@ -1,14 +1,17 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export const NavBar = () => {
+  const { data: session, status } = useSession();
   const pathname = usePathname();
 
   const navLinks = [
     { name: "Homepage", href: "/" },
     { name: "Projects", href: "/projects" },
     { name: "Admin", href: "/admin" },
+    { name: "Sign in", href: "/api/auth/signin" },
   ];
 
   return (
@@ -16,6 +19,21 @@ export const NavBar = () => {
       {navLinks?.map((link) => {
         const isActive =
           link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+
+        if (status === "loading" && link.name === "Sign in")
+          return <div key={link.href}>Loading...</div>;
+
+        if (status === "authenticated" && link.name === "Sign in") {
+          return (
+            <div key={link.href}>
+              {session.user!.name}
+              <Link href="api/auth/signout" className="ml-3">
+                Sign Out
+              </Link>
+            </div>
+          );
+        }
+
         return (
           <Link
             key={link.href}

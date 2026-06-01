@@ -1,6 +1,8 @@
 export interface Project {
   id: number;
   title: string;
+  introduction: string;
+  coverImageUrl: string;
   tags: Tag[];
   projectUrl: string | null;
   githubUrl: string | null;
@@ -10,6 +12,8 @@ export interface Project {
     backend: TechItem[];
   };
   sections: Section[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Tag {

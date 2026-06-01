@@ -5,11 +5,8 @@ import { ChevronDownIcon, Cross2Icon } from "@radix-ui/react-icons";
 import {
   layoutTypeEnum,
   LayoutType,
-  ContentText,
-  ContentImages,
-  ContentVideos,
+
 } from "@/app/api/projects/validationSchema";
-import { ContentVideo } from "@/src/generated/prisma/client";
 import dynamic from "next/dynamic";
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
