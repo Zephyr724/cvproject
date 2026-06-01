@@ -1,6 +1,6 @@
 // lib/repositories/project.repository.ts
 import { prisma } from "@/lib/prisma";
-import type { Prisma } from "@/src/generated/prisma/client";
+import type { Prisma, Project } from "@/src/generated/prisma/client";
 export const projectInclude = {
   tags: { include: { tag: true } },
   techItems: { include: { techItem: true } },
@@ -41,6 +41,10 @@ export const projectRepository = {
     return prisma.project.findMany({
       include: projectInclude,
     });
+  },
+
+  async findManylight(): Promise<Project[]> {
+    return prisma.project.findMany();
   },
 
   async deleteById(projectId: number) {

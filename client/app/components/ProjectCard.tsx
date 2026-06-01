@@ -5,7 +5,16 @@ import ProjectLink from "./ProjectLink";
 import { useRouter } from "next/navigation";
 
 interface Props {
-  project: Project;
+  project: Pick<
+    Project,
+    | "id"
+    | "title"
+    | "introduction"
+    | "coverImageUrl"
+    | "projectUrl"
+    | "githubUrl"
+    | "tags"
+  >;
 }
 
 export const ProjectCard = ({ project }: Props) => {
@@ -18,11 +27,11 @@ export const ProjectCard = ({ project }: Props) => {
           className="block cursor-pointer transition-shadow hover:shadow-md rounded-[var(--radius-4)]"
         >
           <Card size="3">
-            <Flex direction="column" gap="2">
-              <Inset clip="padding-box" side="top" pb="current">
+            <Flex direction="column" gap="0">
+              <Inset clip="padding-box" side="top" pb="0">
                 <img
                   src={
-                    project.sections[0]?.contentImages?.[0]?.url ||
+                    project.coverImageUrl ||
                     "https://placehold.co/600x400?text=No+Image"
                   }
                   alt="Bold typography"
@@ -30,12 +39,12 @@ export const ProjectCard = ({ project }: Props) => {
                     display: "block",
                     objectFit: "cover",
                     width: "100%",
-                    height: 360,
+                    height: 280,
                     backgroundColor: "var(--gray-5)",
                   }}
                 />
               </Inset>
-              <Text as="p" size="4" weight="bold" truncate>
+              <Text as="p" size="4" weight="bold" truncate mt="3">
                 {project.title}
               </Text>
               <Text
@@ -43,18 +52,13 @@ export const ProjectCard = ({ project }: Props) => {
                 size="3"
                 style={{
                   display: "-webkit-box",
-                  WebkitLineClamp: 10, // Text line limit
+                  WebkitLineClamp: 8, // Text line limit
                   WebkitBoxOrient: "vertical",
                   overflow: "hidden",
                 }}
+                my="2"
               >
-                <Strong>Typography</Strong> is the art and technique of
-                arranging type to make written language legible, readable and
-                appealing when displayed.is the art and technique of arranging
-                type to make written language legible, readable and appealing
-                when displayed.is the art and technique of arranging type to
-                make written language legible, readable and appealing when
-                displayed.
+                {project.introduction}
               </Text>
               <Flex gap="1" wrap="wrap">
                 {project.tags?.map((tag) => (

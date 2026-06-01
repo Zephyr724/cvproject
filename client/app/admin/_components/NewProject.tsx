@@ -15,6 +15,10 @@ import RoleInput from "./RoleInput";
 import TechItemInput from "./TechItemInput";
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import SectionEditor from "./SectionEditor";
+import dynamic from "next/dynamic";
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+});
 
 interface NewProjectProps {
   register: UseFormRegister<ValidateCreateProjectType>;
@@ -33,6 +37,7 @@ const NewProject = ({
 }: NewProjectProps) => {
   const router = useRouter();
   const [error, setError] = useState("");
+  const MAX_INTRO_LEN = 500;
 
   return (
     <div className="max-w-xl  bg-gray-50">
@@ -53,6 +58,39 @@ const NewProject = ({
             {...register("title")}
           />
           <ErrorMessage> {errors.title?.message} </ErrorMessage>
+        </div>
+
+        <div>
+          <label>Cover Url</label>
+          <TextField.Root
+            placeholder="https://example.com/image.jpg"
+            {...register("coverImageUrl")}
+          />
+          <ErrorMessage> {errors.coverImageUrl?.message} </ErrorMessage>
+        </div>
+
+        <div>
+          <label>Introduction</label>
+          <Controller
+            name="introduction"
+            control={control}
+            render={({ field }) => (
+              <SimpleMDE
+                options={{
+                  minHeight: "160px",
+                  maxHeight: "200px",
+                }}
+                placeholder="Write your project introduction here…"
+                value={field.value ?? ""}
+                onChange={(value) => {
+                  if (value.length <= MAX_INTRO_LEN) {
+                    field.onChange(value);
+                  }
+                }}
+              />
+            )}
+          />
+          <ErrorMessage>{errors.introduction?.message}</ErrorMessage>
         </div>
 
         <div>

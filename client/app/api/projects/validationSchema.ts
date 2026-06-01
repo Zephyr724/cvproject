@@ -71,6 +71,8 @@ export const sectionSchema = z.object({
 //define api request DTO (also used for Zod validation)
 export const validateCreateProjectSchema = z.object({
   title: z.string().min(1),
+  introduction: z.string().min(1).max(500),
+  coverImageUrl: z.string(),
   projectUrl: z.string().optional(),
   githubUrl: z.string().optional(),
   tags: z.array(tagSchema).optional(),

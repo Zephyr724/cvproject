@@ -19,6 +19,7 @@ import type {
 } from "@/app/projects/_components/types";
 import { Spinner } from "@radix-ui/themes";
 import useFetchProjectById from "@/hooks/useFetchProjectById";
+import { useRouter } from "next/navigation";
 
 interface Props {
   projectId?: number;
@@ -33,8 +34,12 @@ function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
   return {
     id: 0,
     title: data.title || "Untitled",
+    introduction: data.introduction ?? "",
+    coverImageUrl: data.coverImageUrl || "#",
     projectUrl: data.projectUrl ?? "#",
     githubUrl: data.githubUrl ?? "#",
+    createdAt: "",
+    updatedAt: "",
     tags: (data.tags ?? []).map((t, i) => ({
       id: t.id ?? i,
       name: t.name ?? "",
@@ -69,6 +74,8 @@ function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
 function projectToFormData(project: Project): ValidateCreateProjectType {
   return {
     title: project.title,
+    introduction: project.introduction,
+    coverImageUrl: project.coverImageUrl,
     projectUrl: project.projectUrl ?? "",
     githubUrl: project.githubUrl ?? "",
     tags: project.tags.map((t, i) => ({ ...t, order: t.order ?? i })),
@@ -108,6 +115,8 @@ const NewProjectForm = ({ projectId, project: initialProject }: Props) => {
     isLoading,
   } = useFetchProjectById(projectId);
 
+  const router = useRouter();
+
   // 3. Prioritize the externally passed project
   const project = initialProject ?? fetchedProject;
 
@@ -129,16 +138,19 @@ const NewProjectForm = ({ projectId, project: initialProject }: Props) => {
 
   const handleFormSubmit = handleSubmit(async (data) => {
     if (isEdit) {
-      projectApiService
+      await projectApiService
         .update<ValidateCreateProjectType>(projectId, data)
         .catch((err) => {
           setError(err.message);
         });
     } else {
-      projectApiService.create<ValidateCreateProjectType>(data).catch((err) => {
-        setError(err.message);
-      });
+      await projectApiService
+        .create<ValidateCreateProjectType>(data)
+        .catch((err) => {
+          setError(err.message);
+        });
     }
+    router.push("/admin/projects");
   });
 
   return (
