@@ -280,7 +280,7 @@ const SectionInput = ({ value, onChange }: SectionInputProps) => {
                       />
                       <TextField.Root
                         placeholder="Alt text"
-                        value={img.alt}
+                        value={img.alt ?? undefined}
                         onChange={(e) =>
                           updateContentImage(
                             sectionIndex,
@@ -352,7 +352,6 @@ const SectionInput = ({ value, onChange }: SectionInputProps) => {
         </Card>
       ))}
 
-      {/* ─── 添加 Section 按钮 ─── */}
       <Button variant="outline" className="w-full" onClick={addSection}>
         <RxPlus className="mr-2" /> Add Section
       </Button>
