@@ -15,9 +15,9 @@ export const ProjectCard = ({ project }: Props) => {
       <Box maxWidth="480px" maxHeight="720px">
         <div
           onClick={() => router.push(`/projects/${project.id}`)}
-          className="block cursor-pointer transition-shadow hover:shadow-md rounded-(--radius-4)"
+          className="block cursor-pointer transition-shadow overflow-hidden  hover:shadow-md rounded-(--radius-4)"
         >
-          <Card size="3">
+          <Card size="3" data-radius="small">
             <Flex direction="column" gap="2">
               <Inset clip="padding-box" side="top" pb="current">
                 <img

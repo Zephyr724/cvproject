@@ -3,6 +3,8 @@ import Link from "next/link";
 import ProjectsListDisplay from "@/app/projects/_components/ProjectsListDisplay";
 import { projectService } from "@/lib/server/services/project.service";
 
+export const dynamic = "force-dynamic";
+
 export const AdminProjectPage = async () => {
   const projects = await projectService.getAllProjects();
 
