@@ -24,7 +24,14 @@ export const NavBar = () => {
           return <div key={link.href}>Loading...</div>;
 
         if (status === "authenticated" && link.name === "Sign in") {
-          return <div key={link.href}>{session.user!.name}</div>;
+          return (
+            <div key={link.href}>
+              {session.user!.name}
+              <Link href="api/auth/signout" className="ml-3">
+                Sign Out
+              </Link>
+            </div>
+          );
         }
 
         return (
