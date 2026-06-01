@@ -57,22 +57,13 @@ const Dots = () => {
 };
 
 export function ImageCarousel({ images }: Props) {
+  const validImages = images.filter((img) => img.url && img.url.length > 0);
+
+  if (validImages.length === 0) return null;
+
   const plugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: true }),
   );
-
-  // if only one image return <Image>
-  if (images.length === 1)
-    return (
-      <Image
-        src={images[0].url}
-        alt={images[0].alt}
-        fill
-        priority
-        sizes="(max-width: 768px) 100vw, 50vw"
-        className="object-cover "
-      />
-    );
 
   return (
     <div className="absolute inset-0 overflow-hidden rounded">
@@ -84,16 +75,22 @@ export function ImageCarousel({ images }: Props) {
         opts={{ align: "start", loop: true }}
       >
         <CarouselContent className="h-full">
-          {images.map((image) => (
+          {validImages.map((image) => (
             <CarouselItem key={image.id}>
               <div className=" relative w-full h-full rounded">
-                <Image
+                {/* <Image
                   src={image.url}
                   alt={image.alt}
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-contain rounded"
+                /> temporary fix*/}
+                <img
+                  src={image.url}
+                  alt={image.alt ?? ""}
+                  className="absolute inset-0 w-full h-full object-contain rounded"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
             </CarouselItem>

@@ -1,0 +1,52 @@
+.markdown-content ol {
+  list-style-type: decimal !important;
+  padding-left: 1.5rem !important;
+}
+.markdown-content ul {
+  list-style-type: disc !important;
+  padding-left: 1.5rem !important;
+}
+.markdown-content h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.markdown-content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.markdown-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+.markdown-content h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+.markdown-content h5 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+.markdown-content h6 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid oklch(0.708 0 0);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: oklch(0.556 0 0);
+  font-style: italic;
+}

@@ -1,6 +1,9 @@
 import ReactPlayer from "react-player";
 import { ContentText, ContentImage, ContentVideo } from "../types";
 import { ImageCarousel } from "@/app/components/ImageCarousel";
+import ReactMarkdown from "react-markdown";
+import "@/app/styles/markdown.css";
+import remarkGfm from "remark-gfm";
 
 interface Props {
   contentTexts: ContentText[];
@@ -24,9 +27,11 @@ export default function ImageTopTextBottom({
       {/* Middle Section: Text */}
       {contentTexts[0] &&
         contentTexts.map((text) => (
-          <p key={text.id} className="text-gray-200">
-            {text.content}
-          </p>
+          <div key={text.id} className="markdown-content text-gray-200">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {text.content}
+            </ReactMarkdown>
+          </div>
         ))}
       {/* Buttom Section: video */}
       {contentVideos.length > 0 && (
