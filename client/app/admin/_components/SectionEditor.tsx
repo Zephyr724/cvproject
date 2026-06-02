@@ -65,6 +65,7 @@ const SectionEditor = ({ sections, onChange }: Props) => {
                 color="red"
                 className="w-fit!"
                 onClick={() => deleteSection(index)}
+                type="button"
               >
                 Delete Section
               </Button>
@@ -77,7 +78,7 @@ const SectionEditor = ({ sections, onChange }: Props) => {
           </div>
         ))}
       </div>
-      <Button className="w-full!" onClick={addSection}>
+      <Button className="w-full!" onClick={addSection} type="button">
         Add an Implementation (or project detail)
       </Button>
     </div>
