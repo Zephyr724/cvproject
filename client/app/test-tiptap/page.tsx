@@ -4,6 +4,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useCallback, useState } from "react";
 import { TextStyleKit } from "@tiptap/extension-text-style/text-style-kit";
+import { ImageCarouselNode } from "@/lib/tiptap/extensions/ImageCarouselNode";
 
 // Toolbar button definitions
 const TOOLS = [
@@ -38,7 +39,7 @@ export default function TestTiptapPage() {
   const [loadInput, setLoadInput] = useState("");
 
   const editor = useEditor({
-    extensions: [StarterKit, TextStyleKit],
+    extensions: [StarterKit, TextStyleKit, ImageCarouselNode],
     content: "<p>Hello world! 🌈 Start editing here...</p>",
     onUpdate: ({ editor }) => {
       // Sync JSON in real-time
@@ -149,10 +150,26 @@ export default function TestTiptapPage() {
             ),
           )}
         </select>
+
+        <button
+          className="btn btn-sm btn-ghost"
+          title="Insert Image Carousel"
+          onClick={() =>
+            editor
+              .chain()
+              .focus()
+              .insertImageCarousel([
+                { url: "https://picsum.photos/800/450", alt: "Demo image" },
+              ])
+              .run()
+          }
+        >
+          🖼
+        </button>
       </div>
 
       {/* Editor */}
-      <div className="border border-base-300 rounded-lg bg-base-100">
+      <div className="border border-base-300 rounded-lg bg-base-100 overflow-hidden">
         <EditorContent editor={editor} />
       </div>
 
@@ -201,7 +218,7 @@ export default function TestTiptapPage() {
         <label className="label-text font-semibold">
           Live JSON Output (updates as you type):
         </label>
-        <pre className="bg-neutral text-neutral-content p-4 rounded-lg text-xs overflow-auto max-h-100 whitespace-pre-wrap">
+        <pre className="bg-neutral text-neutral-content p-4 rounded-lg text-xs overflow-auto max-h-96 whitespace-pre-wrap">
           {jsonOutput || "Start editing to see JSON..."}
         </pre>
       </div>
