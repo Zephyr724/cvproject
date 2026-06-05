@@ -48,6 +48,7 @@ export default function TestTiptapPage() {
     editorProps: {
       attributes: {
         class: "tiptap max-w-none outline-none min-h-[200px] px-4 py-3",
+        style: "--line-height: 1.6",
       },
     },
   });
@@ -166,6 +167,26 @@ export default function TestTiptapPage() {
         >
           🖼
         </button>
+        {/* Line Height */}
+        <select
+          className="select select-sm select-bordered w-20"
+          onChange={(e) => {
+            editor.view.dom.style.setProperty("--line-height", e.target.value);
+          }}
+          defaultValue="1.0"
+        >
+          <option value="0.2">0.2</option>
+          <option value="0.4">0.4</option>
+          <option value="0.6">0.6</option>
+          <option value="0.8">0.8</option>
+          <option value="1.0">1.0</option>
+          <option value="1.2">1.2</option>
+          <option value="1.4">1.4</option>
+          <option value="1.6">1.6</option>
+          <option value="1.8">1.8</option>
+          <option value="2.0">2.0</option>
+          <option value="2.5">2.5</option>
+        </select>
       </div>
 
       {/* Editor */}

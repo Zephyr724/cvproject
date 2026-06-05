@@ -172,6 +172,7 @@
     }
     p {
       @apply my-1;
+      line-height: var(--line-height, 1.6);
     }
   }
 }
