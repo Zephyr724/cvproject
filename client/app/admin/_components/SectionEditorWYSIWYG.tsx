@@ -2,6 +2,7 @@
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useState } from "react";
+import SectionEditorToolBar from "./SectionEditorToolBar";
 
 const SectionEditorWYSIWYG = () => {
   const [jsonOutput, setJsonOutput] = useState("");
@@ -28,16 +29,7 @@ const SectionEditorWYSIWYG = () => {
       <div>Project Details:</div>
 
       {/* Tools bar */}
-      <div className="border border-gray-300 rounded bg-base-100 p-1 ">
-        <button
-          key={"bold"}
-          title="Bold"
-          className="btn btn-sm btn-ghost border hover:border-black-200 hover:bg-black-100"
-          onClick={() => editor.chain().focus().toggleBold().run()}
-        >
-          B
-        </button>
-      </div>
+      <SectionEditorToolBar editor={editor} />
 
       {/* Editor */}
       <div className="border border-gray-300 rounded bg-base-100 p-1 ">
