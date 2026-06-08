@@ -16,6 +16,7 @@ import TechItemInput from "./TechItemInput";
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import SectionEditor from "./SectionEditor";
 import dynamic from "next/dynamic";
+import SectionEditorWYSIWYG from "./SectionEditorWYSIWYG";
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
 });
@@ -85,7 +86,6 @@ const NewProject = ({
                 }}
               />
             )}
-         
           />
           <ErrorMessage>{errors.introduction?.message}</ErrorMessage>
         </div>
@@ -206,10 +206,13 @@ const NewProject = ({
             control={control}
             render={({ field }) => {
               return (
-                <SectionEditor
-                  sections={field.value ?? []}
-                  onChange={field.onChange}
-                />
+                <>
+                  <SectionEditor
+                    sections={field.value ?? []}
+                    onChange={field.onChange}
+                  />
+                  <SectionEditorWYSIWYG />
+                </>
               );
             }}
           />

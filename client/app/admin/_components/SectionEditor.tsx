@@ -75,6 +75,7 @@ const SectionEditor = ({ sections, onChange }: Props) => {
               sectionIndex={index}
               updateSection={updateSection}
             />
+            
           </div>
         ))}
       </div>

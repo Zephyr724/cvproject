@@ -238,6 +238,11 @@ const SectionItem = ({ section, updateSection, sectionIndex }: Props) => {
           )}
         </div>
       )}
+
+
+      
+
+
     </div>
   );
 };
