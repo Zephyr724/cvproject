@@ -22,7 +22,7 @@ const SectionEditorWYSIWYG = () => {
     },
   });
 
-  //   if (editor!) return null;
+  if (!editor) return null;
 
   return (
     <div>

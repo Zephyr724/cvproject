@@ -7,7 +7,12 @@ interface Props {
 const SectionEditorToolBar = ({ editor }: Props) => {
   const ToolsConfig = [
     { label: "B", action: "toggleBold", title: "Bold Ctrl+B" },
-    { label: "I", action: "toggleItalic", title: "Italic Ctrl+I" },
+    {
+      label: "I",
+      action: "toggleItalic",
+      title: "Italic Ctrl+I",
+      className: "italic",
+    },
     {
       label: "H1",
       action: "toggleHeading",
@@ -34,7 +39,16 @@ const SectionEditorToolBar = ({ editor }: Props) => {
           type="button"
           key={tool.label}
           title={tool.title}
-          className="min-w-9 btn btn-sm btn-ghost border hover:border-black-200 hover:bg-black-100"
+          className={`min-w-9 btn btn-sm btn-ghost border hover:border-black-200 hover:bg-black-100 ${tool.className ?? ""} ${
+            editor.isActive(
+              tool.action === "toggleHeading"
+                ? "heading"
+                : tool.action.replace("toggle", "").toLowerCase(),
+              tool.attributes,
+            )
+              ? "btn-active"
+              : ""
+          }`}
           onClick={() => {
             const editorCMDChain = editor.chain().focus();
             const commandFn =
