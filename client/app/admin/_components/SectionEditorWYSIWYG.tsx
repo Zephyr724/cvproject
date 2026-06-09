@@ -16,7 +16,7 @@ const SectionEditorWYSIWYG = () => {
 
     editorProps: {
       attributes: {
-        class: "outline-none min-h-[200px] px-4 py-3",
+        class: "tiptap outline-none min-h-[200px] px-4 py-3",
         style: "--line-height:1.6",
       },
     },
