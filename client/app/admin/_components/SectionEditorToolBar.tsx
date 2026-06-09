@@ -34,7 +34,7 @@ const SectionEditorToolBar = ({ editor }: Props) => {
           type="button"
           key={tool.label}
           title={tool.title}
-          className="btn btn-sm btn-ghost border hover:border-black-200 hover:bg-black-100"
+          className="min-w-9 btn btn-sm btn-ghost border hover:border-black-200 hover:bg-black-100"
           onClick={() => {
             const editorCMDChain = editor.chain().focus();
             const commandFn =
