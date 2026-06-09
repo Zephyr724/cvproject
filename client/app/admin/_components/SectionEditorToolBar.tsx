@@ -31,6 +31,7 @@ const SectionEditorToolBar = ({ editor }: Props) => {
     <div className="border border-gray-300 rounded bg-base-100 p-1 ">
       {ToolsConfig.map((tool) => (
         <button
+          type="button"
           key={tool.label}
           title={tool.title}
           className="btn btn-sm btn-ghost border hover:border-black-200 hover:bg-black-100"
