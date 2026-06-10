@@ -62,6 +62,82 @@ const SectionEditorToolBar = ({ editor }: Props) => {
           {tool.label}
         </button>
       ))}
+
+      {/* Text color */}
+      <label
+        title="Text Color"
+        className="btn btn-sm btn-ghost cursor-pointer relative"
+      >
+        <span
+          style={{
+            color: editor.getAttributes("textStyle").color || "currentColor",
+          }}
+        >
+          A
+        </span>
+        <input
+          type="color"
+          className="absolute inset-0 opacity-0 cursor-pointer"
+          value={editor.getAttributes("textStyle").color || "#000000"}
+          onInput={(e) =>
+            editor.chain().focus().setColor(e.currentTarget.value).run()
+          }
+        />
+      </label>
+
+      {/* Clear color */}
+      <button
+        type="button"
+        className="btn btn-sm btn-ghost"
+        onClick={() => editor.chain().focus().unsetColor().run()}
+        title="Clear Color"
+      >
+        <span className="line-through">A</span>
+      </button>
+
+      {/* Font size */}
+      <select
+        className="select select-sm select-bordered w-20"
+        value={editor.getAttributes("textStyle").fontSize || ""}
+        onChange={(e) => {
+          const val = e.target.value;
+          if (val) {
+            editor.chain().focus().setFontSize(val).run();
+          } else {
+            editor.chain().focus().unsetFontSize().run();
+          }
+        }}
+      >
+        <option value="">Size</option>
+        {["12px", "14px", "16px", "18px", "20px", "24px", "30px", "36px"].map(
+          (s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ),
+        )}
+      </select>
+
+      {/* Line Height */}
+      <select
+        className="select select-sm select-bordered w-20"
+        onChange={(e) => {
+          editor.view.dom.style.setProperty("--line-height", e.target.value);
+        }}
+        defaultValue="1.0"
+      >
+        <option value="0.2">0.2</option>
+        <option value="0.4">0.4</option>
+        <option value="0.6">0.6</option>
+        <option value="0.8">0.8</option>
+        <option value="1.0">1.0</option>
+        <option value="1.2">1.2</option>
+        <option value="1.4">1.4</option>
+        <option value="1.6">1.6</option>
+        <option value="1.8">1.8</option>
+        <option value="2.0">2.0</option>
+        <option value="2.5">2.5</option>
+      </select>
     </div>
   );
 };

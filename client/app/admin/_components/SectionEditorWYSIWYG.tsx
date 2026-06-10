@@ -3,11 +3,12 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useState } from "react";
 import SectionEditorToolBar from "./SectionEditorToolBar";
+import { TextStyleKit } from "@tiptap/extension-text-style/text-style-kit";
 
 const SectionEditorWYSIWYG = () => {
   const [jsonOutput, setJsonOutput] = useState("");
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, TextStyleKit],
     content:
       "<p> 🌈 Start editing here, you can edit with the text, carousel images and videos.</p>",
     onUpdate: ({ editor }) => {
