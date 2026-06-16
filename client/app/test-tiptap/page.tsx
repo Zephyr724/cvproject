@@ -4,7 +4,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useCallback, useState } from "react";
 import { TextStyleKit } from "@tiptap/extension-text-style/text-style-kit";
-import { ImageCarouselNode } from "@/lib/tiptap/extensions/ImageCarouselNode";
+import { ImageCarouselNode } from "@/lib/tiptap/extensions/ImageCarouselNodeSample";
 
 // Toolbar button definitions
 const TOOLS = [
