@@ -1,4 +1,5 @@
 import { Editor } from "@tiptap/react";
+import { Afacad } from "next/font/google";
 
 interface Props {
   editor: Editor;
@@ -100,9 +101,9 @@ const SectionEditorToolBar = ({ editor }: Props) => {
         className="select select-sm select-bordered w-20"
         value={editor.getAttributes("textStyle").fontSize || ""}
         onChange={(e) => {
-          const val = e.target.value;
-          if (val) {
-            editor.chain().focus().setFontSize(val).run();
+          const value = e.target.value;
+          if (value) {
+            editor.chain().focus().setFontSize(value).run();
           } else {
             editor.chain().focus().unsetFontSize().run();
           }
@@ -110,9 +111,9 @@ const SectionEditorToolBar = ({ editor }: Props) => {
       >
         <option value="">Size</option>
         {["12px", "14px", "16px", "18px", "20px", "24px", "30px", "36px"].map(
-          (s) => (
-            <option key={s} value={s}>
-              {s}
+          (frontSize) => (
+            <option key={frontSize} value={frontSize}>
+              {frontSize}
             </option>
           ),
         )}
@@ -126,17 +127,25 @@ const SectionEditorToolBar = ({ editor }: Props) => {
         }}
         defaultValue="1.0"
       >
-        <option value="0.2">0.2</option>
-        <option value="0.4">0.4</option>
-        <option value="0.6">0.6</option>
-        <option value="0.8">0.8</option>
-        <option value="1.0">1.0</option>
-        <option value="1.2">1.2</option>
-        <option value="1.4">1.4</option>
-        <option value="1.6">1.6</option>
-        <option value="1.8">1.8</option>
-        <option value="2.0">2.0</option>
-        <option value="2.5">2.5</option>
+        {[
+          "0.2",
+          "0.4",
+          "0.6",
+          "0.8",
+          "1.0",
+          "1.2",
+          "1.4",
+          "1.6",
+          "1.8",
+          "2.0",
+          "2.5",
+          "3.0",
+          "4.0",
+        ].map((lineHeight) => (
+          <option key={lineHeight} value={lineHeight}>
+            {lineHeight}
+          </option>
+        ))}
       </select>
     </div>
   );
