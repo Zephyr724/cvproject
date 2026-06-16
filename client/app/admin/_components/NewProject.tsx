@@ -50,7 +50,12 @@ const NewProject = ({
       <form
         id="new-project-form"
         className="space-y-3 p-1 "
-        onSubmit={onSubmit}
+        onSubmit={
+          (e) => {
+            e.preventDefault();
+            onSubmit;
+          } 
+        }
       >
         <div>
           <label>Project Title</label>
