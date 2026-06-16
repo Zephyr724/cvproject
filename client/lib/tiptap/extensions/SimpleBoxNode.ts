@@ -62,11 +62,27 @@ export const SimpleBoxNode = Node.create({
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // ④ renderHTML：序列化为原生 HTML
   //
-  //    这个方法用于：
-  //    - 导出到 HTML 时
-  //    - 粘贴到不支持 NodeView 的地方时
+  //    谁调用？→ TipTap 内部自动调用，你不需要手动调用。
+  //    什么时候调用？
+  //      - editor.getHTML() 导出 HTML 时
+  //      - 复制节点到剪贴板时
+  //      - 粘贴到不支持 NodeView 的环境时
   //
-  //    返回 [tagName, attributes, content]
+  //    参数 HTMLAttributes 是什么？
+  //      TipTap 会把 addAttributes 中每个属性的 renderHTML 返回值
+  //      收集成一个对象，传到这里。
+  //
+  //      对于简单属性（只写了 default），TipTap 有默认的 renderHTML：
+  //        属性名 → HTML 属性名（同名映射）
+  //
+  //      所以 HTMLAttributes 实际就是：
+  //        { backgroundColor: "#e0f0ff" }  ← 当前节点存储的背景色值
+  //
+  //      如果 addAttributes 里自定义了 renderHTML（如 ImageCarouselNode），
+  //      那 HTMLAttributes 里的 key 就是你自定义的 key。
+  //
+  //    返回值规范：["标签名", {属性}, 子内容]
+  //      子内容为 0 表示这是一个"有洞"的元素，子节点由编辑器管理
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   renderHTML({ HTMLAttributes }) {
     return [
@@ -75,7 +91,7 @@ export const SimpleBoxNode = Node.create({
         "data-type": "simple-box", // 标记这个 div 是 simpleBox 节点
         style: `background-color: ${HTMLAttributes.backgroundColor}; padding: 1rem; border-radius: 0.5rem;`,
       },
-      0, // 0 表示这是一个空元素（有洞 hole），子内容由编辑器管理
+      0, // 0 = 空元素（有洞 hole），子内容由编辑器管理
     ];
   },
 

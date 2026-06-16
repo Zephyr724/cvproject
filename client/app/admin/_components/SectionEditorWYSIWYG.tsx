@@ -4,13 +4,20 @@ import StarterKit from "@tiptap/starter-kit";
 import { useState } from "react";
 import SectionEditorToolBar from "./SectionEditorToolBar";
 import { TextStyleKit } from "@tiptap/extension-text-style/text-style-kit";
-import { ImageCarouselNode } from "@/lib/tiptap/extensions/ImageCarouselNodeSample";
+import { ImageCarouselNodeSample } from "@/lib/tiptap/extensions/ImageCarouselNodeSample";
 import { SimpleBoxNode } from "@/lib/tiptap/extensions/SimpleBoxNode";
+import { ImageCarouselNode } from "@/lib/tiptap/extensions/ImageCarouselNode";
 
 const SectionEditorWYSIWYG = () => {
   const [jsonOutput, setJsonOutput] = useState("");
   const editor = useEditor({
-extensions: [StarterKit, TextStyleKit, ImageCarouselNode, SimpleBoxNode],
+    extensions: [
+      StarterKit,
+      TextStyleKit,
+      ImageCarouselNode,
+      ImageCarouselNodeSample,
+      SimpleBoxNode,
+    ],
     content:
       "<p> 🌈 Start editing here, you can edit with the text, carousel images and videos.</p>",
     onUpdate: ({ editor }) => {

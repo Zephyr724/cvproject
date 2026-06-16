@@ -11,13 +11,13 @@ export type ImageLayout = "full" | "left" | "right";
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
-    imageCarousel: {
-      insertImageCarousel: (images: CarouselImage[]) => ReturnType;
+    imageCarouselSample: {
+      insertImageCarouselSample: (images: CarouselImage[]) => ReturnType;
     };
   }
 }
-export const ImageCarouselNode = Node.create({
-  name: "imageCarousel",
+export const ImageCarouselNodeSample = Node.create({
+  name: "imageCarouselSample",
   group: "block",
   draggable: true,
 
@@ -61,7 +61,7 @@ export const ImageCarouselNode = Node.create({
 
   addCommands() {
     return {
-      insertImageCarousel:
+      insertImageCarouselSample:
         (images: CarouselImage[]) =>
         ({ commands }) =>
           commands.insertContent([

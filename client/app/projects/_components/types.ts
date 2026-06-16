@@ -36,6 +36,12 @@ export interface Role {
   name: string;
 }
 
+export interface Image {
+  id: number;
+  alt: string | null;
+  url: string;
+}
+
 export interface ContentText {
   id: number;
   content: string;

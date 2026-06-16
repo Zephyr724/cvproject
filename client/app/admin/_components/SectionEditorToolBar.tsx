@@ -149,17 +149,17 @@ const SectionEditorToolBar = ({ editor }: Props) => {
       <button
         className="btn btn-sm btn-ghost"
         title="Insert Image Carousel"
-        onClick={() =>
-          editor
-            .chain()
-            .focus()
-            .insertImageCarousel([
-              { url: "https://picsum.photos/800/450", alt: "Demo image" },
-            ])
-            .run()
-        }
+        onClick={() => editor.chain().focus().insertImageCarousel().run()}
       >
         🖼
+      </button>
+
+      <button
+        className="btn btn-sm btn-ghost"
+        title="Insert Simple Box"
+        onClick={() => editor.chain().focus().insertSimpleBox().run()}
+      >
+        📦
       </button>
     </div>
   );
