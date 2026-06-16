@@ -157,3 +157,27 @@ model ProjectRole {
 
 
 
+
+model Experience {
+  id          Int      @id @default(autoincrement())
+  title       String
+  company     String
+  startDate   DateTime
+  endDate     DateTime?
+  description String
+
+  @@map("experience")
+  @@unique([title, company])
+}
+
+model Education {
+  id          Int      @id @default(autoincrement())
+  degree      String
+  institution String
+  startDate   DateTime
+  endDate     DateTime?
+  description String?
+
+  @@map("education")
+  @@unique([degree, institution])
+}
