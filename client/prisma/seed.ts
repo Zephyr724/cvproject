@@ -754,6 +754,81 @@ async function main() {
         role: "ADMIN",
       },
     });
+
+  const experiences = [
+    {
+      title: "Software Developer Intern",
+      company: "ABC Technology Ltd",
+      startDate: new Date("2025-11-01"),
+      endDate: new Date("2026-02-28"),
+      description:
+        "Developed and maintained web application features using React and Node.js. Collaborated with team members through Git and participated in code reviews.",
+    },
+    {
+      title: "IT Support Assistant",
+      company: "XYZ Solutions",
+      startDate: new Date("2024-06-01"),
+      endDate: new Date("2024-11-30"),
+      description:
+        "Provided technical support to staff, troubleshot hardware and software issues, and assisted with system maintenance.",
+    },
+    {
+      title: "Full Stack Developer",
+      company: "Innovation Studio",
+      startDate: new Date("2026-03-01"),
+      endDate: null,
+      description:
+        "Building full-stack web applications using Next.js, Prisma, and MySQL. Responsible for API development, database design, and deployment.",
+    },
+  ];
+
+  for (const exp of experiences) {
+    await prisma.experience.upsert({
+      where: { title_company: { title: exp.title, company: exp.company } },
+      update: {},
+      create: exp,
+    });
+  }
+
+  const educations = [
+    {
+      degree: "Bachelor of Computer Science",
+      institution: "Tech University",
+      startDate: new Date("2020-02-01"),
+      endDate: new Date("2024-11-30"),
+      description:
+        "Focused on software engineering, algorithms, databases, and web development.",
+    },
+    {
+      degree: "Master of Data Science",
+      institution: "Global Institute of Technology",
+      startDate: new Date("2025-02-01"),
+      endDate: null,
+      description:
+        "Studied machine learning, big data analytics, artificial intelligence, and cloud computing.",
+    },
+    {
+      degree: "Diploma in Information Technology",
+      institution: "City Polytechnic",
+      startDate: new Date("2018-01-15"),
+      endDate: new Date("2019-12-15"),
+      description:
+        "Covered programming fundamentals, networking, database systems, and IT support.",
+    },
+  ];
+
+  for (const edu of educations) {
+    await prisma.education.upsert({
+      where: {
+        degree_institution: {
+          degree: edu.degree,
+          institution: edu.institution,
+        },
+      },
+      update: {},
+      create: edu,
+    });
+  }
     console.log(
       `⚠️  No SEED_OWNER_EMAIL set — using fallback admin: ${adminUser.email}`,
     );
