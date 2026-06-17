@@ -6,7 +6,7 @@ import { ImageCarouselNodeView } from "./ImageCarouselNodeView";
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     imageCarousel: {
-      insertImageCarousel: () => ReturnType;
+      insertImageCarousel: (images: Image[]) => ReturnType;
     };
   }
 }
@@ -52,6 +52,9 @@ export const ImageCarouselNode = Node.create({
           commands.insertContent([
             {
               type: this.name,
+              attrs: {
+                images: [{ url: "https://picsum.photos/800/400", alt: "图1" }],
+              },
             },
 
             { type: "paragraph" },

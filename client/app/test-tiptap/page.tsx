@@ -4,7 +4,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useCallback, useState } from "react";
 import { TextStyleKit } from "@tiptap/extension-text-style/text-style-kit";
-import { ImageCarouselNode } from "@/lib/tiptap/extensions/ImageCarouselNodeSample";
+import { ImageCarouselNodeSample } from "@/lib/tiptap/extensions/ImageCarouselNodeSample";
 
 // Toolbar button definitions
 const TOOLS = [
@@ -39,7 +39,7 @@ export default function TestTiptapPage() {
   const [loadInput, setLoadInput] = useState("");
 
   const editor = useEditor({
-    extensions: [StarterKit, TextStyleKit, ImageCarouselNode],
+    extensions: [StarterKit, TextStyleKit, ImageCarouselNodeSample],
     content: "<p>Hello world! 🌈 Start editing here...</p>",
     onUpdate: ({ editor }) => {
       // Sync JSON in real-time
@@ -159,7 +159,7 @@ export default function TestTiptapPage() {
             editor
               .chain()
               .focus()
-              .insertImageCarousel([
+              .insertImageCarouselSample([
                 { url: "https://picsum.photos/800/450", alt: "Demo image" },
               ])
               .run()
