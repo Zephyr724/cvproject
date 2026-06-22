@@ -53,7 +53,12 @@ export const ImageCarouselNode = Node.create({
             {
               type: this.name,
               attrs: {
-                images: [{ url: "https://picsum.photos/800/600", alt: "图1" }],
+                images: [
+                  {
+                    url: "https://loremflickr.com/800/600?random=1",
+                    alt: "图1",
+                  },
+                ],
               },
             },
 

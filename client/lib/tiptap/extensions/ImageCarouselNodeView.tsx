@@ -1,69 +1,88 @@
 "use client";
-import { NodeViewProps } from "@tiptap/react";
-import { NodeViewWrapper } from "@tiptap/react";
-import { useEffect, useState } from "react";
+import { ImageCarousel } from "@/app/components/ImageCarousel";
+import { Image } from "@/app/projects/_components/types";
+import { NodeViewProps, NodeViewWrapper } from "@tiptap/react";
+import { useState } from "react";
 
 export const ImageCarouselNodeView = ({
   node,
-  updateAttributes,
+  updateAttributes,deleteNode
 }: NodeViewProps) => {
-  const images = node.attrs.images;
+  const images = node.attrs.images as Image[];
   const [isEditing, setIsEditing] = useState(false);
+  
 
-  const updateImages = (url: string) => {
-    const next = images.map((img, i) => (i === 0 ? { ...img, url } : img));
-    updateAttributes({ images: next });
+  const addImage = () => {
+    const newImages = [
+      ...images,
+      {
+        url: `https://loremflickr.com/800/600?random=${Math.ceil(Math.random() * 20)}`,
+        alt: "图2",
+      },
+    ];
+    updateAttributes({ images: newImages });
   };
 
-  const currentUrl = images[0]?.url ?? "";
+  const updateImages = (url: string, index: number) => {
+    const updatedImages = images.map((img, i) =>
+      i === index ? { ...img, url } : img,
+    );
+    updateAttributes({ images: updatedImages });
+  };
 
-  useEffect(() => {
-    console.log(currentUrl);
-  });
+  const deleteImages = (index: number) => {
+    const updatedImages = images.filter((_, i) => i !== index);
+    updateAttributes({ images: updatedImages });
+  };
 
   return (
     <NodeViewWrapper className=" flex flex-col group">
-      {images?.map((image) => (
-        <div className="flex flex-col relative">
-          <img src={image.url} alt={image.alt} />
-          {!isEditing && (
-            <div className="flex gap-x-1 absolute top-2 right-3 opacity-10 group-hover:opacity-100 transition-opacity">
+      <div className="relative w-full min-h-64 rounded">
+        <ImageCarousel
+          images={images}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+          onDelete={deleteNode}
+        />
+        {/* Editing Panel */}
+        {isEditing && (
+          <div className="flex flex-col absolute gap-y-0.5 top-0 p-1 w-full rounded-b bg-gray-200/80 ">
+            <div className="relative">
+              {/* Close Button */}
               <button
-                className="btn btn-xs border-2 btn-ghost bg-base-100/80 hover:border-gray-300"
-                onClick={() => setIsEditing(true)}
+                className="absolute top-0 right-0 btn btn-xs border-2 btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300"
+                onClick={() => setIsEditing(false)}
               >
-                ✏️ Edit
-              </button>
-              <button className="btn btn-xs border-2 btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300">
                 ✕
               </button>
-            </div>
-          )}
 
-          {/* Editing Panel */}
-          {isEditing && (
-            <div className="flex flex-col absolute top-0 p-1 w-full rounded-b bg-gray-200/80 ">
-              <div className="relative">
+              {/* Layout Panel */}
+              <div className="h-10">Layout Selection</div>
+            </div>
+            {images.map((image, index) => (
+              <div key={index} className="flex gap-1">
+                <input
+                  type="text"
+                  key={index}
+                  name="url"
+                  className="input input-xs w-[90%] border border-gray-300"
+                  placeholder="Image URL"
+                  value={image.url}
+                  onChange={(e) => updateImages(e.target.value, index)}
+                />
                 <button
-                  className="absolute top-0 right-0 btn btn-xs border-2 btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300"
-                  onClick={() => setIsEditing(false)}
+                  className="btn btn-xs border btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300"
+                  onClick={(e) => deleteImages(index)}
                 >
-                  ✕
+                  🗑️
                 </button>
               </div>
-              <input
-                type="text"
-                id="url"
-                name="url"
-                className="input input-xs w-[90%] border border-gray-300"
-                placeholder="Image URL"
-                value={currentUrl}
-                onChange={(e) => updateImages(e.target.value)}
-              />
-            </div>
-          )}
-        </div>
-      ))}
+            ))}
+
+            <button onClick={addImage}> + </button>
+          </div>
+        )}
+      </div>
     </NodeViewWrapper>
   );
 };
