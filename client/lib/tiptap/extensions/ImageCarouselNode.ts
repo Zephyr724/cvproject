@@ -1,4 +1,4 @@
-import { Image } from "@/app/projects/_components/types";
+import { Image, Layout } from "@/app/projects/_components/types";
 import { Node } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 import { ImageCarouselNodeView } from "./ImageCarouselNodeView";
@@ -19,12 +19,13 @@ export const ImageCarouselNode = Node.create({
   addAttributes() {
     return {
       images: {
-        // default: {
-        //   id: 111,
-        //   alt: "An image",
-        //   url: "https://picsum.photos/1280/720",
-        // },
         default: [] as { url: string; alt?: string }[],
+      },
+      layout: {
+        default: "full" as Layout,
+      },
+      width: {
+        default: "100%",
       },
     };
   },

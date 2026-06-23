@@ -26,7 +26,6 @@ export interface TechItem {
   id: number;
   name: string;
   order: number;
-
   slug: string;
 }
 
@@ -81,3 +80,5 @@ export type LayoutType =
   | "imgLeftTextRight"
   | "imgRightTextLeft"
   | "textTopImgMiddleTextBottom";
+
+export type Layout = "full" | "left" | "right";

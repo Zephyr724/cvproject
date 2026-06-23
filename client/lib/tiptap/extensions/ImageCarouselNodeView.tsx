@@ -1,16 +1,34 @@
 "use client";
 import { ImageCarousel } from "@/app/components/ImageCarousel";
-import { Image } from "@/app/projects/_components/types";
+import { Image, Layout } from "@/app/projects/_components/types";
 import { NodeViewProps, NodeViewWrapper } from "@tiptap/react";
 import { useState } from "react";
 
 export const ImageCarouselNodeView = ({
   node,
-  updateAttributes,deleteNode
+  updateAttributes,
+  deleteNode,
 }: NodeViewProps) => {
   const images = node.attrs.images as Image[];
+  const layout = node.attrs.layout as Layout;
+  const width = node.attrs.width;
+
+  const widthClassMap: Record<string, string> = {
+    "100%": "w-full",
+    full: "w-full",
+    "75%": "w-3/4",
+    "66%": "w-2/3",
+    "50%": "w-1/2",
+    "33%": "w-1/3",
+  };
+
+  const layoutClassMap: Record<string, string> = {
+    full: "",
+    left: "float-left mr-4",
+    right: "float-right ml-4",
+  };
+
   const [isEditing, setIsEditing] = useState(false);
-  
 
   const addImage = () => {
     const newImages = [
@@ -36,7 +54,9 @@ export const ImageCarouselNodeView = ({
   };
 
   return (
-    <NodeViewWrapper className=" flex flex-col group">
+    <NodeViewWrapper
+      className={`flex flex-col group ${layoutClassMap[layout]} ${widthClassMap[width]}`}
+    >
       <div className="relative w-full min-h-64 rounded">
         <ImageCarousel
           images={images}
@@ -46,7 +66,11 @@ export const ImageCarouselNodeView = ({
         />
         {/* Editing Panel */}
         {isEditing && (
-          <div className="flex flex-col absolute gap-y-0.5 top-0 p-1 w-full rounded-b bg-gray-200/80 ">
+          <div
+            className="flex flex-col absolute gap-y-0.5 top-0 p-1 w-full rounded-b bg-gray-200/80 "
+            contentEditable={false}
+            onMouseDown={(e) => e.stopPropagation()}
+          >
             <div className="relative">
               {/* Close Button */}
               <button
@@ -57,7 +81,32 @@ export const ImageCarouselNodeView = ({
               </button>
 
               {/* Layout Panel */}
-              <div className="h-10">Layout Selection</div>
+              <div className="flex gap-1">
+                {["full", "left", "right"].map((layout) => (
+                  <button
+                    className="btn btn-xs border btn-ghost bg-base-100/90 hover:border-gray-400"
+                    onClick={() => updateAttributes({ layout })}
+                  >
+                    {layout}
+                  </button>
+                ))}
+
+                <select
+                  className="rounded-2xl border bg-base-100/90 hover:border-gray-400 text-center"
+                  name="width"
+                  id="width-select"
+                  onChange={(e) => updateAttributes({ width: e.target.value })}
+                >
+                  <option  value="">
+                    Select width
+                  </option>
+                  {["full", "75%", "66%", "50%", "33%"].map((width) => (
+                    <option  value={width}>
+                      {width}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
             {images.map((image, index) => (
               <div key={index} className="flex gap-1">
