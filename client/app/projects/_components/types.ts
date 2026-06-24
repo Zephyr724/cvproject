@@ -36,7 +36,7 @@ export interface Role {
 }
 
 export interface Image {
-  alt: string | null;
+  alt?: string;
   url: string;
 }
 

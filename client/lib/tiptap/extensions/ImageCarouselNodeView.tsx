@@ -67,11 +67,11 @@ export const ImageCarouselNodeView = ({
         {/* Editing Panel */}
         {isEditing && (
           <div
-            className="flex flex-col absolute gap-y-0.5 top-0 p-1 w-full rounded-b bg-gray-200/80 "
+            className="flex flex-col absolute gap-y-1 top-0  w-full rounded-b bg-gray-300/90 "
             contentEditable={false}
             onMouseDown={(e) => e.stopPropagation()}
           >
-            <div className="relative">
+            <div className="relative ">
               {/* Close Button */}
               <button
                 className="absolute top-0 right-0 btn btn-xs border-2 btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300"
@@ -81,27 +81,32 @@ export const ImageCarouselNodeView = ({
               </button>
 
               {/* Layout Panel */}
-              <div className="flex gap-1">
+              <div className=" bg-blue-200 px-2 py-1 font-bold">Display</div>
+              <div className="flex gap-2 bg-blue-200 px-2 pb-2 mb-2">
+                <label>Layout:</label>
                 {["full", "left", "right"].map((layout) => (
                   <button
-                    className="btn btn-xs border btn-ghost bg-base-100/90 hover:border-gray-400"
+                    key={layout}
+                    className="btn btn-xs border-2 btn-ghost bg-base-100/90 hover:border-gray-400 hover:bg-gray-200"
                     onClick={() => updateAttributes({ layout })}
                   >
-                    {layout}
+                    {layout === "full"
+                      ? "🖼️ Full"
+                      : layout === "left"
+                        ? "⬅️ Left"
+                        : "➡️ Right"}
                   </button>
                 ))}
 
                 <select
-                  className="rounded-2xl border bg-base-100/90 hover:border-gray-400 text-center"
+                  className="rounded border-2 bg-base-100/90 text-center hover:border-gray-400 hover:bg-gray-200 "
                   name="width"
                   id="width-select"
                   onChange={(e) => updateAttributes({ width: e.target.value })}
                 >
-                  <option  value="">
-                    Select width
-                  </option>
+                  <option value="">Select width</option>
                   {["full", "75%", "66%", "50%", "33%"].map((width) => (
-                    <option  value={width}>
+                    <option value={width} key={width}>
                       {width}
                     </option>
                   ))}
@@ -109,7 +114,12 @@ export const ImageCarouselNodeView = ({
               </div>
             </div>
             {images.map((image, index) => (
-              <div key={index} className="flex gap-1">
+              <div key={index} className="flex gap-1 px-1 items-center">
+                <img
+                  src={image.url}
+                  alt={image.alt}
+                  className="w-12 h-full rounded"
+                />
                 <input
                   type="text"
                   key={index}
@@ -120,8 +130,9 @@ export const ImageCarouselNodeView = ({
                   onChange={(e) => updateImages(e.target.value, index)}
                 />
                 <button
+                  key={`imageCarouselImage-${index}`}
                   className="btn btn-xs border btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300"
-                  onClick={(e) => deleteImages(index)}
+                  onClick={() => deleteImages(index)}
                 >
                   🗑️
                 </button>

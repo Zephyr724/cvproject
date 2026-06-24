@@ -41,7 +41,7 @@ const NewProject = ({
   const MAX_INTRO_LEN = 500;
 
   return (
-    <div className="max-w-xl  bg-gray-50">
+    <div className="max-w-4xl  bg-gray-50">
       {error && (
         <Callout.Root color="red">
           <Callout.Text>{error}</Callout.Text>

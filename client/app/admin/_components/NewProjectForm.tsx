@@ -155,13 +155,13 @@ const NewProjectForm = ({ projectId, project: initialProject }: Props) => {
 
   return (
     <div className="flex flex-1">
-      <div className="flex-1 overflow-auto  h-full p-5">
+      <div className="flex-2 overflow-auto  h-full p-2">
         {error && <p className="text-red-500">{error}</p>}
         {isLoading && <Spinner />}
         <ProjectDisplay project={liveProject} showCloseButton={false} />
       </div>
 
-      <div className="flex-1 overflow-auto">
+      <div className="flex-3 overflow-auto">
         <NewProject
           register={register}
           control={control}
