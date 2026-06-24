@@ -151,7 +151,7 @@ export const ImageCarouselNodeView = ({
                   type="text"
                   key={`url-${index}`}
                   name="url"
-                  className="flex-5 input input-xs  border border-gray-300"
+                  className="flex-5 input input-xs h-7 border border-gray-300"
                   placeholder="Image URL"
                   value={image.url}
                   onChange={(e) => updateImages("url", e.target.value, index)}
@@ -160,7 +160,7 @@ export const ImageCarouselNodeView = ({
                   type="text"
                   key={`alt-${index}`}
                   name="alt"
-                  className="flex-2 input input-xs border border-gray-300"
+                  className="flex-2 input input-xs h-7 border border-gray-300"
                   placeholder="Alt text (e.g., 'Homepage screenshot')"
                   value={image.alt}
                   onChange={(e) => updateImages("alt", e.target.value, index)}
