@@ -14,7 +14,6 @@ export const ImageCarouselNodeView = ({
   const width = node.attrs.width;
 
   const widthClassMap: Record<string, string> = {
-    "100%": "w-full",
     full: "w-full",
     "75%": "w-3/4",
     "66%": "w-2/3",
@@ -35,15 +34,15 @@ export const ImageCarouselNodeView = ({
       ...images,
       {
         url: `https://loremflickr.com/800/600?random=${Math.ceil(Math.random() * 20)}`,
-        alt: "图2",
+        alt: "",
       },
     ];
     updateAttributes({ images: newImages });
   };
 
-  const updateImages = (url: string, index: number) => {
+  const updateImages = (field: "url" | "alt", value: string, index: number) => {
     const updatedImages = images.map((img, i) =>
-      i === index ? { ...img, url } : img,
+      i === index ? { ...img, [field]: value } : img,
     );
     updateAttributes({ images: updatedImages });
   };
@@ -83,31 +82,59 @@ export const ImageCarouselNodeView = ({
               {/* Layout Panel */}
               <div className=" bg-blue-200 px-2 py-1 font-bold">Display</div>
               <div className="flex gap-2 bg-blue-200 px-2 pb-2 mb-2">
-                <label>Layout:</label>
-                {["full", "left", "right"].map((layout) => (
+                <span>Layout:</span>
+                {["full", "left", "right"].map((l) => (
                   <button
-                    key={layout}
-                    className="btn btn-xs border-2 btn-ghost bg-base-100/90 hover:border-gray-400 hover:bg-gray-200"
-                    onClick={() => updateAttributes({ layout })}
+                    key={l}
+                    className={`btn btn-xs border-2 btn-ghost bg-base-100/90 hover:border-gray-400 hover:bg-gray-200 ${
+                      layout === l
+                        ? "btn-active bg-blue-300 border-blue-400"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      updateAttributes({
+                        layout: l,
+                        ...(l === "full"
+                          ? { width: "full" }
+                          : width == "full"
+                            ? { width: "75%" }
+                            : {}),
+                      });
+                    }}
                   >
-                    {layout === "full"
+                    {l === "full"
                       ? "🖼️ Full"
-                      : layout === "left"
+                      : l === "left"
                         ? "⬅️ Left"
                         : "➡️ Right"}
                   </button>
                 ))}
-
+                <span>Width:</span>
                 <select
-                  className="rounded border-2 bg-base-100/90 text-center hover:border-gray-400 hover:bg-gray-200 "
+                  className={`rounded border-2 w-40 bg-base-100/90 text-center hover:border-gray-400 hover:bg-gray-200
+                    ${
+                      layout === "full"
+                        ? "opacity-50 pointer-events-none  bg-gray-100 text-gray-400 border-gray-300"
+                        : "bg-base-100/90 hover:border-gray-400 hover:bg-gray-200"
+                    }
+                    
+                    `}
                   name="width"
+                  value={width}
+                  disabled={layout === "full"}
                   id="width-select"
                   onChange={(e) => updateAttributes({ width: e.target.value })}
                 >
-                  <option value="">Select width</option>
-                  {["full", "75%", "66%", "50%", "33%"].map((width) => (
-                    <option value={width} key={width}>
-                      {width}
+                  <option value="" disabled>
+                    Select width
+                  </option>
+                  {["full", "75%", "66%", "50%", "33%"].map((w) => (
+                    <option
+                      value={w}
+                      key={w}
+                      disabled={layout !== "full" && w === "full"}
+                    >
+                      {w === "full" ? "Full" : w}
                     </option>
                   ))}
                 </select>
@@ -118,16 +145,25 @@ export const ImageCarouselNodeView = ({
                 <img
                   src={image.url}
                   alt={image.alt}
-                  className="w-12 h-full rounded"
+                  className="w-12 h-12 rounded object-cover shrink-0 "
                 />
                 <input
                   type="text"
-                  key={index}
+                  key={`url-${index}`}
                   name="url"
-                  className="input input-xs w-[90%] border border-gray-300"
+                  className="flex-5 input input-xs  border border-gray-300"
                   placeholder="Image URL"
                   value={image.url}
-                  onChange={(e) => updateImages(e.target.value, index)}
+                  onChange={(e) => updateImages("url", e.target.value, index)}
+                />
+                <input
+                  type="text"
+                  key={`alt-${index}`}
+                  name="alt"
+                  className="flex-2 input input-xs border border-gray-300"
+                  placeholder="Alt text (e.g., 'Homepage screenshot')"
+                  value={image.alt}
+                  onChange={(e) => updateImages("alt", e.target.value, index)}
                 />
                 <button
                   key={`imageCarouselImage-${index}`}
@@ -138,8 +174,16 @@ export const ImageCarouselNodeView = ({
                 </button>
               </div>
             ))}
-
-            <button onClick={addImage}> + </button>
+            <div className="flex justify-center py-1">
+              {" "}
+              <button
+                className="btn btn-primary btn-xs w-100"
+                onClick={addImage}
+              >
+                {" "}
+                +{" "}
+              </button>
+            </div>
           </div>
         )}
       </div>

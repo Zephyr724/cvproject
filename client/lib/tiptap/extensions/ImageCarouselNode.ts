@@ -37,7 +37,6 @@ export const ImageCarouselNode = Node.create({
         "data-type": "image-carousel", // 标记这个 div 是 simpleBox 节点
         ...HTMLAttributes,
       },
-      0, // 0 = 空元素（有洞 hole），子内容由编辑器管理
     ];
   },
 
@@ -57,7 +56,7 @@ export const ImageCarouselNode = Node.create({
                 images: [
                   {
                     url: "https://loremflickr.com/800/600?random=1",
-                    alt: "图1",
+                    alt: "",
                   },
                 ],
               },
