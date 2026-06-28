@@ -42,7 +42,7 @@ const SectionEditorWYSIWYG = () => {
       <SectionEditorToolBar editor={editor} />
 
       {/* Editor */}
-      <div className="border border-gray-300 rounded bg-base-100 p-1 ">
+      <div className="border border-gray-300 rounded bg-base-100 p-1 overflow-hidden ">
         <EditorContent editor={editor} />
       </div>
 

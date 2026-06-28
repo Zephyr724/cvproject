@@ -3,6 +3,7 @@ import { ImageCarousel } from "@/app/components/ImageCarousel";
 import { Image, Layout } from "@/app/projects/_components/types";
 import { NodeViewProps, NodeViewWrapper } from "@tiptap/react";
 import { useState } from "react";
+import { MdOutlineDragIndicator } from "react-icons/md";
 
 export const ImageCarouselNodeView = ({
   node,
@@ -23,8 +24,8 @@ export const ImageCarouselNodeView = ({
 
   const layoutClassMap: Record<string, string> = {
     full: "",
-    left: "float-left mr-4",
-    right: "float-right ml-4",
+    left: "float-left mr-6",
+    right: "float-right ml-6",
   };
 
   const [isEditing, setIsEditing] = useState(false);
@@ -54,8 +55,16 @@ export const ImageCarouselNodeView = ({
 
   return (
     <NodeViewWrapper
-      className={`flex flex-col group ${layoutClassMap[layout]} ${widthClassMap[width]}`}
+      className={`group relative clear-both ${!isEditing && `${layoutClassMap[layout]} ${widthClassMap[width]}`}`}
     >
+      <div
+        className="absolute top-2 left-2 z-5 opacity-10 group-hover:opacity-100 transition-opacity cursor-grab"
+        contentEditable={false}
+        data-drag-handle
+        draggable={true}
+      >
+        <MdOutlineDragIndicator className="size-5"/>
+      </div>
       <div className="relative w-full min-h-64 rounded">
         <ImageCarousel
           images={images}
@@ -66,14 +75,14 @@ export const ImageCarouselNodeView = ({
         {/* Editing Panel */}
         {isEditing && (
           <div
-            className="flex flex-col absolute gap-y-1 top-0  w-full rounded-b bg-gray-300/90 "
+            className="flex flex-col absolute z-10 gap-y-1 top-0  w-full rounded-b bg-gray-300/90 "
             contentEditable={false}
             onMouseDown={(e) => e.stopPropagation()}
           >
             <div className="relative ">
               {/* Close Button */}
               <button
-                className="absolute top-0 right-0 btn btn-xs border-2 btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300"
+                className="absolute top-0.5 right-0.5 btn btn-sm border-2 btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300"
                 onClick={() => setIsEditing(false)}
               >
                 ✕
@@ -81,12 +90,12 @@ export const ImageCarouselNodeView = ({
 
               {/* Layout Panel */}
               <div className=" bg-blue-200 px-2 py-1 font-bold">Display</div>
-              <div className="flex gap-2 bg-blue-200 px-2 pb-2 mb-2">
+              <div className="flex gap-3 bg-blue-200 px-2 pb-2 mb-2 items-center">
                 <span>Layout:</span>
                 {["full", "left", "right"].map((l) => (
                   <button
                     key={l}
-                    className={`btn btn-xs border-2 btn-ghost bg-base-100/90 hover:border-gray-400 hover:bg-gray-200 ${
+                    className={`btn btn-sm border-2 btn-ghost bg-base-100/90 hover:border-gray-400 hover:bg-gray-200 ${
                       layout === l
                         ? "btn-active bg-blue-300 border-blue-400"
                         : ""
@@ -109,7 +118,7 @@ export const ImageCarouselNodeView = ({
                         : "➡️ Right"}
                   </button>
                 ))}
-                <span>Width:</span>
+                <span className="ml-10">Width:</span>
                 <select
                   className={`rounded border-2 w-40 bg-base-100/90 text-center hover:border-gray-400 hover:bg-gray-200
                     ${
@@ -175,13 +184,11 @@ export const ImageCarouselNodeView = ({
               </div>
             ))}
             <div className="flex justify-center py-1">
-              {" "}
               <button
-                className="btn btn-primary btn-xs w-100"
+                className="btn btn-primary btn-xs w-[60%]"
                 onClick={addImage}
               >
-                {" "}
-                +{" "}
+                +
               </button>
             </div>
           </div>
