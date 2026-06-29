@@ -20,6 +20,7 @@ import type {
 import { Spinner } from "@radix-ui/themes";
 import useFetchProjectById from "@/hooks/useFetchProjectById";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 interface Props {
   projectId?: number;
@@ -137,6 +138,9 @@ const NewProjectForm = ({ projectId, project: initialProject }: Props) => {
 
   const formValues = watch();
   const liveProject = formDataToProject(formValues);
+  useEffect(() => {
+    console.log("liveProject", liveProject);
+  });
 
   const handleFormSubmit = handleSubmit(async (data) => {
     if (isEdit) {

@@ -44,7 +44,9 @@ const SectionEditorToolBar = ({ editor }: Props) => {
             editor.isActive(
               tool.action === "toggleHeading"
                 ? "heading"
-                : tool.action.replace("toggle", "").toLowerCase(),
+                : tool.action
+                    .replace("toggle", "")
+                    .replace(/^./, (s) => s.toLowerCase()),
               tool.attributes,
             )
               ? "btn-active"

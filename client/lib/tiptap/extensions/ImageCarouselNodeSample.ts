@@ -42,7 +42,7 @@ export const ImageCarouselNodeSample = Node.create({
         }),
       },
       width: {
-        default: "100%",
+        default: "full",
         parseHTML: (el) => el.getAttribute("data-width") ?? "100%",
         renderHTML: ({ width }: { width: string }) => ({
           "data-width": width,

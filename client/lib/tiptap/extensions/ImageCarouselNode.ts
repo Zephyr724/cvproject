@@ -34,7 +34,7 @@ export const ImageCarouselNode = Node.create({
     return [
       "div",
       {
-        "data-type": "image-carousel", // 标记这个 div 是 simpleBox 节点
+        "data-type": "image-carousel", 
         ...HTMLAttributes,
       },
     ];

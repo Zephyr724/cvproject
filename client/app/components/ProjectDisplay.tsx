@@ -28,7 +28,6 @@ export const ProjectDisplay = ({
     githubUrl,
     techStack,
     responsibilities,
-    sections,
     content,
   } = project;
 
@@ -69,7 +68,7 @@ export const ProjectDisplay = ({
           <Responsibilities responsibilities={responsibilities} />
         )}
 
-        {content && <TiptapRenderer content={content} />}
+        {content && <TiptapRenderer key={JSON.stringify(content)} content={content} />}
       </main>
     </div>
   );

@@ -98,7 +98,14 @@ export function ImageCarousel({
         plugins={[plugin.current]}
         className="w-full h-full rounded *:data-[slot=carousel-content]:h-full"
         onMouseEnter={() => plugin.current.stop()}
-        onMouseLeave={() => plugin.current.play()}
+        onMouseLeave={() => {
+          // play() can be wrong when uninstalling the component
+          try {
+            plugin.current?.play?.();
+          } catch {
+            // ignore
+          }
+        }}
         opts={{ align: "start", loop: true }}
       >
         <CarouselContent className="h-full">
