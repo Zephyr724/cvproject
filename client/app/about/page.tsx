@@ -11,9 +11,6 @@ const AboutPage = async () => {
 
   return (
     <div>
-      <h1>About me ~~</h1>
-      <br />
-
       <SectionTitle
         title="Experience"
         description="Here are some of my work experiences."
