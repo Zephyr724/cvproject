@@ -25,7 +25,7 @@ export const ImageCarouselNode = Node.create({
         default: "full" as Layout,
       },
       width: {
-        default: "100%",
+        default: "full",
       },
     };
   },
