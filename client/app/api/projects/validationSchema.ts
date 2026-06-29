@@ -79,6 +79,7 @@ export const validateCreateProjectSchema = z.object({
   techItems: z.array(techItemSchema).optional(),
   roles: z.array(roleSchema).optional(),
   sections: z.array(sectionSchema).optional(),
+  content: z.any().optional(),
 });
 
 export type ValidateCreateProjectType = z.infer<

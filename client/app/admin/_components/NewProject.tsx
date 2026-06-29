@@ -50,12 +50,10 @@ const NewProject = ({
       <form
         id="new-project-form"
         className="space-y-3 p-1 "
-        onSubmit={
-          (e) => {
-            e.preventDefault();
-            onSubmit;
-          } 
-        }
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit(e);
+        }}
       >
         <div>
           <label>Project Title</label>
@@ -216,7 +214,23 @@ const NewProject = ({
                     sections={field.value ?? []}
                     onChange={field.onChange}
                   />
-                  <SectionEditorWYSIWYG />
+                </>
+              );
+            }}
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <Controller
+            name="content"
+            control={control}
+            render={({ field }) => {
+              return (
+                <>
+                  <SectionEditorWYSIWYG
+                    onChange={field.onChange}
+                    initialContent={field.value}
+                  />
                 </>
               );
             }}

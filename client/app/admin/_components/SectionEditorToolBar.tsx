@@ -37,6 +37,7 @@ const SectionEditorToolBar = ({ editor }: Props) => {
     <div className="border border-gray-300 rounded bg-base-100 p-1 ">
       {ToolsConfig.map((tool) => (
         <button
+          type="button"
           key={tool.label}
           title={tool.title}
           className={`min-w-9 btn btn-sm btn-ghost border hover:border-black-200 hover:bg-black-100 ${tool.className ?? ""} ${
@@ -87,6 +88,7 @@ const SectionEditorToolBar = ({ editor }: Props) => {
 
       {/* Clear color */}
       <button
+        type="button"
         className="btn btn-sm btn-ghost"
         onClick={() => editor.chain().focus().unsetColor().run()}
         title="Clear Color"
@@ -147,6 +149,7 @@ const SectionEditorToolBar = ({ editor }: Props) => {
       </select>
 
       <button
+        type="button"
         className="btn btn-sm btn-ghost"
         title="Insert Image Carousel"
         onClick={() => editor.chain().focus().insertImageCarousel().run()}
@@ -155,6 +158,7 @@ const SectionEditorToolBar = ({ editor }: Props) => {
       </button>
 
       <button
+        type="button"
         className="btn btn-sm btn-ghost"
         title="Insert Simple Box"
         onClick={() => editor.chain().focus().insertSimpleBox().run()}

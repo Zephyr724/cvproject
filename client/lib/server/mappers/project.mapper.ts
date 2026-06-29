@@ -67,6 +67,7 @@ export function toPrismaCreateInput(
           },
         })) ?? [],
     },
+    content: projectData.content ?? null,
   };
 }
 
@@ -127,6 +128,7 @@ export function toApiResponse(project: ProjectWithIncludes) {
       })),
       contentVideos: s.contentVideos.map((cv) => ({ id: cv.id, url: cv.url })),
     })),
+    content: project.content,
   };
 }
 
@@ -209,6 +211,8 @@ export function toPrismaUpdateInput(
       })),
     };
   }
+
+  if (projectData.content !== undefined) data.content = projectData.content;
 
   return data;
 }

@@ -14,6 +14,7 @@ export interface Project {
   sections: Section[];
   createdAt: string;
   updatedAt: string;
+  content?: any;
 }
 
 export interface Tag {

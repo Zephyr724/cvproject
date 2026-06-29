@@ -68,6 +68,7 @@ function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
       id: s.order,
       ...s,
     })) as Section[],
+    content: data.content ?? null,
   };
 }
 
@@ -103,6 +104,7 @@ function projectToFormData(project: Project): ValidateCreateProjectType {
       })),
       layoutType: s.layoutType as LayoutType,
     })),
+    content: project.content,
   };
 }
 

@@ -8,7 +8,12 @@ import { ImageCarouselNodeSample } from "@/lib/tiptap/extensions/ImageCarouselNo
 import { SimpleBoxNode } from "@/lib/tiptap/extensions/SimpleBoxNode";
 import { ImageCarouselNode } from "@/lib/tiptap/extensions/ImageCarouselNode";
 
-const SectionEditorWYSIWYG = () => {
+interface Props {
+  onChange: (json: object) => void;
+  initialContent?: object;
+}
+
+const SectionEditorWYSIWYG = ({ onChange, initialContent }: Props) => {
   const [jsonOutput, setJsonOutput] = useState("");
   const editor = useEditor({
     extensions: [
@@ -19,9 +24,11 @@ const SectionEditorWYSIWYG = () => {
       SimpleBoxNode,
     ],
     content:
+      initialContent ??
       "<p> 🌈 Start editing here, you can edit with the text, carousel images and videos.</p>",
     onUpdate: ({ editor }) => {
       setJsonOutput(JSON.stringify(editor.getJSON(), null, 2));
+      onChange(editor.getJSON());
     },
 
     editorProps: {
