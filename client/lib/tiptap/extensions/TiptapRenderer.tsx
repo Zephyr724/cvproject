@@ -16,7 +16,13 @@ const TiptapRenderer = ({ content }: Props) => {
 
   if (!editor) return null;
 
-  return <EditorContent editor={editor} />;
+  return (
+    <div className="bg-gray-600 rounded text-white p-3">
+      <div className="bg-gray-400  p-4">
+        <EditorContent editor={editor} />
+      </div>
+    </div>
+  );
 };
 
 export default TiptapRenderer;

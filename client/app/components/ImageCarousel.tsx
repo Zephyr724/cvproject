@@ -16,6 +16,7 @@ import { Image } from "../projects/_components/types";
 interface Props {
   images: Image[];
   isEditing?: boolean;
+  isEditable: boolean;
   setIsEditing?: Dispatch<SetStateAction<boolean>>;
   onDelete?: () => void;
 }
@@ -62,6 +63,7 @@ const Dots = () => {
 export function ImageCarousel({
   images,
   isEditing,
+  isEditable,
   setIsEditing,
   onDelete,
 }: Props) {
@@ -75,7 +77,7 @@ export function ImageCarousel({
 
   return (
     <div className="relative w-full h-full  rounded">
-      {!isEditing && (
+      {!isEditing && isEditable && (
         <div className="flex gap-x-1  absolute top-2 right-3 z-10 opacity-10 group-hover:opacity-100 transition-opacity">
           <button
             className="btn btn-sm border-2 btn-ghost bg-base-100/80 hover:border-gray-300"

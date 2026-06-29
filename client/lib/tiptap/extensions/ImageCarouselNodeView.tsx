@@ -9,10 +9,12 @@ export const ImageCarouselNodeView = ({
   node,
   updateAttributes,
   deleteNode,
+  editor,
 }: NodeViewProps) => {
   const images = node.attrs.images as Image[];
   const layout = node.attrs.layout as Layout;
   const width = node.attrs.width;
+  const isEditable = editor.isEditable;
 
   const widthClassMap: Record<string, string> = {
     full: "w-full",
@@ -57,23 +59,26 @@ export const ImageCarouselNodeView = ({
     <NodeViewWrapper
       className={`group relative clear-both ${!isEditing && `${layoutClassMap[layout]} ${widthClassMap[width]}`}`}
     >
-      <div
-        className="absolute top-2 left-2 z-5 opacity-10 group-hover:opacity-100 transition-opacity cursor-grab"
-        contentEditable={false}
-        data-drag-handle
-        draggable={true}
-      >
-        <MdOutlineDragIndicator className="size-5"/>
-      </div>
+      {isEditable && (
+        <div
+          className="absolute top-2 left-2 z-5 opacity-10 group-hover:opacity-100 transition-opacity cursor-grab"
+          contentEditable={false}
+          data-drag-handle
+          draggable={true}
+        >
+          <MdOutlineDragIndicator className="size-5" />
+        </div>
+      )}
       <div className="relative w-full min-h-64 rounded">
         <ImageCarousel
           images={images}
           isEditing={isEditing}
+          isEditable={isEditable}
           setIsEditing={setIsEditing}
           onDelete={deleteNode}
         />
         {/* Editing Panel */}
-        {isEditing && (
+        {isEditing && isEditable && (
           <div
             className="flex flex-col absolute z-10 gap-y-1 top-0  w-full rounded-b bg-gray-300/90 "
             contentEditable={false}
@@ -82,6 +87,7 @@ export const ImageCarouselNodeView = ({
             <div className="relative ">
               {/* Close Button */}
               <button
+                type="button"
                 className="absolute top-0.5 right-0.5 btn btn-sm border-2 btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300"
                 onClick={() => setIsEditing(false)}
               >
@@ -94,6 +100,7 @@ export const ImageCarouselNodeView = ({
                 <span>Layout:</span>
                 {["full", "left", "right"].map((l) => (
                   <button
+                    type="button"
                     key={l}
                     className={`btn btn-sm border-2 btn-ghost bg-base-100/90 hover:border-gray-400 hover:bg-gray-200 ${
                       layout === l
@@ -175,6 +182,7 @@ export const ImageCarouselNodeView = ({
                   onChange={(e) => updateImages("alt", e.target.value, index)}
                 />
                 <button
+                  type="button"
                   key={`imageCarouselImage-${index}`}
                   className="btn btn-xs border btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300"
                   onClick={() => deleteImages(index)}
@@ -185,6 +193,7 @@ export const ImageCarouselNodeView = ({
             ))}
             <div className="flex justify-center py-1">
               <button
+                type="button"
                 className="btn btn-primary btn-xs w-[60%]"
                 onClick={addImage}
               >

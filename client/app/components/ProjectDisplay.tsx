@@ -6,6 +6,9 @@ import Responsibilities from "../projects/Responsibilities";
 import Sections from "../projects/_components/Sections";
 import { Project } from "../projects/_components/types";
 import ProjectLink from "./ProjectLink";
+import SectionEditorWYSIWYG from "../admin/_components/SectionEditorWYSIWYG";
+import { TiptapContent } from "@tiptap/react";
+import TiptapRenderer from "@/lib/tiptap/extensions/TiptapRenderer";
 
 interface ProjectDisplayProps {
   project: Project;
@@ -26,6 +29,7 @@ export const ProjectDisplay = ({
     techStack,
     responsibilities,
     sections,
+    content,
   } = project;
 
   return (
@@ -65,7 +69,7 @@ export const ProjectDisplay = ({
           <Responsibilities responsibilities={responsibilities} />
         )}
 
-        {sections && sections.length > 0 && <Sections sections={sections} />}
+        {content && <TiptapRenderer content={content} />}
       </main>
     </div>
   );

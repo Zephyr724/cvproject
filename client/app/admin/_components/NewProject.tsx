@@ -205,23 +205,6 @@ const NewProject = ({
 
         <div className="flex flex-col gap-1">
           <Controller
-            name="sections"
-            control={control}
-            render={({ field }) => {
-              return (
-                <>
-                  <SectionEditor
-                    sections={field.value ?? []}
-                    onChange={field.onChange}
-                  />
-                </>
-              );
-            }}
-          />
-        </div>
-
-        <div className="flex flex-col gap-1">
-          <Controller
             name="content"
             control={control}
             render={({ field }) => {
