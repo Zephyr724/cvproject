@@ -1,5 +1,13 @@
 import YearBadge from "@/app/about/_components/YearBadge";
 
+type TechItem = {
+  id: number;
+  name: string;
+  slug: string;
+  isFrontend: boolean;
+  isBackend: boolean;
+};
+
 interface ExperienceCardProps {
   experience: {
     id: number;
@@ -8,6 +16,7 @@ interface ExperienceCardProps {
     startDate: string | null;
     endDate?: string | null;
     description: string;
+    techItems: TechItem[];
   };
 }
 
@@ -37,6 +46,20 @@ function ExperienceCard({ experience }: ExperienceCardProps) {
               </li>
             ))}
           </ul>
+          {experience.techItems.length > 0 && (
+            <div>
+              <div className="flex flex-wrap gap-2">
+                {experience.techItems.map((techItem) => (
+                  <span
+                    key={techItem.id}
+                    className="bg-neutral text-neutral-content rounded-xl px-4 py-1 text-sm "
+                  >
+                    {techItem.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -115,6 +115,7 @@ model TechItem {
   isFrontend Boolean           @default(false)
   isBackend  Boolean           @default(false)
   projects   ProjectTechItem[]
+  experiences ExperienceTechItem[]
 
   @@map("tech_item")
 }
@@ -165,9 +166,21 @@ model Experience {
   startDate   DateTime
   endDate     DateTime?
   description String
-
+  techItems   ExperienceTechItem[]
+  
   @@map("experience")
   @@unique([title, company])
+}
+
+model ExperienceTechItem {
+  experienceId Int
+  techItemId   Int
+
+  experience Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  techItem   TechItem   @relation(fields: [techItemId], references: [id], onDelete: Cascade)
+
+  @@id([experienceId, techItemId])
+  @@map("experience_tech_item")
 }
 
 model Education {

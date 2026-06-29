@@ -762,7 +762,8 @@ async function main() {
       startDate: new Date("2025-11-01"),
       endDate: new Date("2026-02-28"),
       description:
-        "Developed and maintained web application features using React and Node.js. Collaborated with team members through Git and participated in code reviews.",
+        "- Developed and maintained web application features using React and Node.js.\n- Collaborated with team members through Git and participated in code reviews.",
+      techItems: ["react", "nodejs"],
     },
     {
       title: "IT Support Assistant",
@@ -770,7 +771,8 @@ async function main() {
       startDate: new Date("2024-06-01"),
       endDate: new Date("2024-11-30"),
       description:
-        "Provided technical support to staff, troubleshot hardware and software issues, and assisted with system maintenance.",
+        "- Provided technical support to staff.\n- Troubleshot hardware and software issues.\n- Assisted with system maintenance.",
+      techItems: [],
     },
     {
       title: "Full Stack Developer",
@@ -778,15 +780,43 @@ async function main() {
       startDate: new Date("2026-03-01"),
       endDate: null,
       description:
-        "Building full-stack web applications using Next.js, Prisma, and MySQL. Responsible for API development, database design, and deployment.",
+        "- Building full-stack web applications using Next.js, Prisma, and MySQL.\n- Responsible for API development, database design, and deployment.",
+      techItems: ["react", "nodejs", "prisma"],
     },
   ];
 
   for (const exp of experiences) {
+    const { techItems, ...experienceData } = exp;
     await prisma.experience.upsert({
       where: { title_company: { title: exp.title, company: exp.company } },
-      update: {},
-      create: exp,
+      update: {
+        ...experienceData,
+
+        techItems: {
+          deleteMany: {},
+          create: techItems.map((slug) => ({
+            techItem: {
+              connect: {
+                slug: slug,
+              },
+            },
+          })),
+        },
+      },
+
+      create: {
+        ...experienceData,
+
+        techItems: {
+          create: techItems.map((slug) => ({
+            techItem: {
+              connect: {
+                slug: slug,
+              },
+            },
+          })),
+        },
+      },
     });
   }
 
