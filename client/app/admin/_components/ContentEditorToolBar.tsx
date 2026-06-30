@@ -1,6 +1,7 @@
 import { Editor } from "@tiptap/react";
-import { RiMovieAiLine } from "react-icons/ri";
+import { RiMovieAiLine, RiCodeBlock } from "react-icons/ri";
 import { TbPhotoPlus } from "react-icons/tb";
+import { FaListOl, FaListUl } from "react-icons/fa";
 
 interface Props {
   editor: Editor;
@@ -27,21 +28,34 @@ const ContentEditorToolBar = ({ editor }: Props) => {
       attributes: { level: 2 },
       title: "Heading 2",
     },
-    { label: "•", action: "toggleBulletList", title: "Bullet List" },
-    { label: "1.", action: "toggleOrderedList", title: "Ordered List" },
+    {
+      label: <FaListUl size={24} />,
+      action: "toggleBulletList",
+      title: "Bullet List",
+    },
+    {
+      label: <FaListOl size={24} />,
+      action: "toggleOrderedList",
+      title: "Ordered List",
+      className: "text-gray-700",
+    },
     { label: "—", action: "setHorizontalRule", title: "Horizontal Rule" },
     { label: "❝", action: "toggleBlockquote", title: "Blockquote" },
-    { label: "<>", action: "toggleCodeBlock", title: "Code Block" },
+    {
+      label: <RiCodeBlock size={24} />,
+      action: "toggleCodeBlock",
+      title: "Code Block",
+    },
   ];
 
   return (
-    <div className="flex gap-1 border border-gray-300 rounded bg-base-100 p-1 flex-wrap items-center">
-      {ToolsConfig.map((tool) => (
+    <div className="flex gap-1.5 border border-gray-300 rounded bg-base-100 p-1 flex-wrap items-center">
+      {ToolsConfig.map((tool, index) => (
         <button
           type="button"
-          key={tool.label}
+          key={tool.action + index}
           title={tool.title}
-          className={`w-9 h-9 btn btn-ghost text-lg border rounded-lg hover:border-black-200 hover:bg-black-100 ${tool.className ?? ""} ${
+          className={`w-9 h-9 btn btn-ghost text-lg border rounded hover:border-black-200 hover:bg-black-100 ${tool.className ?? ""} ${
             editor.isActive(
               tool.action === "toggleHeading"
                 ? "heading"
@@ -63,14 +77,14 @@ const ContentEditorToolBar = ({ editor }: Props) => {
             }
           }}
         >
-          {tool.label}
+          <span>{tool.label}</span>
         </button>
       ))}
 
       {/* Text color */}
       <label
         title="Text Color"
-        className="w-9 h-9 btn btn-ghost text-lg cursor-pointer relative"
+        className="w-9 h-9 btn btn-ghost text-lg rounded border cursor-pointer relative"
       >
         <span
           style={{
@@ -92,7 +106,7 @@ const ContentEditorToolBar = ({ editor }: Props) => {
       {/* Clear color */}
       <button
         type="button"
-        className="w-9 h-9 btn btn-ghost text-lg"
+        className="w-9 h-9 btn btn-ghost text-lg rounded border"
         onClick={() => editor.chain().focus().unsetColor().run()}
         title="Clear Color"
       >
@@ -101,7 +115,7 @@ const ContentEditorToolBar = ({ editor }: Props) => {
 
       {/* Font size */}
       <select
-        className="select select-sm select-bordered w-20 h-8 btn btn-ghost text-base border"
+        className="select select-sm select-bordered w-20 h-8 btn btn-ghost text-base border rounded mr-1"
         value={editor.getAttributes("textStyle").fontSize || ""}
         onChange={(e) => {
           const value = e.target.value;
@@ -124,7 +138,7 @@ const ContentEditorToolBar = ({ editor }: Props) => {
 
       {/* Line Height */}
       <select
-        className="select select-sm select-bordered w-20 h-8 btn btn-ghost text-base border"
+        className="select select-sm select-bordered w-20 h-8 btn btn-ghost text-base rounded border mr-2"
         onChange={(e) => {
           editor.view.dom.style.setProperty("--line-height", e.target.value);
         }}
@@ -153,20 +167,24 @@ const ContentEditorToolBar = ({ editor }: Props) => {
 
       <button
         type="button"
-        className="btn btn-sm btn-ghost"
+        className="w-9 h-9 btn btn-ghost rounded border"
         title="Insert Image Carousel"
         onClick={() => editor.chain().focus().insertImageCarousel().run()}
       >
-        <TbPhotoPlus size={24} />
+        <span>
+          <TbPhotoPlus size={24} />
+        </span>
       </button>
 
       <button
         type="button"
-        className="btn btn-sm btn-ghost"
+        className="w-9 h-9 btn btn-ghost rounded border"
         title="Insert a video"
         onClick={() => editor.chain().focus().insertVideo().run()}
       >
-        <RiMovieAiLine size={24} />
+        <span>
+          <RiMovieAiLine size={24} />
+        </span>
       </button>
     </div>
   );
