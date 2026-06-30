@@ -35,13 +35,13 @@ const ContentEditorToolBar = ({ editor }: Props) => {
   ];
 
   return (
-    <div className="border border-gray-300 rounded bg-base-100 p-1 ">
+    <div className="flex gap-1 border border-gray-300 rounded bg-base-100 p-1 flex-wrap items-center">
       {ToolsConfig.map((tool) => (
         <button
           type="button"
           key={tool.label}
           title={tool.title}
-          className={`min-w-9 btn btn-sm btn-ghost border hover:border-black-200 hover:bg-black-100 ${tool.className ?? ""} ${
+          className={`w-9 h-9 btn btn-ghost text-lg border rounded-lg hover:border-black-200 hover:bg-black-100 ${tool.className ?? ""} ${
             editor.isActive(
               tool.action === "toggleHeading"
                 ? "heading"
@@ -70,7 +70,7 @@ const ContentEditorToolBar = ({ editor }: Props) => {
       {/* Text color */}
       <label
         title="Text Color"
-        className="btn btn-sm btn-ghost cursor-pointer relative"
+        className="w-9 h-9 btn btn-ghost text-lg cursor-pointer relative"
       >
         <span
           style={{
@@ -92,7 +92,7 @@ const ContentEditorToolBar = ({ editor }: Props) => {
       {/* Clear color */}
       <button
         type="button"
-        className="btn btn-sm btn-ghost"
+        className="w-9 h-9 btn btn-ghost text-lg"
         onClick={() => editor.chain().focus().unsetColor().run()}
         title="Clear Color"
       >
@@ -101,7 +101,7 @@ const ContentEditorToolBar = ({ editor }: Props) => {
 
       {/* Font size */}
       <select
-        className="select select-sm select-bordered w-20 border"
+        className="select select-sm select-bordered w-20 h-8 btn btn-ghost text-base border"
         value={editor.getAttributes("textStyle").fontSize || ""}
         onChange={(e) => {
           const value = e.target.value;
@@ -124,7 +124,7 @@ const ContentEditorToolBar = ({ editor }: Props) => {
 
       {/* Line Height */}
       <select
-        className="select select-sm select-bordered w-20 border"
+        className="select select-sm select-bordered w-20 h-8 btn btn-ghost text-base border"
         onChange={(e) => {
           editor.view.dom.style.setProperty("--line-height", e.target.value);
         }}
@@ -157,7 +157,7 @@ const ContentEditorToolBar = ({ editor }: Props) => {
         title="Insert Image Carousel"
         onClick={() => editor.chain().focus().insertImageCarousel().run()}
       >
-        <TbPhotoPlus size={20} />
+        <TbPhotoPlus size={24} />
       </button>
 
       <button
@@ -166,7 +166,7 @@ const ContentEditorToolBar = ({ editor }: Props) => {
         title="Insert a video"
         onClick={() => editor.chain().focus().insertVideo().run()}
       >
-        <RiMovieAiLine size={20} />
+        <RiMovieAiLine size={24} />
       </button>
     </div>
   );
