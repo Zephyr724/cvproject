@@ -6,7 +6,7 @@ import VideoNodeView from "./VideoNodeView";
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     Video: {
-      insertVideo: (video: Video) => ReturnType;
+      insertVideo: () => ReturnType;
     };
   }
 }

@@ -1,4 +1,4 @@
-import { Image, Layout } from "@/app/projects/_components/types";
+import { Layout } from "@/app/projects/_components/types";
 import { Node } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 import { ImageCarouselNodeView } from "./ImageCarouselNodeView";
@@ -6,7 +6,7 @@ import { ImageCarouselNodeView } from "./ImageCarouselNodeView";
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     imageCarousel: {
-      insertImageCarousel: (images: Image[]) => ReturnType;
+      insertImageCarousel: () => ReturnType;
     };
   }
 }
