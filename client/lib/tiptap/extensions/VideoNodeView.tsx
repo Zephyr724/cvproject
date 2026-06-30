@@ -13,6 +13,10 @@ const VideoNodeView = ({
   const [isEditing, setIsEditing] = useState(false);
   const isEditable = editor.isEditable;
 
+  const updateVideo = () => {};
+
+  const deleteVideo = () => {};
+
   return (
     <NodeViewWrapper>
       <div className="relative aspect-video w-full group">
@@ -72,13 +76,13 @@ const VideoNodeView = ({
                   className="flex-5 input input-xs h-7 border border-gray-300"
                   placeholder="Image URL"
                   value={video.src}
-                  // onChange={(e) => updateImages("url", e.target.value, index)}
+                  // onChange={(e) => updateVideo("url", e.target.value, index)}
                 />
 
                 <button
                   type="button"
                   className="btn btn-xs border btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300"
-                  // onClick={() => deleteImages(index)}
+                  // onClick={() => deleteVideo(index)}
                 >
                   🗑️
                 </button>
