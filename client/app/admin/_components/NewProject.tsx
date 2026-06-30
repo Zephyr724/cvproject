@@ -15,7 +15,7 @@ import RoleInput from "./RoleInput";
 import TechItemInput from "./TechItemInput";
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import dynamic from "next/dynamic";
-import SectionEditorWYSIWYG from "./SectionEditorWYSIWYG";
+import ContentEditorWYSIWYG from "./ContentEditorWYSIWYG";
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
 });
@@ -208,7 +208,7 @@ const NewProject = ({
             render={({ field }) => {
               return (
                 <>
-                  <SectionEditorWYSIWYG
+                  <ContentEditorWYSIWYG
                     onChange={field.onChange}
                     initialContent={field.value}
                   />

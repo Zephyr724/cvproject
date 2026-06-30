@@ -14,7 +14,7 @@ const VideoNodeView = ({
   const isEditable = editor.isEditable;
 
   return (
-    <NodeViewWrapper>
+    <NodeViewWrapper className="clear-both">
       <div className="relative aspect-video w-full group">
         {!isEditing && isEditable && (
           <div className="flex gap-x-1  absolute top-2 right-3 z-20 opacity-10 group-hover:opacity-100 transition-opacity">
