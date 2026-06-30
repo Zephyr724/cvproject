@@ -321,15 +321,15 @@ const tiptapContent = {
       attrs: {
         images: [
           {
-            url: "https://loremflickr.com/800/600/dashboard?random=1",
+           url: "https://picsum.photos/seed/carousel-dashboard/800/600",
             alt: "Admin dashboard overview",
           },
           {
-            url: "https://loremflickr.com/800/600/code?random=2",
+            url: "https://picsum.photos/seed/carousel-code/800/600",
             alt: "Code editor interface",
           },
           {
-            url: "https://loremflickr.com/800/600/computer?random=3",
+            url: "https://picsum.photos/seed/carousel-settings/800/600",
             alt: "Project settings page",
           },
         ],
@@ -344,6 +344,143 @@ const tiptapContent = {
         {
           type: "text",
           text: "The admin panel supports real-time content preview with live JSON output for debugging.",
+        },
+      ],
+    },
+    // ImageCarousel — left layout with text wrapping
+    {
+      type: "imageCarousel",
+      attrs: {
+        images: [
+          {
+            url: "https://picsum.photos/seed/carousel-left/600/400",
+            alt: "Mobile responsive view",
+          },
+          {
+            url: "https://picsum.photos/seed/carousel-left2/600/400",
+            alt: "Tablet layout",
+          },
+        ],
+        layout: "left",
+        width: "50%",
+      },
+    },
+    // Wrapping paragraph — text flows around the left-floating carousel
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          text: "The admin interface is fully responsive. It adapts seamlessly across desktop, tablet, and mobile viewports. The sidebar collapses into a hamburger menu on smaller screens, and the content editor toolbar stacks vertically to preserve touch targets. All DaisyUI components respect the active theme, providing a consistent look and feel whether the user prefers light, dark, or one of the playful variants like cupcake or cyberpunk.",
+        },
+      ],
+    },
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          text: "Performance is a first-class concern. Images are lazy-loaded via the carousel component, and the rich-text editor only hydrates client-side when the admin page is mounted. Code-splitting by route ensures that the public-facing project pages never ship the Tiptap editor bundle.",
+        },
+      ],
+    },
+    // ImageCarousel — right layout with text wrapping
+    {
+      type: "imageCarousel",
+      attrs: {
+        images: [
+          {
+            url: "https://picsum.photos/seed/carousel-right/500/400",
+            alt: "Dark mode theme preview",
+          },
+        ],
+        layout: "right",
+        width: "33%",
+      },
+    },
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          text: "Theme support is powered by DaisyUI's built-in theming system, which uses CSS custom properties under the hood. The project ships with four pre-configured themes: light (default), dark, cupcake, and cyberpunk. Users can switch themes at runtime via the theme controller in the navbar, and the selection persists in localStorage so returning visitors keep their preference.",
+        },
+      ],
+    },
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          text: "All rich-text content — including these image carousels with custom layouts — is stored as portable Tiptap JSON in the database. This means the content is renderer-agnostic: it can be displayed on the public project page with a lightweight read-only renderer, exported to other formats, or even migrated to a different editor in the future without data loss.",
+        },
+      ],
+    },
+    // ImageCarousel — left layout + ordered list combo
+    {
+      type: "imageCarousel",
+      attrs: {
+        images: [
+          {
+            url: "https://picsum.photos/seed/carousel-left3/600/400",
+            alt: "Database schema diagram",
+          },
+        ],
+        layout: "left",
+        width: "66%",
+      },
+    },
+    // Ordered list wrapping around the left-floating carousel
+    {
+      type: "orderedList",
+      content: [
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                { type: "text", marks: [{ type: "bold" }], text: "Planning & Design" },
+                { type: "text", text: " — Wireframed the admin UI and defined the Tiptap extension API." },
+              ],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                { type: "text", marks: [{ type: "bold" }], text: "Core Implementation" },
+                { type: "text", text: " — Prisma schema, CRUD API with Zod, custom NodeViews for media blocks." },
+              ],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                { type: "text", marks: [{ type: "bold" }], text: "Editor Toolbar" },
+                { type: "text", text: " — DaisyUI toolbar with headings, lists, code blocks, and media insertion." },
+              ],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                { type: "text", marks: [{ type: "bold" }], text: "Public Renderer" },
+                { type: "text", text: " — Read-only TiptapRenderer mapping node types to React components." },
+              ],
+            },
+          ],
         },
       ],
     },
