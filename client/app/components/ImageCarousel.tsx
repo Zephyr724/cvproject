@@ -80,12 +80,14 @@ export function ImageCarousel({
       {!isEditing && isEditable && (
         <div className="flex gap-x-1  absolute top-2 right-3 z-10 opacity-10 group-hover:opacity-100 transition-opacity">
           <button
+            type="button"
             className="btn btn-sm border-2 btn-ghost bg-base-100/80 hover:border-gray-300"
             onClick={() => setIsEditing?.(true)}
           >
             ✏️ Edit
           </button>
           <button
+            type="button"
             className="btn btn-sm border-2 btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300"
             onClick={onDelete}
           >

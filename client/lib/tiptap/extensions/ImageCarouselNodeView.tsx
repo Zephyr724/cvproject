@@ -191,7 +191,7 @@ export const ImageCarouselNodeView = ({
                 </button>
               </div>
             ))}
-            <div className="flex justify-center py-1">
+            <div className="flex justify-center py-1 mb-2">
               <button
                 type="button"
                 className="btn btn-primary btn-xs w-[60%]"
