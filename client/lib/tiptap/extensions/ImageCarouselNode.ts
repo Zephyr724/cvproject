@@ -34,7 +34,7 @@ export const ImageCarouselNode = Node.create({
     return [
       "div",
       {
-        "data-type": "image-carousel", 
+        "data-type": "image-carousel",
         ...HTMLAttributes,
       },
     ];

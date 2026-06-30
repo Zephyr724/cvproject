@@ -5,6 +5,7 @@ import { useState } from "react";
 import SectionEditorToolBar from "./SectionEditorToolBar";
 import { TextStyleKit } from "@tiptap/extension-text-style/text-style-kit";
 import { ImageCarouselNode } from "@/lib/tiptap/extensions/ImageCarouselNode";
+import { VideoNode } from "@/lib/tiptap/extensions/VideoNode";
 
 interface Props {
   onChange: (json: object) => void;
@@ -14,7 +15,7 @@ interface Props {
 const SectionEditorWYSIWYG = ({ onChange, initialContent }: Props) => {
   const [jsonOutput, setJsonOutput] = useState("");
   const editor = useEditor({
-    extensions: [StarterKit, TextStyleKit, ImageCarouselNode],
+    extensions: [StarterKit, TextStyleKit, ImageCarouselNode,VideoNode],
     content:
       initialContent ??
       "<p> 🌈 Start editing here, you can edit with the text, carousel images and videos.</p>",

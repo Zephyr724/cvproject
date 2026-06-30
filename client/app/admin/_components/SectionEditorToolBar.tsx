@@ -1,5 +1,6 @@
 import { Editor } from "@tiptap/react";
-import { Afacad } from "next/font/google";
+import { RiMovieAiLine } from "react-icons/ri";
+import { TbPhotoPlus } from "react-icons/tb";
 
 interface Props {
   editor: Editor;
@@ -100,7 +101,7 @@ const SectionEditorToolBar = ({ editor }: Props) => {
 
       {/* Font size */}
       <select
-        className="select select-sm select-bordered w-20"
+        className="select select-sm select-bordered w-20 border"
         value={editor.getAttributes("textStyle").fontSize || ""}
         onChange={(e) => {
           const value = e.target.value;
@@ -123,7 +124,7 @@ const SectionEditorToolBar = ({ editor }: Props) => {
 
       {/* Line Height */}
       <select
-        className="select select-sm select-bordered w-20"
+        className="select select-sm select-bordered w-20 border"
         onChange={(e) => {
           editor.view.dom.style.setProperty("--line-height", e.target.value);
         }}
@@ -156,16 +157,16 @@ const SectionEditorToolBar = ({ editor }: Props) => {
         title="Insert Image Carousel"
         onClick={() => editor.chain().focus().insertImageCarousel().run()}
       >
-        🖼
+        <TbPhotoPlus size={20} />
       </button>
 
       <button
         type="button"
         className="btn btn-sm btn-ghost"
-        title="Insert Simple Box"
-        onClick={() => editor.chain().focus().insertSimpleBox().run()}
+        title="Insert a video"
+        onClick={() => editor.chain().focus().insertVideo().run()}
       >
-        📦
+        <RiMovieAiLine size={20} />
       </button>
     </div>
   );

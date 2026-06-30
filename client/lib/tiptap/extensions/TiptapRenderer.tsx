@@ -4,6 +4,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { ImageCarouselNode } from "./ImageCarouselNode";
 import { useEffect } from "react";
+import { VideoNode } from "./VideoNode";
 
 interface Props {
   content: object;
@@ -11,7 +12,7 @@ interface Props {
 
 const TiptapRenderer = ({ content }: Props) => {
   const editor = useEditor({
-    extensions: [StarterKit, TextStyleKit, ImageCarouselNode],
+    extensions: [StarterKit, TextStyleKit, ImageCarouselNode, VideoNode],
     content,
     editable: false,
   });

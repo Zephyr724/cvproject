@@ -57,6 +57,10 @@ export interface ContentVideo {
   url: string;
 }
 
+export interface Video {
+  src: string;
+}
+
 export interface Section {
   id: number;
   order: number;
