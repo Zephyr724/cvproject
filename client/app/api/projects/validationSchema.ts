@@ -35,39 +35,6 @@ export const techItemSchema = z
     message: "have to provide id or name",
   });
 
-export const contentTextSchema = z.object({
-  id: z.number().optional(),
-  content: z.string(),
-});
-
-export const contentImagesSchema = z.object({
-  id: z.number().optional(),
-  url: z.string(),
-  alt: z.string().max(191).optional(),
-});
-
-export const contentVideosSchema = z.object({
-  id: z.number().optional(),
-  url: z.string(),
-});
-
-export const layoutTypeEnum = z.enum([
-  "imgTopTextBottom",
-  "imgLeftTextRight",
-  "imgRightTextLeft",
-  "textTopImgMiddleTextBottom",
-]);
-
-export const sectionSchema = z.object({
-  id: z.number().optional(),
-  order: z.number().optional(),
-  title: z.string().min(1).max(191),
-  layoutType: layoutTypeEnum,
-  contentTexts: z.array(contentTextSchema).optional(),
-  contentImages: z.array(contentImagesSchema).optional(),
-  contentVideos: z.array(contentVideosSchema).optional(),
-});
-
 //define api request DTO (also used for Zod validation)
 export const validateCreateProjectSchema = z.object({
   title: z.string().min(1),
@@ -78,7 +45,6 @@ export const validateCreateProjectSchema = z.object({
   tags: z.array(tagSchema).optional(),
   techItems: z.array(techItemSchema).optional(),
   roles: z.array(roleSchema).optional(),
-  sections: z.array(sectionSchema).optional(),
   content: z.any().optional(),
 });
 
@@ -87,13 +53,3 @@ export type ValidateCreateProjectType = z.infer<
 >;
 
 export type TechItem = z.infer<typeof techItemSchema>;
-
-export type Section = z.infer<typeof sectionSchema>;
-
-export type LayoutType = z.infer<typeof layoutTypeEnum>;
-
-export type ContentText = z.infer<typeof contentTextSchema>;
-
-export type ContentImages = z.infer<typeof contentImagesSchema>;
-
-export type ContentVideos = z.infer<typeof contentVideosSchema>;

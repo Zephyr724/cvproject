@@ -46,27 +46,6 @@ export function toPrismaCreateInput(
         role: { connect: { id } },
       })),
     },
-    sections: {
-      create:
-        projectData.sections?.map((section) => ({
-          order: section.order ?? 0,
-          title: section.title,
-          layoutType: section.layoutType,
-          contentTexts: {
-            create:
-              section.contentTexts?.map(({ content }) => ({ content })) ?? [],
-            //only create content without id (which automatically created by db)
-          },
-          contentImages: {
-            create:
-              section.contentImages?.map(({ url, alt }) => ({ url, alt })) ??
-              [],
-          },
-          contentVideos: {
-            create: section.contentVideos?.map(({ url }) => ({ url })) ?? [],
-          },
-        })) ?? [],
-    },
     content: projectData.content ?? null,
   };
 }
@@ -112,29 +91,13 @@ export function toApiResponse(project: ProjectWithIncludes) {
       name: r.role.name,
       order: r.order,
     })),
-    sections: project.sections.map((s) => ({
-      id: s.id,
-      order: s.order,
-      title: s.title,
-      layoutType: s.layoutType,
-      contentTexts: s.contentTexts.map((ct) => ({
-        id: ct.id,
-        content: ct.content,
-      })),
-      contentImages: s.contentImages.map((ci) => ({
-        id: ci.id,
-        url: ci.url,
-        alt: ci.alt,
-      })),
-      contentVideos: s.contentVideos.map((cv) => ({ id: cv.id, url: cv.url })),
-    })),
     content: project.content,
   };
 }
 
 // update's transformation is more complex,
 // because we need to handle the logic of connect vs create vs delete for related entities
-// (tags, techItems, roles, sections)
+// (tags, techItems, roles, content)
 // For simplicity, we assume the frontend sends the complete updated list of related entities
 // (with ids if they exist, without ids if new), and we do a full replace on the backend:
 export function toPrismaUpdateInput(
@@ -187,30 +150,6 @@ export function toPrismaUpdateInput(
     };
   }
 
-  // sections —— key difference: sections have their own content (texts, images, videos),
-  // so we also need to handle them
-  if (projectData.sections !== undefined) {
-    data.sections = {
-      deleteMany: {}, //delete all old sections (with CASCADE, child content auto-deleted)
-
-      create: projectData.sections.map((section) => ({
-        order: section.order ?? 0,
-        title: section.title,
-        layoutType: section.layoutType,
-        contentTexts: {
-          create:
-            section.contentTexts?.map(({ content }) => ({ content })) ?? [],
-        },
-        contentImages: {
-          create:
-            section.contentImages?.map(({ url, alt }) => ({ url, alt })) ?? [],
-        },
-        contentVideos: {
-          create: section.contentVideos?.map(({ url }) => ({ url })) ?? [],
-        },
-      })),
-    };
-  }
 
   if (projectData.content !== undefined) data.content = projectData.content;
 

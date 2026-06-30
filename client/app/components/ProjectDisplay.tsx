@@ -3,11 +3,8 @@ import CloseButton from "@/app/components/CloseButton";
 import { FaGithub, FaExternalLinkSquareAlt } from "react-icons/fa";
 import TechStack from "../projects/TechStack";
 import Responsibilities from "../projects/Responsibilities";
-import Sections from "../projects/_components/Sections";
 import { Project } from "../projects/_components/types";
 import ProjectLink from "./ProjectLink";
-import SectionEditorWYSIWYG from "../admin/_components/SectionEditorWYSIWYG";
-import { TiptapContent } from "@tiptap/react";
 import TiptapRenderer from "@/lib/tiptap/extensions/TiptapRenderer";
 
 interface ProjectDisplayProps {

@@ -75,7 +75,7 @@ export const ImageCarouselNodeView = ({
           isEditing={isEditing}
           isEditable={isEditable}
           setIsEditing={setIsEditing}
-          onDelete={deleteNode}
+          onDelete={()=>deleteNode()}
         />
         {/* Editing Panel */}
         {isEditing && isEditable && (

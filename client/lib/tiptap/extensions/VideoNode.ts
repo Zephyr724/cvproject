@@ -20,7 +20,7 @@ export const VideoNode = Node.create({
     return {
       video: {
         default: {
-          src: "https://youtu.be/nK9d09fFSyc?si=7PcCUylQ3hWQ8ARI",
+          src: "https://youtu.be/nK9d09fFSyc",
         } as Video,
       },
     };
@@ -44,7 +44,7 @@ export const VideoNode = Node.create({
               type: this.name,
               attrs: {
                 video: {
-                  src: "https://youtu.be/nK9d09fFSyc?si=7PcCUylQ3hWQ8ARI",
+                  src: "https://youtu.be/nK9d09fFSyc",
                 },
               },
             },

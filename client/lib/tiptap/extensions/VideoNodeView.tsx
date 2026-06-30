@@ -13,10 +13,6 @@ const VideoNodeView = ({
   const [isEditing, setIsEditing] = useState(false);
   const isEditable = editor.isEditable;
 
-  const updateVideo = () => {};
-
-  const deleteVideo = () => {};
-
   return (
     <NodeViewWrapper>
       <div className="relative aspect-video w-full group">
@@ -25,14 +21,14 @@ const VideoNodeView = ({
             <button
               type="button"
               className="btn btn-sm border-2 btn-ghost bg-base-100/80 hover:border-gray-300"
-              onClick={() => setIsEditing?.(true)}
+              onClick={() => setIsEditing(true)}
             >
               ✏️ Edit
             </button>
             <button
               type="button"
               className="btn btn-sm border-2 btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300"
-              // onClick={onDelete}
+              onClick={deleteNode}
             >
               ✕
             </button>
@@ -64,28 +60,18 @@ const VideoNodeView = ({
               </button>
               <div className=" bg-blue-200 px-2 py-1 mb-1 font-bold">Video</div>
 
-              <div className="flex gap-1 px-1 items-center mb-2">
-                {/* <img
-                  src={image.url}
-                  alt={image.alt}
-                  className="w-12 h-12 rounded object-cover shrink-0 "
-                /> */}
+              <div className="flex gap-1 px-2 items-center mb-2">
+                <span>URL:</span>
                 <input
                   type="text"
-                  name="url"
-                  className="flex-5 input input-xs h-7 border border-gray-300"
-                  placeholder="Image URL"
+                  name="video_src"
+                  className="flex-5 input input-xs h-7 border border-gray-300 "
+                  placeholder="Video src"
                   value={video.src}
-                  // onChange={(e) => updateVideo("url", e.target.value, index)}
+                  onChange={(e) =>
+                    updateAttributes({ video: { src: e.target.value } })
+                  }
                 />
-
-                <button
-                  type="button"
-                  className="btn btn-xs border btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300"
-                  // onClick={() => deleteVideo(index)}
-                >
-                  🗑️
-                </button>
               </div>
             </div>
           </div>

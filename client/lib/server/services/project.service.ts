@@ -69,11 +69,11 @@ export const projectService = {
       githubUrl: p.githubUrl ?? null, // ← undefined → null
       createdAt: p.createdAt.toISOString(),
       updatedAt: p.updatedAt.toISOString(),
-      // List do not need tags/sections，default is []
+      // List do not need tags/content，default is []
       tags: [],
       techStack: { frontend: [], backend: [] },
       responsibilities: [],
-      sections: [],
+      content: null,
     }));
   },
 
@@ -166,7 +166,7 @@ function handlePrismaError(error: unknown): never {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     if (error.code === "P2025") {
       throw new BusinessError(
-        `Related record not found: ${error.meta?.cause || "please check the IDs in tags / techItems / roles / sections"}`,
+        `Related record not found: ${error.meta?.cause || "please check the IDs in tags / techItems / roles / content"}`,
         422,
       );
     }

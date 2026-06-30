@@ -14,8 +14,6 @@ import type {
   Tag,
   TechItem,
   Role,
-  Section,
-  LayoutType,
 } from "@/app/projects/_components/types";
 import { Spinner } from "@radix-ui/themes";
 import useFetchProjectById from "@/hooks/useFetchProjectById";
@@ -65,10 +63,6 @@ function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
       name: r.name ?? "",
       order: r.order,
     })) as Role[],
-    sections: (data.sections ?? []).map((s, i) => ({
-      id: s.order,
-      ...s,
-    })) as Section[],
     content: data.content ?? null,
   };
 }
@@ -96,14 +90,6 @@ function projectToFormData(project: Project): ValidateCreateProjectType {
     roles: project.responsibilities.map((r, i) => ({
       ...r,
       order: r.order ?? i,
-    })),
-    sections: project.sections.map((s) => ({
-      ...s,
-      contentImages: s.contentImages?.map((ci) => ({
-        ...ci,
-        alt: ci.alt ?? undefined, // ← null → undefined
-      })),
-      layoutType: s.layoutType as LayoutType,
     })),
     content: project.content,
   };

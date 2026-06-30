@@ -14,7 +14,6 @@ import TagInput from "./TagInput";
 import RoleInput from "./RoleInput";
 import TechItemInput from "./TechItemInput";
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
-import SectionEditor from "./SectionEditor";
 import dynamic from "next/dynamic";
 import SectionEditorWYSIWYG from "./SectionEditorWYSIWYG";
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
@@ -201,7 +200,6 @@ const NewProject = ({
           />
           <ErrorMessage>{errors.roles?.message}</ErrorMessage>
         </div>
-        {/* <TextField.Root placeholder="Sections" {...register("sections")} /> */}
 
         <div className="flex flex-col gap-1">
           <Controller
