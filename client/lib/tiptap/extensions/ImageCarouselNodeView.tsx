@@ -4,6 +4,7 @@ import { Image, Layout } from "@/app/projects/_components/types";
 import { NodeViewProps, NodeViewWrapper } from "@tiptap/react";
 import { useState } from "react";
 import { MdOutlineDragIndicator } from "react-icons/md";
+import { FaArrowsAltH ,FaLongArrowAltLeft,FaLongArrowAltRight} from "react-icons/fa";
 
 export const ImageCarouselNodeView = ({
   node,
@@ -75,7 +76,7 @@ export const ImageCarouselNodeView = ({
           isEditing={isEditing}
           isEditable={isEditable}
           setIsEditing={setIsEditing}
-          onDelete={()=>deleteNode()}
+          onDelete={() => deleteNode()}
         />
         {/* Editing Panel */}
         {isEditing && isEditable && (
@@ -118,11 +119,15 @@ export const ImageCarouselNodeView = ({
                       });
                     }}
                   >
-                    {l === "full"
-                      ? "🖼️ Full"
-                      : l === "left"
-                        ? "⬅️ Left"
-                        : "➡️ Right"}
+                    {l === "full" ? (
+                      <>
+                        <FaArrowsAltH size={24} /> Full
+                      </>
+                    ) : l === "left" ? (
+                      <><FaLongArrowAltLeft size={24}/>Left</>
+                    ) : (
+                      <><FaLongArrowAltRight size={24}/>Right</>
+                    )}
                   </button>
                 ))}
                 <span className="ml-10">Width:</span>

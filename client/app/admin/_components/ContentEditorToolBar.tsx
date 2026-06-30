@@ -64,7 +64,7 @@ const ContentEditorToolBar = ({ editor }: Props) => {
                     .replace(/^./, (s) => s.toLowerCase()),
               tool.attributes,
             )
-              ? "btn-active"
+              ? "bg-blue-300 border-blue-400"
               : ""
           }`}
           onClick={() => {
