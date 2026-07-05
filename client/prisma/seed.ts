@@ -1,6 +1,6 @@
 // prisma/seed.ts
 import "dotenv/config";
-import { PrismaClient } from "@generated/prisma";
+import { PrismaClient, UserRole } from "@generated/prisma";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 
 const adapter = new PrismaMariaDb({
@@ -24,9 +24,7 @@ const tiptapContent = {
     {
       type: "heading",
       attrs: { level: 1 },
-      content: [
-        { type: "text", text: "Implementation" },
-      ],
+      content: [{ type: "text", text: "Implementation" }],
     },
     // Intro paragraph with mixed styles
     {
@@ -41,9 +39,7 @@ const tiptapContent = {
         { type: "text", text: " leveraging " },
         {
           type: "text",
-          marks: [
-            { type: "textStyle", attrs: { color: "#2563eb" } },
-          ],
+          marks: [{ type: "textStyle", attrs: { color: "#2563eb" } }],
           text: "Next.js 14 App Router",
         },
         { type: "text", text: " and " },
@@ -59,9 +55,7 @@ const tiptapContent = {
     {
       type: "heading",
       attrs: { level: 2 },
-      content: [
-        { type: "text", text: "Architecture Overview" },
-      ],
+      content: [{ type: "text", text: "Architecture Overview" }],
     },
     // Paragraph with different font sizes
     {
@@ -111,9 +105,7 @@ const tiptapContent = {
         { type: "text", text: " with MySQL, providing type-safe queries and " },
         {
           type: "text",
-          marks: [
-            { type: "textStyle", attrs: { color: "#d97706" } },
-          ],
+          marks: [{ type: "textStyle", attrs: { color: "#d97706" } }],
           text: "automatic migration management",
         },
         { type: "text", text: "." },
@@ -207,9 +199,7 @@ const tiptapContent = {
     {
       type: "heading",
       attrs: { level: 2 },
-      content: [
-        { type: "text", text: "Key Design Decisions" },
-      ],
+      content: [{ type: "text", text: "Key Design Decisions" }],
     },
     // Ordered list
     {
@@ -227,7 +217,10 @@ const tiptapContent = {
                   marks: [{ type: "bold" }],
                   text: "Tiptap",
                 },
-                { type: "text", text: " as the rich-text editor — extensible, headless, and React-native" },
+                {
+                  type: "text",
+                  text: " as the rich-text editor — extensible, headless, and React-native",
+                },
               ],
             },
           ],
@@ -238,7 +231,10 @@ const tiptapContent = {
             {
               type: "paragraph",
               content: [
-                { type: "text", text: "Replaced deprecated Section model with " },
+                {
+                  type: "text",
+                  text: "Replaced deprecated Section model with ",
+                },
                 {
                   type: "text",
                   marks: [{ type: "italic" }],
@@ -261,7 +257,10 @@ const tiptapContent = {
                   marks: [{ type: "bold" }],
                   text: "custom NodeViews",
                 },
-                { type: "text", text: " for media blocks (ImageCarousel, Video) to keep editing WYSIWYG" },
+                {
+                  type: "text",
+                  text: " for media blocks (ImageCarousel, Video) to keep editing WYSIWYG",
+                },
               ],
             },
           ],
@@ -272,7 +271,10 @@ const tiptapContent = {
             {
               type: "paragraph",
               content: [
-                { type: "text", text: "Separated admin and public routes via " },
+                {
+                  type: "text",
+                  text: "Separated admin and public routes via ",
+                },
                 {
                   type: "text",
                   marks: [{ type: "bold" }],
@@ -304,15 +306,16 @@ const tiptapContent = {
     {
       type: "heading",
       attrs: { level: 2 },
-      content: [
-        { type: "text", text: "Screenshots & Media" },
-      ],
+      content: [{ type: "text", text: "Screenshots & Media" }],
     },
     // Paragraph before carousel
     {
       type: "paragraph",
       content: [
-        { type: "text", text: "Here's a collection of screenshots from the admin dashboard:" },
+        {
+          type: "text",
+          text: "Here's a collection of screenshots from the admin dashboard:",
+        },
       ],
     },
     // ImageCarousel node
@@ -321,7 +324,7 @@ const tiptapContent = {
       attrs: {
         images: [
           {
-           url: "https://picsum.photos/seed/carousel-dashboard/800/600",
+            url: "https://picsum.photos/seed/carousel-dashboard/800/600",
             alt: "Admin dashboard overview",
           },
           {
@@ -440,8 +443,15 @@ const tiptapContent = {
             {
               type: "paragraph",
               content: [
-                { type: "text", marks: [{ type: "bold" }], text: "Planning & Design" },
-                { type: "text", text: " — Wireframed the admin UI and defined the Tiptap extension API." },
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Planning & Design",
+                },
+                {
+                  type: "text",
+                  text: " — Wireframed the admin UI and defined the Tiptap extension API.",
+                },
               ],
             },
           ],
@@ -452,8 +462,15 @@ const tiptapContent = {
             {
               type: "paragraph",
               content: [
-                { type: "text", marks: [{ type: "bold" }], text: "Core Implementation" },
-                { type: "text", text: " — Prisma schema, CRUD API with Zod, custom NodeViews for media blocks." },
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Core Implementation",
+                },
+                {
+                  type: "text",
+                  text: " — Prisma schema, CRUD API with Zod, custom NodeViews for media blocks.",
+                },
               ],
             },
           ],
@@ -464,8 +481,15 @@ const tiptapContent = {
             {
               type: "paragraph",
               content: [
-                { type: "text", marks: [{ type: "bold" }], text: "Editor Toolbar" },
-                { type: "text", text: " — DaisyUI toolbar with headings, lists, code blocks, and media insertion." },
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Editor Toolbar",
+                },
+                {
+                  type: "text",
+                  text: " — DaisyUI toolbar with headings, lists, code blocks, and media insertion.",
+                },
               ],
             },
           ],
@@ -476,8 +500,15 @@ const tiptapContent = {
             {
               type: "paragraph",
               content: [
-                { type: "text", marks: [{ type: "bold" }], text: "Public Renderer" },
-                { type: "text", text: " — Read-only TiptapRenderer mapping node types to React components." },
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Public Renderer",
+                },
+                {
+                  type: "text",
+                  text: " — Read-only TiptapRenderer mapping node types to React components.",
+                },
               ],
             },
           ],
@@ -497,9 +528,7 @@ const tiptapContent = {
     {
       type: "heading",
       attrs: { level: 2 },
-      content: [
-        { type: "text", text: "Code Example" },
-      ],
+      content: [{ type: "text", text: "Code Example" }],
     },
     // Paragraph
     {
@@ -552,9 +581,7 @@ export const ImageCarouselNode = Node.create({
     {
       type: "heading",
       attrs: { level: 2 },
-      content: [
-        { type: "text", text: "Deployment" },
-      ],
+      content: [{ type: "text", text: "Deployment" }],
     },
     {
       type: "paragraph",
@@ -577,7 +604,10 @@ export const ImageCarouselNode = Node.create({
           ],
           text: "AWS ECS",
         },
-        { type: "text", text: " (backend). CI/CD pipelines run automated tests, linting, and database migrations before each deployment." },
+        {
+          type: "text",
+          text: " (backend). CI/CD pipelines run automated tests, linting, and database migrations before each deployment.",
+        },
       ],
     },
     {
@@ -686,15 +716,38 @@ async function main() {
   await prisma.role.deleteMany();
 
   // 0. 创建种子用户（用于 owner 关联）
-  const seedUser = await prisma.user.upsert({
-    where: { email: "admin@cvproject.dev" },
-    update: {},
-    create: {
-      name: "Seed Admin",
-      email: "admin@cvproject.dev",
-      role: "ADMIN",
-    },
-  });
+
+  const seedEmail = process.env.SEED_OWNER_EMAIL;
+  const seedRole = (process.env.SEED_OWNER_ROLE as UserRole) || "ADMIN";
+
+  let seedUser;
+  if (seedEmail) {
+    seedUser = await prisma.user.findUnique({ where: { email: seedEmail } });
+    if (!seedUser) {
+      console.error(
+        `❌ User with email "${seedEmail}" not found. Please log in with Google first, then run seed.`,
+      );
+      process.exit(1);
+    }
+    // 顺便把 role 设为 ADMIN
+    if (seedUser.role !== seedRole) {
+      await prisma.user.update({
+        where: { id: seedUser.id },
+        data: { role: seedRole },
+      });
+    }
+  } else {
+    // fallback: 创建假用户（仅用于没有 Google 登录的开发环境）
+    seedUser = await prisma.user.upsert({
+      where: { email: "admin@cvproject.dev" },
+      update: {},
+      create: {
+        name: "Seed Admin",
+        email: "admin@cvproject.dev",
+        role: "ADMIN",
+      },
+    });
+  }
 
   // 1. 预先创建标签(Tag)、技术项(TechItem)、角色(Role)实体（避免重复）
   // 此处为简化，采用 upsert 方式

@@ -54,12 +54,12 @@ export const projectService = {
     return toApiResponse(project);
   },
   async getAllProjects() {
-    const projects = await projectRepository.findMany();
+    const projects = await projectRepository.findManyWithDetails();
     return projects.map(toApiResponse);
   },
 
-  async getAllProjectsList() {
-    const projects = await projectRepository.findManylight();
+  async getAllProjectsList(ownerId?: string) {
+    const projects = await projectRepository.findAll(ownerId);
     return projects.map((p) => ({
       id: p.id,
       title: p.title,

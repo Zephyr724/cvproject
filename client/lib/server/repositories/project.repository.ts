@@ -30,14 +30,16 @@ export const projectRepository = {
       include: projectInclude,
     });
   },
-  async findMany(): Promise<ProjectWithIncludes[]> {
+  async findManyWithDetails(): Promise<ProjectWithIncludes[]> {
     return prisma.project.findMany({
       include: projectInclude,
     });
   },
 
-  async findManylight(): Promise<Project[]> {
-    return prisma.project.findMany();
+  async findAll(ownerId?: string): Promise<Project[]> {
+    return prisma.project.findMany({
+      ...(ownerId && { where: { ownerId } }),
+    });
   },
 
   async deleteById(projectId: number) {
