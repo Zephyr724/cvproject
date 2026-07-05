@@ -14,416 +14,621 @@ const adapter = new PrismaMariaDb({
 
 const prisma = new PrismaClient({ adapter });
 
+// ──────────────────────────────────────
+// Tiptap JSON — covers all toolbar styles
+// ──────────────────────────────────────
+const tiptapContent = {
+  type: "doc",
+  content: [
+    // H1 标题: "Implementation"
+    {
+      type: "heading",
+      attrs: { level: 1 },
+      content: [
+        { type: "text", text: "Implementation" },
+      ],
+    },
+    // Intro paragraph with mixed styles
+    {
+      type: "paragraph",
+      content: [
+        { type: "text", text: "This project was built with a " },
+        {
+          type: "text",
+          marks: [{ type: "bold" }],
+          text: "modern React stack",
+        },
+        { type: "text", text: " leveraging " },
+        {
+          type: "text",
+          marks: [
+            { type: "textStyle", attrs: { color: "#2563eb" } },
+          ],
+          text: "Next.js 14 App Router",
+        },
+        { type: "text", text: " and " },
+        {
+          type: "text",
+          marks: [{ type: "italic" }],
+          text: "server-side rendering",
+        },
+        { type: "text", text: " for optimal performance." },
+      ],
+    },
+    // H2: "Architecture Overview"
+    {
+      type: "heading",
+      attrs: { level: 2 },
+      content: [
+        { type: "text", text: "Architecture Overview" },
+      ],
+    },
+    // Paragraph with different font sizes
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          marks: [
+            { type: "textStyle", attrs: { fontSize: "18px" } },
+            { type: "bold" },
+          ],
+          text: "Backend",
+        },
+        {
+          type: "text",
+          text: " services run on a microservice architecture with ",
+        },
+        {
+          type: "text",
+          marks: [{ type: "bold" }],
+          text: "NestJS",
+        },
+        { type: "text", text: " as the core framework. " },
+        {
+          type: "text",
+          marks: [
+            { type: "textStyle", attrs: { fontSize: "14px" } },
+            { type: "italic" },
+          ],
+          text: "(deployed on AWS ECS with auto-scaling)",
+        },
+      ],
+    },
+    // Paragraph with colored text
+    {
+      type: "paragraph",
+      content: [
+        { type: "text", text: "The database layer uses " },
+        {
+          type: "text",
+          marks: [
+            { type: "textStyle", attrs: { color: "#059669" } },
+            { type: "bold" },
+          ],
+          text: "Prisma ORM",
+        },
+        { type: "text", text: " with MySQL, providing type-safe queries and " },
+        {
+          type: "text",
+          marks: [
+            { type: "textStyle", attrs: { color: "#d97706" } },
+          ],
+          text: "automatic migration management",
+        },
+        { type: "text", text: "." },
+      ],
+    },
+    // Bullet list
+    {
+      type: "bulletList",
+      content: [
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Client",
+                },
+                {
+                  type: "text",
+                  text: " — Next.js + Tailwind CSS + DaisyUI + Three.js",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Server",
+                },
+                {
+                  type: "text",
+                  text: " — NestJS monorepo with modular service design",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Database",
+                },
+                {
+                  type: "text",
+                  text: " — MySQL 8 with Prisma ORM",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Auth",
+                },
+                {
+                  type: "text",
+                  text: " — NextAuth.js v5 with GitHub OAuth",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    // Horizontal rule
+    { type: "horizontalRule" },
+    // H2: "Key Design Decisions"
+    {
+      type: "heading",
+      attrs: { level: 2 },
+      content: [
+        { type: "text", text: "Key Design Decisions" },
+      ],
+    },
+    // Ordered list
+    {
+      type: "orderedList",
+      content: [
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                { type: "text", text: "Chose " },
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Tiptap",
+                },
+                { type: "text", text: " as the rich-text editor — extensible, headless, and React-native" },
+              ],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                { type: "text", text: "Replaced deprecated Section model with " },
+                {
+                  type: "text",
+                  marks: [{ type: "italic" }],
+                  text: "JSON content column",
+                },
+                { type: "text", text: " for flexible project editing" },
+              ],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                { type: "text", text: "Used " },
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "custom NodeViews",
+                },
+                { type: "text", text: " for media blocks (ImageCarousel, Video) to keep editing WYSIWYG" },
+              ],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                { type: "text", text: "Separated admin and public routes via " },
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Next.js middleware",
+                },
+                { type: "text", text: " with role-based access control" },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    // Blockquote
+    {
+      type: "blockquote",
+      content: [
+        {
+          type: "paragraph",
+          content: [
+            {
+              type: "text",
+              text: "💡 The entire content editing pipeline — from toolbar to JSON serialization — is fully custom-built on top of Tiptap's extension system, allowing us to ship rich project pages without a traditional CMS.",
+            },
+          ],
+        },
+      ],
+    },
+    // H2: "Screenshots & Media"
+    {
+      type: "heading",
+      attrs: { level: 2 },
+      content: [
+        { type: "text", text: "Screenshots & Media" },
+      ],
+    },
+    // Paragraph before carousel
+    {
+      type: "paragraph",
+      content: [
+        { type: "text", text: "Here's a collection of screenshots from the admin dashboard:" },
+      ],
+    },
+    // ImageCarousel node
+    {
+      type: "imageCarousel",
+      attrs: {
+        images: [
+          {
+           url: "https://picsum.photos/seed/carousel-dashboard/800/600",
+            alt: "Admin dashboard overview",
+          },
+          {
+            url: "https://picsum.photos/seed/carousel-code/800/600",
+            alt: "Code editor interface",
+          },
+          {
+            url: "https://picsum.photos/seed/carousel-settings/800/600",
+            alt: "Project settings page",
+          },
+        ],
+        layout: "full",
+        width: "full",
+      },
+    },
+    // Paragraph
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          text: "The admin panel supports real-time content preview with live JSON output for debugging.",
+        },
+      ],
+    },
+    // ImageCarousel — left layout with text wrapping
+    {
+      type: "imageCarousel",
+      attrs: {
+        images: [
+          {
+            url: "https://picsum.photos/seed/carousel-left/600/400",
+            alt: "Mobile responsive view",
+          },
+          {
+            url: "https://picsum.photos/seed/carousel-left2/600/400",
+            alt: "Tablet layout",
+          },
+        ],
+        layout: "left",
+        width: "50%",
+      },
+    },
+    // Wrapping paragraph — text flows around the left-floating carousel
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          text: "The admin interface is fully responsive. It adapts seamlessly across desktop, tablet, and mobile viewports. The sidebar collapses into a hamburger menu on smaller screens, and the content editor toolbar stacks vertically to preserve touch targets. All DaisyUI components respect the active theme, providing a consistent look and feel whether the user prefers light, dark, or one of the playful variants like cupcake or cyberpunk.",
+        },
+      ],
+    },
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          text: "Performance is a first-class concern. Images are lazy-loaded via the carousel component, and the rich-text editor only hydrates client-side when the admin page is mounted. Code-splitting by route ensures that the public-facing project pages never ship the Tiptap editor bundle.",
+        },
+      ],
+    },
+    // ImageCarousel — right layout with text wrapping
+    {
+      type: "imageCarousel",
+      attrs: {
+        images: [
+          {
+            url: "https://picsum.photos/seed/carousel-right/500/400",
+            alt: "Dark mode theme preview",
+          },
+        ],
+        layout: "right",
+        width: "33%",
+      },
+    },
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          text: "Theme support is powered by DaisyUI's built-in theming system, which uses CSS custom properties under the hood. The project ships with four pre-configured themes: light (default), dark, cupcake, and cyberpunk. Users can switch themes at runtime via the theme controller in the navbar, and the selection persists in localStorage so returning visitors keep their preference.",
+        },
+      ],
+    },
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          text: "All rich-text content — including these image carousels with custom layouts — is stored as portable Tiptap JSON in the database. This means the content is renderer-agnostic: it can be displayed on the public project page with a lightweight read-only renderer, exported to other formats, or even migrated to a different editor in the future without data loss.",
+        },
+      ],
+    },
+    // ImageCarousel — left layout + ordered list combo
+    {
+      type: "imageCarousel",
+      attrs: {
+        images: [
+          {
+            url: "https://picsum.photos/seed/carousel-left3/600/400",
+            alt: "Database schema diagram",
+          },
+        ],
+        layout: "left",
+        width: "66%",
+      },
+    },
+    // Ordered list wrapping around the left-floating carousel
+    {
+      type: "orderedList",
+      content: [
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                { type: "text", marks: [{ type: "bold" }], text: "Planning & Design" },
+                { type: "text", text: " — Wireframed the admin UI and defined the Tiptap extension API." },
+              ],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                { type: "text", marks: [{ type: "bold" }], text: "Core Implementation" },
+                { type: "text", text: " — Prisma schema, CRUD API with Zod, custom NodeViews for media blocks." },
+              ],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                { type: "text", marks: [{ type: "bold" }], text: "Editor Toolbar" },
+                { type: "text", text: " — DaisyUI toolbar with headings, lists, code blocks, and media insertion." },
+              ],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                { type: "text", marks: [{ type: "bold" }], text: "Public Renderer" },
+                { type: "text", text: " — Read-only TiptapRenderer mapping node types to React components." },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    // Video node
+    {
+      type: "video",
+      attrs: {
+        video: {
+          src: "https://youtu.be/nK9d09fFSyc",
+        },
+      },
+    },
+    // H2: "Code Example"
+    {
+      type: "heading",
+      attrs: { level: 2 },
+      content: [
+        { type: "text", text: "Code Example" },
+      ],
+    },
+    // Paragraph
+    {
+      type: "paragraph",
+      content: [
+        { type: "text", text: "Here's how the " },
+        {
+          type: "text",
+          marks: [{ type: "textStyle", attrs: { color: "#7c3aed" } }],
+          text: "ImageCarouselNode",
+        },
+        { type: "text", text: " extension is registered in Tiptap:" },
+      ],
+    },
+    // Code block
+    {
+      type: "codeBlock",
+      attrs: {
+        language: "typescript",
+      },
+      content: [
+        {
+          type: "text",
+          text: `// Registering a custom NodeView in Tiptap
+export const ImageCarouselNode = Node.create({
+  name: "imageCarousel",
+  group: "block",
+  draggable: true,
+
+  addCommands() {
+    return {
+      insertImageCarousel: () => ({ commands }) =>
+        commands.insertContent([
+          { type: this.name, attrs: { images: [] } },
+          { type: "paragraph" },
+        ]),
+    };
+  },
+
+  addNodeView() {
+    return ReactNodeViewRenderer(ImageCarouselNodeView);
+  },
+});`,
+        },
+      ],
+    },
+    // Horizontal rule
+    { type: "horizontalRule" },
+    // Final H2 & paragraph with font-size 12px footnote
+    {
+      type: "heading",
+      attrs: { level: 2 },
+      content: [
+        { type: "text", text: "Deployment" },
+      ],
+    },
+    {
+      type: "paragraph",
+      content: [
+        { type: "text", text: "The project is deployed on " },
+        {
+          type: "text",
+          marks: [
+            { type: "bold" },
+            { type: "textStyle", attrs: { color: "#dc2626" } },
+          ],
+          text: "Vercel",
+        },
+        { type: "text", text: " (frontend) and " },
+        {
+          type: "text",
+          marks: [
+            { type: "bold" },
+            { type: "textStyle", attrs: { color: "#2563eb" } },
+          ],
+          text: "AWS ECS",
+        },
+        { type: "text", text: " (backend). CI/CD pipelines run automated tests, linting, and database migrations before each deployment." },
+      ],
+    },
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          marks: [
+            { type: "textStyle", attrs: { fontSize: "12px" } },
+            { type: "italic" },
+          ],
+          text: "Last updated: June 2026 — Migration from Section model to Tiptap JSON content system completed.",
+        },
+      ],
+    },
+  ],
+};
+
+// ──────────────────────────────────────
+// Base project data (without id override)
+// ──────────────────────────────────────
 const projectData = {
   id: 1,
   title: "My first Project",
   tags: [
-    {
-      id: 1,
-      name: "React",
-      order: 1,
-    },
-    {
-      id: 2,
-      name: "Svelte",
-      order: 2,
-    },
-    {
-      id: 3,
-      name: "Full Stack",
-      order: 3,
-    },
-    {
-      id: 4,
-      name: "Serverless",
-      order: 4,
-    },
+    { id: 1, name: "React", order: 1 },
+    { id: 2, name: "Svelte", order: 2 },
+    { id: 3, name: "Full Stack", order: 3 },
+    { id: 4, name: "Serverless", order: 4 },
   ],
   projectUrl: "https://github.com/Zephyr724/cvproject",
   githubUrl: "https://github.com/Zephyr724/cvproject",
   techStack: {
     frontend: [
       { id: 1, order: 3, name: "React", slug: "react" },
-      {
-        id: 2,
-        order: 1,
-        name: "Next",
-        slug: "next",
-      },
-      {
-        id: 3,
-        order: 2,
-        name: "Svelte",
-        slug: "svelte",
-      },
-      {
-        id: 4,
-        order: 4,
-        name: "Three.js",
-        slug: "threejs",
-      },
+      { id: 2, order: 1, name: "Next", slug: "next" },
+      { id: 3, order: 2, name: "Svelte", slug: "svelte" },
+      { id: 4, order: 4, name: "Three.js", slug: "threejs" },
     ],
     backend: [
       { id: 1, order: 4, name: "Node.js", slug: "nodejs" },
-      {
-        id: 2,
-        order: 1,
-        name: "Next",
-        slug: "next",
-      },
-      {
-        id: 3,
-        order: 3,
-        name: "Go",
-        slug: "go",
-      },
-      {
-        id: 4,
-        order: 2,
-        name: "Typescript",
-        slug: "typescript",
-      },
+      { id: 2, order: 1, name: "Next", slug: "next" },
+      { id: 3, order: 3, name: "Go", slug: "go" },
+      { id: 4, order: 2, name: "Typescript", slug: "typescript" },
     ],
   },
   responsibilities: [
-    {
-      id: 1,
-      order: 4,
-      name: "Frontend developer",
-    },
-    {
-      id: 2,
-      order: 2,
-      name: "Backend developer",
-    },
-    {
-      id: 3,
-      order: 1,
-      name: "UI designer",
-    },
-    {
-      id: 4,
-      order: 99,
-      name: "QA",
-    },
-  ],
-  sections: [
-    {
-      id: 1,
-      order: 1,
-      title: "Project Introduction",
-      layoutType: "imgTopTextBottom",
-      contentText: [
-        {
-          id: 1,
-          content:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        },
-        {
-          id: 2,
-          content:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        },
-        {
-          id: 3,
-          content:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        },
-      ],
-      contentImages: [
-        {
-          id: 1,
-          alt: "image",
-          url: "https://picsum.photos/400/300",
-        },
-        {
-          id: 2,
-          alt: "image",
-          url: "https://picsum.photos/1280/720",
-        },
-        {
-          id: 3,
-          alt: "image",
-          url: "https://picsum.photos/1920/1080",
-        },
-        {
-          id: 4,
-          alt: "image",
-          url: "https://picsum.photos/2560/1420",
-        },
-        {
-          id: 5,
-          alt: "image",
-          url: "https://picsum.photos/1440/2560",
-        },
-      ],
-      contentVideos: [
-        {
-          id: 1,
-          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
-        },
-        {
-          id: 2,
-          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
-        },
-      ],
-    },
-    {
-      id: 2,
-      order: 2,
-      title: "Problem",
-      layoutType: "imgLeftTextRight",
-      contentText: [
-        {
-          id: 1,
-          content:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-        },
-        {
-          id: 2,
-          content:
-            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-        },
-        {
-          id: 3,
-          content: "When an unknown printer took a galley of type.",
-        },
-        {
-          id: 4,
-          content:
-            "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ",
-        },
-        {
-          id: 5,
-          content:
-            "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-        },
-      ],
-      contentImages: [
-        {
-          id: 1,
-          alt: "image",
-          url: "https://picsum.photos/400/300",
-        },
-        {
-          id: 2,
-          alt: "image",
-          url: "https://picsum.photos/1920/1080",
-        },
-        {
-          id: 3,
-          alt: "image",
-          url: "https://picsum.photos/1600/1200",
-        },
-        {
-          id: 4,
-          alt: "image",
-          url: "https://picsum.photos/2560/1420",
-        },
-        {
-          id: 5,
-          alt: "image",
-          url: "https://picsum.photos/1440/2560",
-        },
-      ],
-      contentVideos: [
-        {
-          id: 1,
-          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
-        },
-        {
-          id: 2,
-          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
-        },
-      ],
-    },
-    {
-      id: 3,
-      order: 3,
-      title: "Tasks",
-      layoutType: "imgRightTextLeft",
-      contentText: [
-        {
-          id: 1,
-          content:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-        },
-        {
-          id: 2,
-          content:
-            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-        },
-        {
-          id: 3,
-          content: "When an unknown printer took a galley of type.",
-        },
-      ],
-      contentImages: [
-        {
-          id: 4,
-          alt: "image",
-          url: "https://picsum.photos/2560/1440",
-        },
-        {
-          id: 2,
-          alt: "image",
-          url: "https://picsum.photos/1280/720",
-        },
-        {
-          id: 3,
-          alt: "image",
-          url: "https://picsum.photos/1920/1080",
-        },
-        {
-          id: 1,
-          alt: "image",
-          url: "https://picsum.photos/2560/1420",
-        },
-        {
-          id: 5,
-          alt: "image",
-          url: "https://picsum.photos/1440/2560",
-        },
-      ],
-      contentVideos: [
-        {
-          id: 1,
-          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
-        },
-        {
-          id: 2,
-          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
-        },
-      ],
-    },
-    {
-      id: 4,
-      order: 4,
-      title: "Actions",
-      layoutType: "imgLeftTextRight",
-      contentText: [
-        {
-          id: 1,
-          content:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-        },
-        {
-          id: 2,
-          content:
-            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-        },
-        {
-          id: 3,
-          content: "When an unknown printer took a galley of type.",
-        },
-        {
-          id: 4,
-          content:
-            "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ",
-        },
-        {
-          id: 5,
-          content:
-            "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-        },
-      ],
-      contentImages: [
-        {
-          id: 5,
-          alt: "image",
-          url: "https://picsum.photos/2560/1440",
-        },
-        {
-          id: 2,
-          alt: "image",
-          url: "https://picsum.photos/1280/720",
-        },
-        {
-          id: 3,
-          alt: "image",
-          url: "https://picsum.photos/1920/1080",
-        },
-        {
-          id: 4,
-          alt: "image",
-          url: "https://picsum.photos/2560/1420",
-        },
-        {
-          id: 1,
-          alt: "image",
-          url: "https://picsum.photos/1440/2560",
-        },
-      ],
-      contentVideos: [
-        {
-          id: 1,
-          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
-        },
-        {
-          id: 2,
-          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
-        },
-      ],
-    },
-    {
-      id: 5,
-      order: 5,
-      title: "Results",
-      layoutType: "textTopImgMiddleTextBottom",
-      contentText: [
-        {
-          id: 1,
-          content:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ",
-        },
-        {
-          id: 2,
-          content:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-        },
-        {
-          id: 3,
-          content: "When an unknown printer took a galley of type.",
-        },
-      ],
-      contentImages: [
-        {
-          id: 3,
-          alt: "image",
-          url: "https://picsum.photos/2560/1440",
-        },
-        {
-          id: 2,
-          alt: "image",
-          url: "https://picsum.photos/1280/720",
-        },
-        {
-          id: 1,
-          alt: "image",
-          url: "https://picsum.photos/1920/1080",
-        },
-        {
-          id: 4,
-          alt: "image",
-          url: "https://picsum.photos/2560/1420",
-        },
-        {
-          id: 5,
-          alt: "image",
-          url: "https://picsum.photos/1440/2560",
-        },
-      ],
-      contentVideos: [
-        {
-          id: 1,
-          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
-        },
-        {
-          id: 2,
-          url: "https://www.youtube.com/watch?v=LXb3EKWsInQ",
-        },
-      ],
-    },
+    { id: 1, order: 4, name: "Frontend developer" },
+    { id: 2, order: 2, name: "Backend developer" },
+    { id: 3, order: 1, name: "UI designer" },
+    { id: 4, order: 99, name: "QA" },
   ],
 };
 
@@ -467,48 +672,18 @@ function generateProject(id: number, title: string) {
     { id: 2, order: 2, name: "DevOps" },
   ];
 
-  // 修改 sections（可只保留2个章节简化）
-  newProject.sections = newProject.sections
-    .slice(0, 2)
-    .map((section: any, idx: number) => ({
-      ...section,
-      id: idx + 1,
-      title: idx === 0 ? `${title} - Introduction` : `${title} - Key Features`,
-      contentText: section.contentText.map((t: any, i: number) => ({
-        id: i + 1,
-        content: randomText(`Content for ${title}`, i),
-      })),
-      contentImages: section.contentImages
-        .slice(0, 2)
-        .map((img: any, i: number) => ({
-          id: i + 1,
-          url: `https://picsum.photos/id/${100 + i}/800/600`,
-          alt: `demo image ${i}`,
-        })),
-      contentVideos: section.contentVideos
-        .slice(0, 1)
-        .map((vid: any, i: number) => ({
-          id: i + 1,
-          url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", // 示例视频
-        })),
-    }));
-
   return newProject;
 }
 
 async function main() {
-  // 清空旧数据（可选，谨慎使用）
-  // await prisma.projectTag.deleteMany();
-  // await prisma.projectTechItem.deleteMany();
-  // await prisma.projectRole.deleteMany();
-  // await prisma.contentText.deleteMany();
-  // await prisma.contentImage.deleteMany();
-  // await prisma.contentVideo.deleteMany();
-  // await prisma.section.deleteMany();
-  // await prisma.project.deleteMany();
-  // await prisma.tag.deleteMany();
-  // await prisma.techItem.deleteMany();
-  // await prisma.role.deleteMany();
+  // 清空旧数据（按外键依赖顺序删除）
+  await prisma.projectTag.deleteMany();
+  await prisma.projectTechItem.deleteMany();
+  await prisma.projectRole.deleteMany();
+  await prisma.project.deleteMany();
+  await prisma.tag.deleteMany();
+  await prisma.techItem.deleteMany();
+  await prisma.role.deleteMany();
 
   // 0. 创建种子用户（用于 owner 关联）
   const seedUser = await prisma.user.upsert({
@@ -585,7 +760,7 @@ async function main() {
   ];
 
   for (const proj of projectsData) {
-    // 创建 Project
+    // 创建 Project（第一个项目带 rich content，其余用空占位 content）
     const project = await prisma.project.create({
       data: {
         title: proj.title,
@@ -594,6 +769,8 @@ async function main() {
         projectUrl: proj.projectUrl,
         githubUrl: proj.githubUrl,
         ownerId: seedUser.id,
+        // 所有项目都附带同一个 Tiptap JSON content（展示所有样式）
+        content: tiptapContent,
       },
     });
 
@@ -651,49 +828,6 @@ async function main() {
             projectId: project.id,
             roleId: role.id,
             order: roleInput.order,
-          },
-        });
-      }
-    }
-
-    // 插入 sections 及其内容
-    for (const section of proj.sections) {
-      const createdSection = await prisma.section.create({
-        data: {
-          order: section.order,
-          title: section.title,
-          layoutType: section.layoutType,
-          projectId: project.id,
-        },
-      });
-
-      // contentText
-      for (const text of section.contentText) {
-        await prisma.contentText.create({
-          data: {
-            content: text.content,
-            sectionId: createdSection.id,
-          },
-        });
-      }
-
-      // contentImages
-      for (const img of section.contentImages) {
-        await prisma.contentImage.create({
-          data: {
-            url: img.url,
-            alt: img.alt || "",
-            sectionId: createdSection.id,
-          },
-        });
-      }
-
-      // contentVideos
-      for (const vid of section.contentVideos) {
-        await prisma.contentVideo.create({
-          data: {
-            url: vid.url,
-            sectionId: createdSection.id,
           },
         });
       }

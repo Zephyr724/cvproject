@@ -3,9 +3,9 @@ import CloseButton from "@/app/components/CloseButton";
 import { FaGithub, FaExternalLinkSquareAlt } from "react-icons/fa";
 import TechStack from "../projects/TechStack";
 import Responsibilities from "../projects/Responsibilities";
-import Sections from "../projects/_components/Sections";
 import { Project } from "../projects/_components/types";
 import ProjectLink from "./ProjectLink";
+import TiptapRenderer from "@/lib/tiptap/extensions/TiptapRenderer";
 
 interface ProjectDisplayProps {
   project: Project;
@@ -25,7 +25,7 @@ export const ProjectDisplay = ({
     githubUrl,
     techStack,
     responsibilities,
-    sections,
+    content,
   } = project;
 
   return (
@@ -65,7 +65,7 @@ export const ProjectDisplay = ({
           <Responsibilities responsibilities={responsibilities} />
         )}
 
-        {sections && sections.length > 0 && <Sections sections={sections} />}
+        {content && <TiptapRenderer key={JSON.stringify(content)} content={content} />}
       </main>
     </div>
   );

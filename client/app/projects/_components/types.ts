@@ -11,7 +11,7 @@ export interface Project {
     frontend: TechItem[];
     backend: TechItem[];
   };
-  sections: Section[];
+  content?: any;
   createdAt: string;
   updatedAt: string;
 }
@@ -26,7 +26,6 @@ export interface TechItem {
   id: number;
   name: string;
   order: number;
-
   slug: string;
 }
 
@@ -36,43 +35,13 @@ export interface Role {
   name: string;
 }
 
-export interface ContentText {
-  id: number;
-  content: string;
-}
-
-export interface ContentImage {
-  id: number;
-  alt: string | null;
+export interface Image {
+  alt?: string;
   url: string;
 }
 
-export interface ContentVideo {
-  id: number;
-  url: string;
+export interface Video {
+  src: string;
 }
 
-export interface Section {
-  id: number;
-  order: number;
-  title: string;
-  layoutType: string;
-  contentTexts?: ContentText[];
-  contentImages?: ContentImage[];
-  contentVideos?: ContentVideo[];
-}
-
-export interface ImageRatio {
-  width: number;
-  height: number;
-}
-export interface SplitRatio {
-  left: number;
-  right: number;
-}
-
-export type LayoutType =
-  | "imgTopTextBottom"
-  | "imgLeftTextRight"
-  | "imgRightTextLeft"
-  | "textTopImgMiddleTextBottom";
+export type Layout = "full" | "left" | "right";

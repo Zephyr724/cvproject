@@ -14,12 +14,11 @@ import type {
   Tag,
   TechItem,
   Role,
-  Section,
-  LayoutType,
 } from "@/app/projects/_components/types";
 import { Spinner } from "@radix-ui/themes";
 import useFetchProjectById from "@/hooks/useFetchProjectById";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 interface Props {
   projectId?: number;
@@ -64,10 +63,7 @@ function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
       name: r.name ?? "",
       order: r.order,
     })) as Role[],
-    sections: (data.sections ?? []).map((s, i) => ({
-      id: s.order,
-      ...s,
-    })) as Section[],
+    content: data.content ?? null,
   };
 }
 
@@ -95,14 +91,7 @@ function projectToFormData(project: Project): ValidateCreateProjectType {
       ...r,
       order: r.order ?? i,
     })),
-    sections: project.sections.map((s) => ({
-      ...s,
-      contentImages: s.contentImages?.map((ci) => ({
-        ...ci,
-        alt: ci.alt ?? undefined, // ← null → undefined
-      })),
-      layoutType: s.layoutType as LayoutType,
-    })),
+    content: project.content,
   };
 }
 
@@ -135,6 +124,9 @@ const NewProjectForm = ({ projectId, project: initialProject }: Props) => {
 
   const formValues = watch();
   const liveProject = formDataToProject(formValues);
+  useEffect(() => {
+    console.log("liveProject", liveProject);
+  });
 
   const handleFormSubmit = handleSubmit(async (data) => {
     if (isEdit) {
@@ -155,13 +147,13 @@ const NewProjectForm = ({ projectId, project: initialProject }: Props) => {
 
   return (
     <div className="flex flex-1">
-      <div className="flex-1 overflow-auto  h-full p-5">
+      <div className="flex-2 overflow-auto  h-full p-2">
         {error && <p className="text-red-500">{error}</p>}
         {isLoading && <Spinner />}
         <ProjectDisplay project={liveProject} showCloseButton={false} />
       </div>
 
-      <div className="flex-1 overflow-auto">
+      <div className="flex-3 overflow-auto">
         <NewProject
           register={register}
           control={control}

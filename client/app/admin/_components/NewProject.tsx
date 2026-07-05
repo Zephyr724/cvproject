@@ -14,8 +14,8 @@ import TagInput from "./TagInput";
 import RoleInput from "./RoleInput";
 import TechItemInput from "./TechItemInput";
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
-import SectionEditor from "./SectionEditor";
 import dynamic from "next/dynamic";
+import ContentEditorWYSIWYG from "./ContentEditorWYSIWYG";
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
 });
@@ -40,7 +40,7 @@ const NewProject = ({
   const MAX_INTRO_LEN = 500;
 
   return (
-    <div className="max-w-xl  bg-gray-50">
+    <div className="max-w-4xl  bg-gray-50">
       {error && (
         <Callout.Root color="red">
           <Callout.Text>{error}</Callout.Text>
@@ -49,7 +49,10 @@ const NewProject = ({
       <form
         id="new-project-form"
         className="space-y-3 p-1 "
-        onSubmit={onSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit(e);
+        }}
       >
         <div>
           <label>Project Title</label>
@@ -85,7 +88,6 @@ const NewProject = ({
                 }}
               />
             )}
-         
           />
           <ErrorMessage>{errors.introduction?.message}</ErrorMessage>
         </div>
@@ -198,18 +200,19 @@ const NewProject = ({
           />
           <ErrorMessage>{errors.roles?.message}</ErrorMessage>
         </div>
-        {/* <TextField.Root placeholder="Sections" {...register("sections")} /> */}
 
         <div className="flex flex-col gap-1">
           <Controller
-            name="sections"
+            name="content"
             control={control}
             render={({ field }) => {
               return (
-                <SectionEditor
-                  sections={field.value ?? []}
-                  onChange={field.onChange}
-                />
+                <>
+                  <ContentEditorWYSIWYG
+                    onChange={field.onChange}
+                    initialContent={field.value}
+                  />
+                </>
               );
             }}
           />

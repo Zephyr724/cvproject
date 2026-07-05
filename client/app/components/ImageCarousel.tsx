@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
+import { Dispatch, SetStateAction } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -11,10 +11,14 @@ import {
   useCarousel,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import { ContentImage } from "../projects/_components/types";
+import { Image } from "../projects/_components/types";
 
 interface Props {
-  images: ContentImage[];
+  images: Image[];
+  isEditing?: boolean;
+  isEditable: boolean;
+  setIsEditing?: Dispatch<SetStateAction<boolean>>;
+  onDelete?: () => void;
 }
 
 const Dots = () => {
@@ -56,7 +60,13 @@ const Dots = () => {
   );
 };
 
-export function ImageCarousel({ images }: Props) {
+export function ImageCarousel({
+  images,
+  isEditing,
+  isEditable,
+  setIsEditing,
+  onDelete,
+}: Props) {
   const validImages = images.filter((img) => img.url && img.url.length > 0);
 
   if (validImages.length === 0) return null;
@@ -66,17 +76,43 @@ export function ImageCarousel({ images }: Props) {
   );
 
   return (
-    <div className="absolute inset-0 overflow-hidden rounded">
+    <div className="relative w-full h-full  rounded">
+      {!isEditing && isEditable && (
+        <div className="flex gap-x-1  absolute top-2 right-3 z-10 opacity-10 group-hover:opacity-100 transition-opacity">
+          <button
+            type="button"
+            className="btn btn-sm border-2 btn-ghost bg-base-100/80 hover:border-gray-300"
+            onClick={() => setIsEditing?.(true)}
+          >
+            ✏️ Edit
+          </button>
+          <button
+            type="button"
+            className="btn btn-sm border-2 btn-ghost bg-base-100/80 text-red-500 hover:border-gray-300"
+            onClick={onDelete}
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       <Carousel
         plugins={[plugin.current]}
         className="w-full h-full rounded *:data-[slot=carousel-content]:h-full"
         onMouseEnter={() => plugin.current.stop()}
-        onMouseLeave={() => plugin.current.play()}
+        onMouseLeave={() => {
+          // play() can be wrong when uninstalling the component
+          try {
+            plugin.current?.play?.();
+          } catch {
+            // ignore
+          }
+        }}
         opts={{ align: "start", loop: true }}
       >
         <CarouselContent className="h-full">
-          {validImages.map((image) => (
-            <CarouselItem key={image.id}>
+          {validImages.map((image, index) => (
+            <CarouselItem key={index}>
               <div className=" relative w-full h-full rounded">
                 {/* <Image
                   src={image.url}
@@ -88,8 +124,9 @@ export function ImageCarousel({ images }: Props) {
                 /> temporary fix*/}
                 <img
                   src={image.url}
+                  key={index}
                   alt={image.alt ?? ""}
-                  className="absolute inset-0 w-full h-full object-contain rounded"
+                  className=" w-full object-contain rounded"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
