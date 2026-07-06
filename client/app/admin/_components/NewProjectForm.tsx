@@ -39,6 +39,8 @@ function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
     githubUrl: data.githubUrl ?? "#",
     createdAt: "",
     updatedAt: "",
+    ownerId: null,
+    ownerEmail: null,
     tags: (data.tags ?? []).map((t, i) => ({
       id: t.id ?? i,
       name: t.name ?? "",
