@@ -1,26 +1,21 @@
 import YearBadge from "@/app/about/_components/YearBadge";
+import { Experience } from "@/app/admin/about/types";
 
-type TechItem = {
-  id: number;
-  name: string;
-  slug: string;
-  isFrontend: boolean;
-  isBackend: boolean;
-};
+import EditDeleteButtons from "@/app/admin/about/_components/EditDeleteButtons";
 
 interface ExperienceCardProps {
-  experience: {
-    id: number;
-    title: string;
-    company: string;
-    startDate: string | null;
-    endDate?: string | null;
-    description: string;
-    techItems: TechItem[];
-  };
+  experience: Experience;
+  showActions?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
-function ExperienceCard({ experience }: ExperienceCardProps) {
+function ExperienceCard({
+  experience,
+  showActions = false,
+  onEdit,
+  onDelete,
+}: ExperienceCardProps) {
   return (
     <div key={experience.id}>
       <div className="card card-border bg-base-100 shadow-xl border boderder-neutral/20 m-2 ">
@@ -59,6 +54,10 @@ function ExperienceCard({ experience }: ExperienceCardProps) {
                 ))}
               </div>
             </div>
+          )}
+
+          {showActions && (
+            <EditDeleteButtons onEdit={onEdit} onDelete={onDelete} />
           )}
         </div>
       </div>
