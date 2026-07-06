@@ -8,10 +8,7 @@ export const dynamic = "force-dynamic";
 const ProjectsPage = async () => {
   const session = await getServerSession(authOptions);
 
-  const projects =
-    session?.user?.role === "ADMIN"
-      ? await projectService.getAllProjectsList()
-      : await projectService.getAllProjectsList(session?.user.id);
+  const projects = await projectService.getAccessibleProjectsList(session);
 
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(360px,1fr))] gap-3 place-items-start p-3">

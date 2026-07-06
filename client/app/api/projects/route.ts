@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { toApiResponse } from "@/lib/server/mappers/project.mapper";
-import { projectInclude } from "@/lib/server/repositories/project.repository";
 import { projectService } from "@/lib/server/services/project.service";
 import { validateCreateProjectSchema } from "./validationSchema";
 import { BusinessError } from "@/lib/server/errors";
+import { requireAuth } from "@/lib/server/auth-guard";
 
 export async function GET() {
-  const projects = await projectService.getAllProjects();
+  // Ensure user is authenticated; throws 401 if no valid session
+  const session = await requireAuth();
+  const projects = await projectService.getAccessibleProjects(session);
   return NextResponse.json(projects);
 }
 

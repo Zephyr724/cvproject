@@ -5,6 +5,7 @@ import { Button, Link, Table } from "@radix-ui/themes";
 import { useState } from "react";
 import projectApiService from "@/lib/api/project-api-service";
 import { useRouter } from "next/navigation";
+import { formatDate } from "@/lib/utils";
 
 interface Props {
   projects: Project[];
@@ -35,6 +36,8 @@ const ProjectsListDisplay = ({ projects }: Props) => {
           <Table.Row>
             <Table.ColumnHeaderCell>Project ID</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Project Name</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Updated</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Created</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Operations</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
@@ -43,6 +46,8 @@ const ProjectsListDisplay = ({ projects }: Props) => {
             <Table.Row key={project.id}>
               <Table.RowHeaderCell>{project.id}</Table.RowHeaderCell>
               <Table.Cell>{project.title}</Table.Cell>
+              <Table.Cell>{formatDate(project.updatedAt)}</Table.Cell>
+              <Table.Cell>{formatDate(project.createdAt)}</Table.Cell>
               <Table.Cell className="flex gap-2 items-center">
                 <Button asChild>
                   <Link href={`/admin/projects/${project.id}/edit`}>

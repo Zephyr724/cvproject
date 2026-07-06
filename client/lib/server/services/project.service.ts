@@ -9,11 +9,12 @@ import {
   toPrismaCreateInput,
   toApiResponse,
   toPrismaUpdateInput,
+  toApiResponseSummary,
 } from "@/lib/server/mappers/project.mapper";
 import { ValidateCreateProjectType } from "@/app/api/projects/validationSchema";
 import { BusinessError } from "@/lib/server/errors";
 import { Prisma, TechCategory } from "@/src/generated/prisma/client";
-import { getServerSession } from "next-auth";
+import { getServerSession, Session } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const projectService = {
@@ -53,28 +54,28 @@ export const projectService = {
     if (!project) return null;
     return toApiResponse(project);
   },
-  async getAllProjects() {
-    const projects = await projectRepository.findManyWithDetails();
+  async getAllProjects(ownerId?: string) {
+    const projects = await projectRepository.findMany(ownerId);
     return projects.map(toApiResponse);
   },
 
   async getAllProjectsList(ownerId?: string) {
-    const projects = await projectRepository.findAll(ownerId);
-    return projects.map((p) => ({
-      id: p.id,
-      title: p.title,
-      introduction: p.introduction,
-      coverImageUrl: p.coverImageUrl,
-      projectUrl: p.projectUrl ?? null, // ← undefined → null
-      githubUrl: p.githubUrl ?? null, // ← undefined → null
-      createdAt: p.createdAt.toISOString(),
-      updatedAt: p.updatedAt.toISOString(),
-      // List do not need tags/content，default is []
-      tags: [],
-      techStack: { frontend: [], backend: [] },
-      responsibilities: [],
-      content: null,
-    }));
+    const projects = await projectRepository.findMany(ownerId);
+    return projects.map(toApiResponseSummary);
+  },
+
+  async getAccessibleProjectsList(session: Session | null) {
+    if (session?.user?.role === "ADMIN") {
+      return this.getAllProjectsList();
+    }
+    return this.getAllProjectsList(session?.user.id);
+  },
+
+  async getAccessibleProjects(session: Session | null) {
+    if (session?.user?.role === "ADMIN") {
+      return this.getAllProjects();
+    }
+    return this.getAllProjects(session?.user.id);
   },
 
   async update(
