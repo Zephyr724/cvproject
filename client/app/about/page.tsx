@@ -1,6 +1,6 @@
 import { experienceService } from "@/lib/server/services/experience.service";
 import { educationService } from "@/lib/server/services/education.service";
-import ExperienceCard from "./_components/ExperienceCard";
+import ExperienceCard from "../components/ExperienceCard";
 import EducationCard from "./_components/EducationCard";
 import SectionTitle from "./_components/SectionTitle";
 export const dynamic = "force-dynamic";
