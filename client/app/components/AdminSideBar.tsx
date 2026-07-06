@@ -5,7 +5,10 @@ import { usePathname } from "next/navigation";
 export const AdminSideBar = () => {
   const pathname = usePathname();
 
-  const navLinks = [{ name: "Projects", href: "/admin/projects" }];
+  const navLinks = [
+    { name: "Projects", href: "/admin/projects" },
+    { name: "Experience & Education", href: "/admin/about" },
+  ];
 
   return (
     <div className="flex flex-col bg-blue-200 h-screen">
