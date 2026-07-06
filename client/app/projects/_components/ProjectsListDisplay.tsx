@@ -36,6 +36,7 @@ const ProjectsListDisplay = ({ projects }: Props) => {
           <Table.Row>
             <Table.ColumnHeaderCell>Project ID</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Project Name</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Owen Email</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Updated</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Created</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Operations</Table.ColumnHeaderCell>
@@ -46,6 +47,7 @@ const ProjectsListDisplay = ({ projects }: Props) => {
             <Table.Row key={project.id}>
               <Table.RowHeaderCell>{project.id}</Table.RowHeaderCell>
               <Table.Cell>{project.title}</Table.Cell>
+              <Table.Cell>{project.ownerEmail}</Table.Cell>
               <Table.Cell>{formatDate(project.updatedAt)}</Table.Cell>
               <Table.Cell>{formatDate(project.createdAt)}</Table.Cell>
               <Table.Cell className="flex gap-2 items-center">

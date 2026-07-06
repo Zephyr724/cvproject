@@ -12,6 +12,8 @@ export const AdminProjectPage = async () => {
 
   const projects = await projectService.getAccessibleProjectsList(session);
 
+  console.log(projects)
+
   return (
     <div className="p-4">
       <Button asChild color="green">

@@ -63,7 +63,8 @@ export function toApiResponse(project: ProjectWithIncludes) {
     githubUrl: project.githubUrl,
     createdAt: project.createdAt.toISOString(),
     updatedAt: project.updatedAt.toISOString(),
-    ownerId: project.ownerId,
+    ownerId: project.ownerId ?? null,
+    ownerEmail: project.owner.email ?? null,
     tags: project.tags.map((t) => ({
       id: t.tag.id,
       name: t.tag.name,

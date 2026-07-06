@@ -14,6 +14,8 @@ export interface Project {
   content?: any;
   createdAt: string;
   updatedAt: string;
+  ownerId?: string;
+  ownerEmail?: string;
 }
 
 export interface Tag {

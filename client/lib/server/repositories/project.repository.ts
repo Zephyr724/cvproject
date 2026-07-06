@@ -5,6 +5,7 @@ export const projectInclude = {
   tags: { include: { tag: true } },
   techItems: { include: { techItem: true } },
   roles: { include: { role: true } },
+  owner: { select: { email: true } }
 } satisfies Prisma.ProjectInclude; // use 'satisfies' to ensure this matches the expected type without losing literal types
 
 export type ProjectWithIncludes = Prisma.ProjectGetPayload<{
