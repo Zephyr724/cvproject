@@ -54,28 +54,23 @@ export const projectService = {
     if (!project) return null;
     return toApiResponse(project);
   },
-  async getAllProjects(ownerId?: string) {
-    const projects = await projectRepository.findMany(ownerId);
+
+  async getAccessibleProjects(session: Session | null) {
+    const projects =
+      session?.user?.role === "ADMIN"
+        ? await projectRepository.findMany()
+        : await projectRepository.findMany(session?.user?.id);
+
     return projects.map(toApiResponse);
   },
 
-  async getAllProjectsList(ownerId?: string) {
-    const projects = await projectRepository.findMany(ownerId);
-    return projects.map(toApiResponseSummary);
-  },
-
   async getAccessibleProjectsList(session: Session | null) {
-    if (session?.user?.role === "ADMIN") {
-      return this.getAllProjectsList();
-    }
-    return this.getAllProjectsList(session?.user.id);
-  },
+    const projects =
+      session?.user?.role === "ADMIN"
+        ? await projectRepository.findMany()
+        : await projectRepository.findMany(session?.user?.id);
 
-  async getAccessibleProjects(session: Session | null) {
-    if (session?.user?.role === "ADMIN") {
-      return this.getAllProjects();
-    }
-    return this.getAllProjects(session?.user.id);
+    return projects.map(toApiResponseSummary);
   },
 
   async update(
