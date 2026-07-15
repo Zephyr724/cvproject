@@ -626,6 +626,29 @@ export const ImageCarouselNode = Node.create({
   ],
 };
 
+const bulletListDoc = (items: string[]) => ({
+  type: "doc",
+  content: [
+    {
+      type: "bulletList",
+      content: items.map((text) => ({
+        type: "listItem",
+        content: [
+          {
+            type: "paragraph",
+            content: [
+              {
+                type: "text",
+                text,
+              },
+            ],
+          },
+        ],
+      })),
+    },
+  ],
+});
+
 // ──────────────────────────────────────
 // Project title pool (1-10)
 // ──────────────────────────────────────
@@ -705,7 +728,9 @@ async function main() {
 
     // Reset AUTO_INCREMENT on each table
     await tx.$executeRawUnsafe("ALTER TABLE project_role AUTO_INCREMENT = 1");
-    await tx.$executeRawUnsafe("ALTER TABLE project_tech_item AUTO_INCREMENT = 1");
+    await tx.$executeRawUnsafe(
+      "ALTER TABLE project_tech_item AUTO_INCREMENT = 1",
+    );
     await tx.$executeRawUnsafe("ALTER TABLE project_tag AUTO_INCREMENT = 1");
     await tx.$executeRawUnsafe("ALTER TABLE project AUTO_INCREMENT = 1");
     await tx.$executeRawUnsafe("ALTER TABLE role AUTO_INCREMENT = 1");
@@ -721,9 +746,7 @@ async function main() {
   const seedEmail = process.env.SEED_OWNER_EMAIL;
   const seedRoleRaw = process.env.SEED_OWNER_ROLE?.toUpperCase();
   const seedRole: UserRole =
-    seedRoleRaw === "ADMIN" || seedRoleRaw === "USER"
-      ? seedRoleRaw
-      : "ADMIN";
+    seedRoleRaw === "ADMIN" || seedRoleRaw === "USER" ? seedRoleRaw : "ADMIN";
 
   // Admin user (from your Google login, or fallback)
   let adminUser;
@@ -754,111 +777,6 @@ async function main() {
         role: "ADMIN",
       },
     });
-
-  const experiences = [
-    {
-      title: "Software Developer Intern",
-      company: "ABC Technology Ltd",
-      startDate: new Date("2025-11-01"),
-      endDate: new Date("2026-02-28"),
-      description:
-        "- Developed and maintained web application features using React and Node.js.\n- Collaborated with team members through Git and participated in code reviews.",
-      techItems: ["react", "nodejs"],
-    },
-    {
-      title: "IT Support Assistant",
-      company: "XYZ Solutions",
-      startDate: new Date("2024-06-01"),
-      endDate: new Date("2024-11-30"),
-      description:
-        "- Provided technical support to staff.\n- Troubleshot hardware and software issues.\n- Assisted with system maintenance.",
-      techItems: [],
-    },
-    {
-      title: "Full Stack Developer",
-      company: "Innovation Studio",
-      startDate: new Date("2026-03-01"),
-      endDate: null,
-      description:
-        "- Building full-stack web applications using Next.js, Prisma, and MySQL.\n- Responsible for API development, database design, and deployment.",
-      techItems: ["react", "nodejs", "prisma"],
-    },
-  ];
-
-  for (const exp of experiences) {
-    const { techItems, ...experienceData } = exp;
-    await prisma.experience.upsert({
-      where: { title_company: { title: exp.title, company: exp.company } },
-      update: {
-        ...experienceData,
-
-        techItems: {
-          deleteMany: {},
-          create: techItems.map((slug) => ({
-            techItem: {
-              connect: {
-                slug: slug,
-              },
-            },
-          })),
-        },
-      },
-
-      create: {
-        ...experienceData,
-
-        techItems: {
-          create: techItems.map((slug) => ({
-            techItem: {
-              connect: {
-                slug: slug,
-              },
-            },
-          })),
-        },
-      },
-    });
-  }
-
-  const educations = [
-    {
-      degree: "Bachelor of Computer Science",
-      institution: "Tech University",
-      startDate: new Date("2020-02-01"),
-      endDate: new Date("2024-11-30"),
-      description:
-        "Focused on software engineering, algorithms, databases, and web development.",
-    },
-    {
-      degree: "Master of Data Science",
-      institution: "Global Institute of Technology",
-      startDate: new Date("2025-02-01"),
-      endDate: null,
-      description:
-        "Studied machine learning, big data analytics, artificial intelligence, and cloud computing.",
-    },
-    {
-      degree: "Diploma in Information Technology",
-      institution: "City Polytechnic",
-      startDate: new Date("2018-01-15"),
-      endDate: new Date("2019-12-15"),
-      description:
-        "Covered programming fundamentals, networking, database systems, and IT support.",
-    },
-  ];
-
-  for (const edu of educations) {
-    await prisma.education.upsert({
-      where: {
-        degree_institution: {
-          degree: edu.degree,
-          institution: edu.institution,
-        },
-      },
-      update: {},
-      create: edu,
-    });
-  }
     console.log(
       `⚠️  No SEED_OWNER_EMAIL set — using fallback admin: ${adminUser.email}`,
     );
@@ -994,10 +912,139 @@ async function main() {
         });
       }
     }
-
     console.log(
       `  [${i}/10] "${proj.title}" → owner=${ownerId === adminUser.id ? "admin" : "testuser"}`,
     );
+  }
+
+  const experiences = [
+    {
+      title: "Software Developer Intern",
+      company: "ABC Technology Ltd",
+      startDate: new Date("2025-11-01"),
+      endDate: new Date("2026-02-28"),
+      description: bulletListDoc([
+        "Developed and maintained web application features using React and Node.js.",
+        "Collaborated with team members through Git and participated in code reviews.",
+      ]),
+      techItems: ["react", "nodejs"],
+    },
+    {
+      title: "IT Support Assistant",
+      company: "XYZ Solutions",
+      startDate: new Date("2024-06-01"),
+      endDate: new Date("2024-11-30"),
+      description: bulletListDoc([
+        "Provided technical support to staff.",
+        "Troubleshot hardware and software issues.",
+        "Assisted with system maintenance.",
+      ]),
+      techItems: [],
+    },
+    {
+      title: "Full Stack Developer",
+      company: "Innovation Studio",
+      startDate: new Date("2026-03-01"),
+      endDate: null,
+      description: bulletListDoc([
+        "Building full-stack web applications using Next.js, Prisma, and MySQL.",
+        "Responsible for API development, database design, and deployment.",
+      ]),
+      techItems: ["react", "nodejs", "prisma"],
+    },
+  ];
+
+  for (const exp of experiences) {
+    const { techItems, ...experienceData } = exp;
+    await prisma.experience.upsert({
+      where: {
+        userId_title_company: {
+          userId: adminUser.id,
+          title: exp.title,
+          company: exp.company,
+        },
+      },
+      update: {
+        ...experienceData,
+        userId: adminUser.id,
+
+        techItems: {
+          deleteMany: {},
+          create: techItems.map((slug) => ({
+            techItem: {
+              connect: {
+                slug: slug,
+              },
+            },
+          })),
+        },
+      },
+
+      create: {
+        ...experienceData,
+        userId: adminUser.id,
+
+        techItems: {
+          create: techItems.map((slug) => ({
+            techItem: {
+              connect: {
+                slug: slug,
+              },
+            },
+          })),
+        },
+      },
+    });
+  }
+
+  const educations = [
+    {
+      degree: "Bachelor of Computer Science",
+      institution: "Tech University",
+      startDate: new Date("2020-02-01"),
+      endDate: new Date("2024-11-30"),
+      description: bulletListDoc([
+        "Focused on software engineering, algorithms, databases, and web development.",
+      ]),
+    },
+    {
+      degree: "Master of Data Science",
+      institution: "Global Institute of Technology",
+      startDate: new Date("2025-02-01"),
+      endDate: null,
+
+      description: bulletListDoc([
+        "Studied machine learning, big data analytics, artificial intelligence, and cloud computing.",
+      ]),
+    },
+    {
+      degree: "Diploma in Information Technology",
+      institution: "City Polytechnic",
+      startDate: new Date("2018-01-15"),
+      endDate: new Date("2019-12-15"),
+      description: bulletListDoc([
+        "Covered programming fundamentals, networking, database systems, and IT support.",
+      ]),
+    },
+  ];
+
+  for (const edu of educations) {
+    await prisma.education.upsert({
+      where: {
+        userId_degree_institution: {
+          userId: adminUser.id,
+          degree: edu.degree,
+          institution: edu.institution,
+        },
+      },
+      update: {
+        userId: adminUser.id,
+      },
+      create: {
+        ...edu,
+        userId: adminUser.id,
+      },
+    });
   }
 
   console.log("✅ Seed data inserted successfully!");

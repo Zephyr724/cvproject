@@ -52,6 +52,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   projects      Project[]
+  experiences   Experience[]
+  educations    Education[]
 
   @@map("users")
 }
@@ -158,18 +160,19 @@ model ProjectRole {
 
 
 
-
+// Add user ID with each experience
 model Experience {
   id          Int      @id @default(autoincrement())
   title       String
   company     String
   startDate   DateTime
   endDate     DateTime?
-  description String
+  description Json?
   techItems   ExperienceTechItem[]
-  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@map("experience")
-  @@unique([title, company])
+  @@unique([userId, title, company])
 }
 
 model ExperienceTechItem {
@@ -189,8 +192,10 @@ model Education {
   institution String
   startDate   DateTime
   endDate     DateTime?
-  description String?
+  description Json?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("education")
-  @@unique([degree, institution])
+  @@unique([userId, degree, institution])
 }
