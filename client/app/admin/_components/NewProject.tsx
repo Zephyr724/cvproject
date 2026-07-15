@@ -209,6 +209,7 @@ const NewProject = ({
               return (
                 <>
                   <ContentEditorWYSIWYG
+                    title="Project Details:"
                     onChange={field.onChange}
                     initialContent={field.value}
                   />
