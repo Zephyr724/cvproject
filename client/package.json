@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start -p $PORT",
     "lint": "eslint",
-    "release": "standard-version"
+    "release": "standard-version",
+    "check-gltf": "node scripts/check-gltf.mjs public/models/house.glb"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

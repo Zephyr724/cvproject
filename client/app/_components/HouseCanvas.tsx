@@ -1,163 +1,131 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, Html } from "@react-three/drei";
+import { Suspense, useMemo } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Html, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
-import { ThreeDropdown } from "./ThreeDropdown";
-import {useCamera } from "../context/CameraContext";
+import { useCamera } from "../context/CameraContext";
 
-// 立方体六个面的位置和旋转（平面几何体）
-const FACES = [
-  { name: "front", pos: [0, 0, 0.5], rot: [0, 0, 0], color: "#ff5722" },
-  { name: "back", pos: [0, 0, -0.5], rot: [0, Math.PI, 0], color: "#4caf50" },
-  {
-    name: "left",
-    pos: [-0.5, 0, 0],
-    rot: [0, -Math.PI / 2, 0],
-    color: "#2196f3",
-  },
-  {
-    name: "right",
-    pos: [0.5, 0, 0],
-    rot: [0, Math.PI / 2, 0],
-    color: "#ffeb3b",
-  },
-  {
-    name: "top",
-    pos: [0, 0.5, 0],
-    rot: [-Math.PI / 2, 0, 0],
-    color: "#9c27b0",
-  },
-  {
-    name: "bottom",
-    pos: [0, -0.5, 0],
-    rot: [Math.PI / 2, 0, 0],
-    color: "#00bcd4",
-  },
-];
+// House GLB 模型（修复材质 + 双面渲染）
+function HouseModel() {
+  const { scene } = useGLTF("/models/house.glb");
 
-// 指定哪些面触发什么交互
-const FACE_A = "front"; // 面A：弹出项目页面
-const FACE_B = "right"; // 面B：弹出3D下拉框
+  // useMemo 确保只在 scene 变化时遍历
+  const processedScene = useMemo(() => {
+    const clonedScene = scene.clone(true);
 
-// 下拉框选项（每个选项对应一个项目）
-const DROPDOWN_ITEMS = [
-  { label: "React Project 1", url: "https://react-project1.example.com" },
-  { label: "React Project 2", url: "https://react-project2.example.com" },
-  { label: "Svelte Project", url: "https://svelte-project.example.com" },
-];
+    clonedScene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
 
-// 单个平面组件（支持点击）
-interface FacePlaneProps {
-  position: [number, number, number];
-  rotation: [number, number, number];
-  color: string;
-  name: string;
-  onClick: (name: string, event: any) => void;
+        if (mesh.material) {
+          // mesh.material 可能是单个材质或材质数组（multi-material）
+          const materials = Array.isArray(mesh.material)
+            ? mesh.material
+            : [mesh.material];
+
+          for (const rawMat of materials) {
+            const mat = rawMat as THREE.MeshStandardMaterial;
+
+            // 双面渲染：修复 Blender 导出法线不一致导致的面消失
+            mat.side = THREE.DoubleSide;
+
+            // 修复颜色暗淡：确保颜色空间正确
+            if (mat.map) {
+              mat.map.colorSpace = THREE.SRGBColorSpace;
+            }
+            if (mat.emissiveMap) {
+              mat.emissiveMap.colorSpace = THREE.SRGBColorSpace;
+            }
+
+            // 透明材质处理
+            const transparent = mat.transparent;
+            const opacity = mat.opacity;
+
+            // glTF KHR_materials_transmission 导出 → Three.js 自动创建 MeshPhysicalMaterial
+            // 检查是否为玻璃/透射材质
+            const hasTransmission =
+              mat instanceof THREE.MeshPhysicalMaterial &&
+              mat.transmission > 0;
+
+            if (hasTransmission) {
+              // 玻璃材质：禁用深度写入，确保玻璃后面的物体可见
+              mat.depthWrite = false;
+              mesh.renderOrder = 1;
+            } else if (opacity < 1 || transparent) {
+              // 普通半透明材质（非玻璃）
+              mat.depthWrite = false;
+              mesh.renderOrder = 1;
+              // 只在有 alphaMap（如树叶）时启用 alphaTest 做裁剪
+              mat.alphaTest = mat.alphaMap ? 0.1 : 0;
+            }
+          }
+        }
+      }
+    });
+
+    return clonedScene;
+  }, [scene]);
+
+  return <primitive object={processedScene} scale={1} />;
 }
 
-function FacePlane({
-  position,
-  rotation,
-  color,
-  name,
-  onClick,
-}: FacePlaneProps) {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  return (
-    <mesh
-      ref={meshRef}
-      position={position}
-      rotation={rotation}
-      onClick={(e) => {
-        e.stopPropagation();
-        onClick(name, e);
-      }}
-    >
-      <planeGeometry args={[1, 1]} />
-      <meshStandardMaterial color={color} side={THREE.DoubleSide} />
-    </mesh>
-  );
-}
-
-// 场景内容组件（需要访问相机等）
+// 场景内容
 function SceneContent({
   onOpenModal,
 }: {
   onOpenModal: (title: string, url: string) => void;
 }) {
-  const { controlsRef } = useCamera(); // 获取 controlsRef
-
-  const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState<
-    [number, number, number]
-  >([0, 0, 0]);
-
-  // 处理平面点击
-  const handleFaceClick = useCallback(
-    (faceName: string, event: any) => {
-      if (faceName === FACE_A) {
-        // 面A：打开一个固定的项目页面
-        onOpenModal("React Demo", "https://example.com/react-demo");
-      } else if (faceName === FACE_B) {
-        // 面B：显示下拉框，并获取点击位置的世界坐标
-        // 获取平面的世界坐标
-        const worldPos = event.point; // 点击点的世界坐标
-        setDropdownPosition([worldPos.x, worldPos.y + 0.6, worldPos.z]); // 偏移一点
-        setDropdownVisible(true);
-      } else {
-        // 其他面：可以控制台输出，暂不处理
-        console.log(`Clicked on ${faceName}`);
-      }
-    },
-    [onOpenModal],
-  );
-
-  // 处理下拉框选择
-  const handleDropdownSelect = useCallback(
-    (item: (typeof DROPDOWN_ITEMS)[0]) => {
-      setDropdownVisible(false);
-      onOpenModal(item.label, item.url);
-    },
-    [onOpenModal],
-  );
-
-  // 处理下拉框关闭（点击外部或按关闭按钮）
-  const handleDropdownClose = useCallback(() => {
-    setDropdownVisible(false);
-  }, []);
+  const { controlsRef } = useCamera();
 
   return (
     <>
-      {/* 环境光 + 点光源，让平面有立体感 */}
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} />
+      {/* 商店氛围光：柔和暖色 */}
+      <ambientLight intensity={0.5} color="#fff5e8" />
 
-      {/* 六个面 */}
-      {FACES.map((face) => (
-        <FacePlane
-          key={face.name}
-          name={face.name}
-          position={face.pos as [number, number, number]}
-          rotation={face.rot as [number, number, number]}
-          color={face.color}
-          onClick={handleFaceClick}
-        />
-      ))}
+      {/* 模拟商店轨道灯：从上方投射 */}
+      <pointLight
+        position={[2, 3, 2]}
+        intensity={80}
+        color="#ffe8cc"
+        distance={8}
+        decay={2}
+        castShadow
+      />
+      <pointLight
+        position={[-2, 3, 2]}
+        intensity={60}
+        color="#ffe8cc"
+        distance={8}
+        decay={2}
+      />
+      <pointLight
+        position={[0, 3, -2]}
+        intensity={50}
+        color="#ffe8cc"
+        distance={8}
+        decay={2}
+      />
 
-      {/* 3D 下拉框：使用 Html 组件，位置跟随模型面B */}
-      {dropdownVisible && (
-        <Html position={dropdownPosition} center>
-          <ThreeDropdown
-            items={DROPDOWN_ITEMS}
-            onSelect={handleDropdownSelect}
-            onClose={handleDropdownClose}
-          />
-        </Html>
-      )}
-      {/* 将 ref 绑定到 OrbitControls */}
+      {/* 补光：防止底部过暗 */}
+      <hemisphereLight
+        args={["#fff5e8", "#3a3040", 0.4]}
+      />
+
+      {/* 房屋模型 */}
+      <Suspense
+        fallback={
+          <Html center>
+            <div className="bg-white/80 px-4 py-2 rounded shadow text-sm">
+              Loading...
+            </div>
+          </Html>
+        }
+      >
+        <HouseModel />
+      </Suspense>
+
+      {/* 相机控制 */}
       <OrbitControls ref={controlsRef} enableZoom enablePan />
     </>
   );
@@ -171,7 +139,14 @@ export function HouseCanvas({
 }) {
   return (
     <div className="w-full h-full">
-      <Canvas camera={{ position: [2, 2, 3], fov: 50 }}>
+      <Canvas
+        camera={{ position: [2, 2, 3], fov: 50 }}
+        gl={{
+          outputColorSpace: THREE.SRGBColorSpace,
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.0,
+        }}
+      >
         <SceneContent onOpenModal={onOpenModal} />
       </Canvas>
     </div>
