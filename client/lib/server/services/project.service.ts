@@ -9,11 +9,12 @@ import {
   toPrismaCreateInput,
   toApiResponse,
   toPrismaUpdateInput,
+  toApiResponseSummary,
 } from "@/lib/server/mappers/project.mapper";
 import { ValidateCreateProjectType } from "@/app/api/projects/validationSchema";
 import { BusinessError } from "@/lib/server/errors";
 import { Prisma, TechCategory } from "@/src/generated/prisma/client";
-import { getServerSession } from "next-auth";
+import { getServerSession, Session } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const projectService = {
@@ -53,28 +54,23 @@ export const projectService = {
     if (!project) return null;
     return toApiResponse(project);
   },
-  async getAllProjects() {
-    const projects = await projectRepository.findMany();
+
+  async getAccessibleProjects(session: Session | null) {
+    const projects =
+      session?.user?.role === "ADMIN"
+        ? await projectRepository.findMany()
+        : await projectRepository.findMany(session?.user?.id);
+
     return projects.map(toApiResponse);
   },
 
-  async getAllProjectsList() {
-    const projects = await projectRepository.findManylight();
-    return projects.map((p) => ({
-      id: p.id,
-      title: p.title,
-      introduction: p.introduction,
-      coverImageUrl: p.coverImageUrl,
-      projectUrl: p.projectUrl ?? null, // ← undefined → null
-      githubUrl: p.githubUrl ?? null, // ← undefined → null
-      createdAt: p.createdAt.toISOString(),
-      updatedAt: p.updatedAt.toISOString(),
-      // List do not need tags/content，default is []
-      tags: [],
-      techStack: { frontend: [], backend: [] },
-      responsibilities: [],
-      content: null,
-    }));
+  async getAccessibleProjectsList(session: Session | null) {
+    const projects =
+      session?.user?.role === "ADMIN"
+        ? await projectRepository.findMany()
+        : await projectRepository.findMany(session?.user?.id);
+
+    return projects.map(toApiResponseSummary);
   },
 
   async update(

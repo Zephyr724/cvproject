@@ -1,5 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
+import HomeClient from "./_components/HomeClient";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -8,6 +9,7 @@ export default async function Home() {
     <div className="w-full">
       <main>
         <h1>Hello {session && <span>{session.user!.name}</span>}</h1>
+        <HomeClient />
       </main>
     </div>
   );

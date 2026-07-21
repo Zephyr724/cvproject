@@ -1,5 +1,5 @@
-import { Project } from "../_components/types";
 import ProjectDisplay from "@/app/components/ProjectDisplay";
+import { projectService } from "@/lib/server/services/project.service";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -8,15 +8,11 @@ interface Props {
 export const ProjectPage = async ({ params }: Props) => {
   const { id } = await params;
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects/${id}`,
-  );
+  const project = await projectService.getProject(parseInt(id));
 
-  if (!res.ok) {
+  if (!project) {
     return <div> Project not found</div>;
   }
-
-  const project = (await res.json()) as Project;
 
   return <ProjectDisplay project={project} />;
 };

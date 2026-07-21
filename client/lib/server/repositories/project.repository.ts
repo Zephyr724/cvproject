@@ -5,6 +5,7 @@ export const projectInclude = {
   tags: { include: { tag: true } },
   techItems: { include: { techItem: true } },
   roles: { include: { role: true } },
+  owner: { select: { email: true } }
 } satisfies Prisma.ProjectInclude; // use 'satisfies' to ensure this matches the expected type without losing literal types
 
 export type ProjectWithIncludes = Prisma.ProjectGetPayload<{
@@ -30,14 +31,11 @@ export const projectRepository = {
       include: projectInclude,
     });
   },
-  async findMany(): Promise<ProjectWithIncludes[]> {
+  async findMany(ownerId?: string): Promise<ProjectWithIncludes[]> {
     return prisma.project.findMany({
+      ...(ownerId && { where: { ownerId } }),
       include: projectInclude,
     });
-  },
-
-  async findManylight(): Promise<Project[]> {
-    return prisma.project.findMany();
   },
 
   async deleteById(projectId: number) {

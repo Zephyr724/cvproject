@@ -1,0 +1,17 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 14.11.2021 15:31:40
+
+newmtl main
+	Ns 96.078423
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.803922 0.568627 0.490196
+	Kd 0.803922 0.568627 0.490196
+	Ks 0.500000 0.500000 0.500000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka 1_foodtruck_color.tga.jpeg
+	map_Kd 1_foodtruck_color.tga.jpeg
+	map_d 0_foodtruck_uv_main_Opacity.png

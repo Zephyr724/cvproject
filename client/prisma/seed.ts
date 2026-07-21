@@ -1,6 +1,6 @@
 // prisma/seed.ts
 import "dotenv/config";
-import { PrismaClient } from "@generated/prisma";
+import { PrismaClient, UserRole } from "@generated/prisma";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 
 const adapter = new PrismaMariaDb({
@@ -24,9 +24,7 @@ const tiptapContent = {
     {
       type: "heading",
       attrs: { level: 1 },
-      content: [
-        { type: "text", text: "Implementation" },
-      ],
+      content: [{ type: "text", text: "Implementation" }],
     },
     // Intro paragraph with mixed styles
     {
@@ -41,9 +39,7 @@ const tiptapContent = {
         { type: "text", text: " leveraging " },
         {
           type: "text",
-          marks: [
-            { type: "textStyle", attrs: { color: "#2563eb" } },
-          ],
+          marks: [{ type: "textStyle", attrs: { color: "#2563eb" } }],
           text: "Next.js 14 App Router",
         },
         { type: "text", text: " and " },
@@ -59,9 +55,7 @@ const tiptapContent = {
     {
       type: "heading",
       attrs: { level: 2 },
-      content: [
-        { type: "text", text: "Architecture Overview" },
-      ],
+      content: [{ type: "text", text: "Architecture Overview" }],
     },
     // Paragraph with different font sizes
     {
@@ -111,9 +105,7 @@ const tiptapContent = {
         { type: "text", text: " with MySQL, providing type-safe queries and " },
         {
           type: "text",
-          marks: [
-            { type: "textStyle", attrs: { color: "#d97706" } },
-          ],
+          marks: [{ type: "textStyle", attrs: { color: "#d97706" } }],
           text: "automatic migration management",
         },
         { type: "text", text: "." },
@@ -207,9 +199,7 @@ const tiptapContent = {
     {
       type: "heading",
       attrs: { level: 2 },
-      content: [
-        { type: "text", text: "Key Design Decisions" },
-      ],
+      content: [{ type: "text", text: "Key Design Decisions" }],
     },
     // Ordered list
     {
@@ -227,7 +217,10 @@ const tiptapContent = {
                   marks: [{ type: "bold" }],
                   text: "Tiptap",
                 },
-                { type: "text", text: " as the rich-text editor — extensible, headless, and React-native" },
+                {
+                  type: "text",
+                  text: " as the rich-text editor — extensible, headless, and React-native",
+                },
               ],
             },
           ],
@@ -238,7 +231,10 @@ const tiptapContent = {
             {
               type: "paragraph",
               content: [
-                { type: "text", text: "Replaced deprecated Section model with " },
+                {
+                  type: "text",
+                  text: "Replaced deprecated Section model with ",
+                },
                 {
                   type: "text",
                   marks: [{ type: "italic" }],
@@ -261,7 +257,10 @@ const tiptapContent = {
                   marks: [{ type: "bold" }],
                   text: "custom NodeViews",
                 },
-                { type: "text", text: " for media blocks (ImageCarousel, Video) to keep editing WYSIWYG" },
+                {
+                  type: "text",
+                  text: " for media blocks (ImageCarousel, Video) to keep editing WYSIWYG",
+                },
               ],
             },
           ],
@@ -272,7 +271,10 @@ const tiptapContent = {
             {
               type: "paragraph",
               content: [
-                { type: "text", text: "Separated admin and public routes via " },
+                {
+                  type: "text",
+                  text: "Separated admin and public routes via ",
+                },
                 {
                   type: "text",
                   marks: [{ type: "bold" }],
@@ -304,15 +306,16 @@ const tiptapContent = {
     {
       type: "heading",
       attrs: { level: 2 },
-      content: [
-        { type: "text", text: "Screenshots & Media" },
-      ],
+      content: [{ type: "text", text: "Screenshots & Media" }],
     },
     // Paragraph before carousel
     {
       type: "paragraph",
       content: [
-        { type: "text", text: "Here's a collection of screenshots from the admin dashboard:" },
+        {
+          type: "text",
+          text: "Here's a collection of screenshots from the admin dashboard:",
+        },
       ],
     },
     // ImageCarousel node
@@ -321,7 +324,7 @@ const tiptapContent = {
       attrs: {
         images: [
           {
-           url: "https://picsum.photos/seed/carousel-dashboard/800/600",
+            url: "https://picsum.photos/seed/carousel-dashboard/800/600",
             alt: "Admin dashboard overview",
           },
           {
@@ -440,8 +443,15 @@ const tiptapContent = {
             {
               type: "paragraph",
               content: [
-                { type: "text", marks: [{ type: "bold" }], text: "Planning & Design" },
-                { type: "text", text: " — Wireframed the admin UI and defined the Tiptap extension API." },
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Planning & Design",
+                },
+                {
+                  type: "text",
+                  text: " — Wireframed the admin UI and defined the Tiptap extension API.",
+                },
               ],
             },
           ],
@@ -452,8 +462,15 @@ const tiptapContent = {
             {
               type: "paragraph",
               content: [
-                { type: "text", marks: [{ type: "bold" }], text: "Core Implementation" },
-                { type: "text", text: " — Prisma schema, CRUD API with Zod, custom NodeViews for media blocks." },
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Core Implementation",
+                },
+                {
+                  type: "text",
+                  text: " — Prisma schema, CRUD API with Zod, custom NodeViews for media blocks.",
+                },
               ],
             },
           ],
@@ -464,8 +481,15 @@ const tiptapContent = {
             {
               type: "paragraph",
               content: [
-                { type: "text", marks: [{ type: "bold" }], text: "Editor Toolbar" },
-                { type: "text", text: " — DaisyUI toolbar with headings, lists, code blocks, and media insertion." },
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Editor Toolbar",
+                },
+                {
+                  type: "text",
+                  text: " — DaisyUI toolbar with headings, lists, code blocks, and media insertion.",
+                },
               ],
             },
           ],
@@ -476,8 +500,15 @@ const tiptapContent = {
             {
               type: "paragraph",
               content: [
-                { type: "text", marks: [{ type: "bold" }], text: "Public Renderer" },
-                { type: "text", text: " — Read-only TiptapRenderer mapping node types to React components." },
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Public Renderer",
+                },
+                {
+                  type: "text",
+                  text: " — Read-only TiptapRenderer mapping node types to React components.",
+                },
               ],
             },
           ],
@@ -497,9 +528,7 @@ const tiptapContent = {
     {
       type: "heading",
       attrs: { level: 2 },
-      content: [
-        { type: "text", text: "Code Example" },
-      ],
+      content: [{ type: "text", text: "Code Example" }],
     },
     // Paragraph
     {
@@ -552,9 +581,7 @@ export const ImageCarouselNode = Node.create({
     {
       type: "heading",
       attrs: { level: 2 },
-      content: [
-        { type: "text", text: "Deployment" },
-      ],
+      content: [{ type: "text", text: "Deployment" }],
     },
     {
       type: "paragraph",
@@ -577,7 +604,10 @@ export const ImageCarouselNode = Node.create({
           ],
           text: "AWS ECS",
         },
-        { type: "text", text: " (backend). CI/CD pipelines run automated tests, linting, and database migrations before each deployment." },
+        {
+          type: "text",
+          text: " (backend). CI/CD pipelines run automated tests, linting, and database migrations before each deployment.",
+        },
       ],
     },
     {
@@ -597,109 +627,154 @@ export const ImageCarouselNode = Node.create({
 };
 
 // ──────────────────────────────────────
-// Base project data (without id override)
+// Project title pool (1-10)
 // ──────────────────────────────────────
-const projectData = {
-  id: 1,
-  title: "My first Project",
-  tags: [
-    { id: 1, name: "React", order: 1 },
-    { id: 2, name: "Svelte", order: 2 },
-    { id: 3, name: "Full Stack", order: 3 },
-    { id: 4, name: "Serverless", order: 4 },
-  ],
-  projectUrl: "https://github.com/Zephyr724/cvproject",
-  githubUrl: "https://github.com/Zephyr724/cvproject",
-  techStack: {
-    frontend: [
-      { id: 1, order: 3, name: "React", slug: "react" },
-      { id: 2, order: 1, name: "Next", slug: "next" },
-      { id: 3, order: 2, name: "Svelte", slug: "svelte" },
-      { id: 4, order: 4, name: "Three.js", slug: "threejs" },
-    ],
-    backend: [
-      { id: 1, order: 4, name: "Node.js", slug: "nodejs" },
-      { id: 2, order: 1, name: "Next", slug: "next" },
-      { id: 3, order: 3, name: "Go", slug: "go" },
-      { id: 4, order: 2, name: "Typescript", slug: "typescript" },
-    ],
-  },
-  responsibilities: [
-    { id: 1, order: 4, name: "Frontend developer" },
-    { id: 2, order: 2, name: "Backend developer" },
-    { id: 3, order: 1, name: "UI designer" },
-    { id: 4, order: 99, name: "QA" },
-  ],
-};
+const PROJECT_TITLES = [
+  "My first Project",
+  "E-Commerce Platform",
+  "Portfolio Website",
+  "Task Management App",
+  "Blog CMS",
+  "Real-time Chat App",
+  "Analytics Dashboard",
+  "CI/CD Pipeline",
+  "API Gateway",
+  "SaaS Admin Panel",
+];
 
-// 辅助函数：生成随机的扩充文本
-function randomText(prefix: string, index: number) {
-  return `${prefix} ${index}: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`;
-}
-
-// 生成一个新项目（基于 baseProject 的结构，但修改相应字段）
+// ──────────────────────────────────────
+// Generate a project payload (all share tiptapContent)
+// ──────────────────────────────────────
 function generateProject(id: number, title: string) {
-  // 深拷贝基础结构
-  const newProject = JSON.parse(JSON.stringify(projectData));
-  newProject.id = id;
-  newProject.title = title;
-
-  // 修改 tags（保持原有标签，也可适当变化）
-  newProject.tags = [
-    { id: 1, name: "React", order: 1 },
-    { id: 2, name: "Vue", order: 2 }, // 示例变化
-    { id: 3, name: "Full Stack", order: 3 },
-    { id: 4, name: "GraphQL", order: 4 },
+  const tags = [
+    { name: id % 2 === 0 ? "Tailwind" : "React", order: 1 },
+    { name: id % 3 === 0 ? "GraphQL" : "Full Stack", order: 2 },
+    { name: "Prisma", order: 3 },
   ];
 
-  // 修改 techStack（稍微更改名称和顺序）
-  newProject.techStack = {
-    frontend: [
-      { id: 1, order: 2, name: "React", slug: "react" },
-      { id: 2, order: 1, name: "Vue", slug: "vue" },
-      { id: 3, order: 3, name: "Tailwind", slug: "tailwind" },
-    ],
-    backend: [
-      { id: 1, order: 1, name: "Node.js", slug: "nodejs" },
-      { id: 2, order: 2, name: "GraphQL", slug: "graphql" },
-      { id: 3, order: 3, name: "Prisma", slug: "prisma" },
-    ],
+  const frontend = [
+    { slug: "react", category: "frontend" as const, order: 1 },
+    { slug: "tailwind", category: "frontend" as const, order: 2 },
+    ...(id % 2 === 0
+      ? [{ slug: "vue" as const, category: "frontend" as const, order: 3 }]
+      : []),
+  ];
+
+  const backend = [
+    { slug: "nodejs", category: "backend" as const, order: 1 },
+    { slug: "prisma", category: "backend" as const, order: 2 },
+    ...(id % 3 === 0
+      ? [{ slug: "graphql" as const, category: "backend" as const, order: 3 }]
+      : []),
+  ];
+
+  const techStack = { frontend, backend };
+
+  const responsibilities = [
+    { name: "Full stack developer", order: 1 },
+    ...(id > 5
+      ? [{ name: "DevOps" as const, order: 2 }]
+      : [{ name: "UI designer" as const, order: 2 }]),
+  ];
+
+  return {
+    id,
+    title,
+    tags,
+    techStack,
+    responsibilities,
+    projectUrl: `https://github.com/Zephyr724/project-${id}`,
+    githubUrl: `https://github.com/Zephyr724/project-${id}`,
   };
-
-  // 修改 responsibilities
-  newProject.responsibilities = [
-    { id: 1, order: 1, name: "Full stack developer" },
-    { id: 2, order: 2, name: "DevOps" },
-  ];
-
-  return newProject;
 }
 
 async function main() {
-  // 清空旧数据（按外键依赖顺序删除）
-  await prisma.projectTag.deleteMany();
-  await prisma.projectTechItem.deleteMany();
-  await prisma.projectRole.deleteMany();
-  await prisma.project.deleteMany();
-  await prisma.tag.deleteMany();
-  await prisma.techItem.deleteMany();
-  await prisma.role.deleteMany();
+  // ──────────────────────────────────────
+  // DELETE all data in correct FK order + reset AUTO_INCREMENT
+  // ──────────────────────────────────────
+  await prisma.$transaction(async (tx) => {
+    // Child tables first
+    await tx.projectRole.deleteMany();
+    await tx.projectTechItem.deleteMany();
+    await tx.projectTag.deleteMany();
+    await tx.project.deleteMany(); // FK to users, safe to delete
+    // Independent tables
+    await tx.role.deleteMany();
+    await tx.techItem.deleteMany();
+    await tx.tag.deleteMany();
 
-  // 0. 创建种子用户（用于 owner 关联）
-  const seedUser = await prisma.user.upsert({
-    where: { email: "admin@cvproject.dev" },
-    update: {},
+    // Reset AUTO_INCREMENT on each table
+    await tx.$executeRawUnsafe("ALTER TABLE project_role AUTO_INCREMENT = 1");
+    await tx.$executeRawUnsafe("ALTER TABLE project_tech_item AUTO_INCREMENT = 1");
+    await tx.$executeRawUnsafe("ALTER TABLE project_tag AUTO_INCREMENT = 1");
+    await tx.$executeRawUnsafe("ALTER TABLE project AUTO_INCREMENT = 1");
+    await tx.$executeRawUnsafe("ALTER TABLE role AUTO_INCREMENT = 1");
+    await tx.$executeRawUnsafe("ALTER TABLE tech_item AUTO_INCREMENT = 1");
+    await tx.$executeRawUnsafe("ALTER TABLE tag AUTO_INCREMENT = 1");
+  });
+  console.log("✅ All data deleted, AUTO_INCREMENT reset to 1");
+
+  // ──────────────────────────────────────
+  // 0. Create / locate seed users
+  // ──────────────────────────────────────
+
+  const seedEmail = process.env.SEED_OWNER_EMAIL;
+  const seedRoleRaw = process.env.SEED_OWNER_ROLE?.toUpperCase();
+  const seedRole: UserRole =
+    seedRoleRaw === "ADMIN" || seedRoleRaw === "USER"
+      ? seedRoleRaw
+      : "ADMIN";
+
+  // Admin user (from your Google login, or fallback)
+  let adminUser;
+  if (seedEmail) {
+    adminUser = await prisma.user.findUnique({
+      where: { email: seedEmail },
+    });
+    if (!adminUser) {
+      console.error(
+        `❌ Admin user with email "${seedEmail}" not found. Please log in with Google first, then run seed.`,
+      );
+      process.exit(1);
+    }
+    if (adminUser.role !== seedRole) {
+      await prisma.user.update({
+        where: { id: adminUser.id },
+        data: { role: seedRole },
+      });
+    }
+    console.log(`✅ Admin user: ${adminUser.email} (id=${adminUser.id})`);
+  } else {
+    adminUser = await prisma.user.upsert({
+      where: { email: "admin@cvproject.dev" },
+      update: {},
+      create: {
+        name: "Seed Admin",
+        email: "admin@cvproject.dev",
+        role: "ADMIN",
+      },
+    });
+    console.log(
+      `⚠️  No SEED_OWNER_EMAIL set — using fallback admin: ${adminUser.email}`,
+    );
+  }
+
+  // Test user (non-admin, for permission testing)
+  const testUser = await prisma.user.upsert({
+    where: { email: "testuser@cvproject.dev" },
+    update: { role: "USER" },
     create: {
-      name: "Seed Admin",
-      email: "admin@cvproject.dev",
-      role: "ADMIN",
+      name: "Test User",
+      email: "testuser@cvproject.dev",
+      role: "USER",
     },
   });
+  console.log(`✅ Test user: ${testUser.email} (id=${testUser.id})`);
 
-  // 1. 预先创建标签(Tag)、技术项(TechItem)、角色(Role)实体（避免重复）
-  // 此处为简化，采用 upsert 方式
+  // ──────────────────────────────────────
+  // 1. Upsert tags, techItems, roles
+  // ──────────────────────────────────────
 
-  // 示例：创建基础标签
   const tagNames = [
     "React",
     "Vue",
@@ -716,7 +791,6 @@ async function main() {
     });
   }
 
-  // 创建技术项
   const techItems = [
     { name: "React", slug: "react", isFrontend: true, isBackend: false },
     { name: "Vue", slug: "vue", isFrontend: true, isBackend: false },
@@ -733,7 +807,6 @@ async function main() {
     });
   }
 
-  // 创建角色
   const roleNames = [
     "Full stack developer",
     "Frontend developer",
@@ -750,49 +823,39 @@ async function main() {
     });
   }
 
-  // 2. 插入项目及其关联
-  const projectsData = [
-    projectData,
-    generateProject(2, "E-Commerce Platform"),
-    generateProject(3, "Portfolio Website"),
-    generateProject(4, "Task Management App"),
-    generateProject(5, "Blog CMS"),
-  ];
+  // ──────────────────────────────────────
+  // 2. Insert 10 projects (1-5 → admin, 6-10 → testuser)
+  // ──────────────────────────────────────
 
-  for (const proj of projectsData) {
-    // 创建 Project（第一个项目带 rich content，其余用空占位 content）
+  for (let i = 1; i <= 10; i++) {
+    const ownerId = i <= 5 ? adminUser.id : testUser.id;
+    const proj = generateProject(i, PROJECT_TITLES[i - 1]);
+
     const project = await prisma.project.create({
       data: {
         title: proj.title,
         introduction: `An introduction about ${proj.title}.`,
-        coverImageUrl: `https://picsum.photos/seed/${proj.id}/800/400`,
+        coverImageUrl: `https://picsum.photos/seed/${i}/800/400`,
         projectUrl: proj.projectUrl,
         githubUrl: proj.githubUrl,
-        ownerId: seedUser.id,
-        // 所有项目都附带同一个 Tiptap JSON content（展示所有样式）
+        ownerId,
         content: tiptapContent,
       },
     });
 
-    // 关联 tags (ProjectTag)
-    for (const tagInput of proj.tags) {
-      const tag = await prisma.tag.findUnique({
-        where: { name: tagInput.name },
-      });
+    // Tags
+    for (const t of proj.tags) {
+      const tag = await prisma.tag.findUnique({ where: { name: t.name } });
       if (tag) {
         await prisma.projectTag.create({
-          data: {
-            projectId: project.id,
-            tagId: tag.id,
-            order: tagInput.order,
-          },
+          data: { projectId: project.id, tagId: tag.id, order: t.order },
         });
       }
     }
 
-    // 关联 techItems (ProjectTechItem) — 需要区分 category
+    // TechItems
     for (const [category, items] of Object.entries(proj.techStack)) {
-      for (const item of items as any[]) {
+      for (const item of items as typeof proj.techStack.frontend) {
         const tech = await prisma.techItem.findUnique({
           where: { slug: item.slug },
         });
@@ -802,14 +865,14 @@ async function main() {
               projectId_techItemId_category: {
                 projectId: project.id,
                 techItemId: tech.id,
-                category: category as any,
+                category: category as "frontend" | "backend",
               },
             },
             update: { order: item.order },
             create: {
               projectId: project.id,
               techItemId: tech.id,
-              category: category as any,
+              category: category as "frontend" | "backend",
               order: item.order,
             },
           });
@@ -817,21 +880,19 @@ async function main() {
       }
     }
 
-    // 关联 roles (ProjectRole)
-    for (const roleInput of proj.responsibilities) {
-      const role = await prisma.role.findUnique({
-        where: { name: roleInput.name },
-      });
+    // Roles
+    for (const r of proj.responsibilities) {
+      const role = await prisma.role.findUnique({ where: { name: r.name } });
       if (role) {
         await prisma.projectRole.create({
-          data: {
-            projectId: project.id,
-            roleId: role.id,
-            order: roleInput.order,
-          },
+          data: { projectId: project.id, roleId: role.id, order: r.order },
         });
       }
     }
+
+    console.log(
+      `  [${i}/10] "${proj.title}" → owner=${ownerId === adminUser.id ? "admin" : "testuser"}`,
+    );
   }
 
   console.log("✅ Seed data inserted successfully!");

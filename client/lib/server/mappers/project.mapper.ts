@@ -63,6 +63,8 @@ export function toApiResponse(project: ProjectWithIncludes) {
     githubUrl: project.githubUrl,
     createdAt: project.createdAt.toISOString(),
     updatedAt: project.updatedAt.toISOString(),
+    ownerId: project.ownerId ?? null,
+    ownerEmail: project.owner.email ?? null,
     tags: project.tags.map((t) => ({
       id: t.tag.id,
       name: t.tag.name,
@@ -92,6 +94,16 @@ export function toApiResponse(project: ProjectWithIncludes) {
       order: r.order,
     })),
     content: project.content,
+  };
+}
+
+export function toApiResponseSummary(project: ProjectWithIncludes) {
+  return {
+    ...toApiResponse(project),
+    tags: [],
+    techStack: { frontend: [], backend: [] },
+    responsibilities: [],
+    content: null,
   };
 }
 
@@ -149,7 +161,6 @@ export function toPrismaUpdateInput(
       })),
     };
   }
-
 
   if (projectData.content !== undefined) data.content = projectData.content;
 
