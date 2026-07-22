@@ -2,7 +2,7 @@
 
 import { Button } from "@radix-ui/themes/components/index";
 import ExperienceForm from "./ExperienceForm";
-import { Experience } from "@/app/admin/about/types";
+import { Experience } from "@/app/admin/experience/types";
 import ExperienceCard from "@/app/components/ExperienceCard";
 import { useState } from "react";
 import experienceApiService from "@/lib/api/experience-api-service";
