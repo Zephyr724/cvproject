@@ -1,7 +1,10 @@
 import YearBadge from "@/app/about/_components/YearBadge";
 import { Experience } from "@/app/admin/about/types";
+import TipTapRenderer from "@/lib/tiptap/extensions/TiptapRenderer";
 
 import EditDeleteButtons from "@/app/admin/about/_components/EditDeleteButtons";
+import TiptapRenderer from "@/lib/tiptap/extensions/TiptapRenderer";
+import { JSONContent } from "@tiptap/react";
 
 interface ExperienceCardProps {
   experience: Experience;
@@ -34,13 +37,7 @@ function ExperienceCard({
             />
           </div>
 
-          <ul className="list-disc list-inside">
-            {experience.description.split("\n").map((line, index) => (
-              <li key={index} className="text-md">
-                {line.replace(/^- /, "")}
-              </li>
-            ))}
-          </ul>
+          <TiptapRenderer content={experience.description as JSONContent} />
           {experience.techItems.length > 0 && (
             <div>
               <div className="flex flex-wrap gap-2">
