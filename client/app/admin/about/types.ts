@@ -1,3 +1,5 @@
+import { JSONContent } from "@tiptap/react";
+
 type TechItem = {
   id: number;
   name: string;
@@ -12,6 +14,6 @@ export interface Experience {
   company: string;
   startDate: string | null;
   endDate?: string | null;
-  description: string;
+  description: JSONContent | null;
   techItems: TechItem[];
 }
