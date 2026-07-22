@@ -15,6 +15,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const req = await request.json();
+
   const validateReq = validateCreateExperienceSchema.safeParse(req);
   if (!validateReq.success) {
     return NextResponse.json(
@@ -39,49 +40,3 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function PATCH(req: NextRequest) {
-  try {
-    const session = await requireAuth();
-    const body = await req.json();
-    console.log("Test body: ", body);
-    const experienceId = body.id;
-    await requireExperienceOwner(session, experienceId);
-
-    const validateReq = validateUpdateExperienceSchema.safeParse(body);
-    if (!validateReq.success) {
-      return NextResponse.json(
-        { error: validateReq.error.issues },
-        { status: 400 },
-      );
-    }
-
-    const experience = await experienceService.updateExperience(
-      experienceId,
-      validateReq.data,
-    );
-
-    return NextResponse.json(experience, { status: 200 });
-  } catch (error) {}
-}
-
-export async function DELETE(req: NextRequest) {
-  try {
-    const session = await requireAuth();
-    const body = await req.json();
-    console.log("Test body: ", body);
-    const experienceId = body.id;
-    await requireExperienceOwner(session, experienceId);
-
-    const experience = await experienceService.deleteById(experienceId);
-    return NextResponse.json(experience, { status: 200 });
-  } catch (error) {
-    if (error instanceof BusinessError) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: error.status },
-      );
-    }
-
-    console.log("Unexpected error: ", error);
-  }
-}

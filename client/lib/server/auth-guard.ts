@@ -2,6 +2,8 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession, Session } from "next-auth";
 import { BusinessError } from "./errors";
 import { projectService } from "./services/project.service";
+import experienceApiService from "../api/experience-api-service";
+import { experienceService } from "./services/experience.service";
 
 export async function requireAuth() {
   const session = await getServerSession(authOptions);
@@ -18,11 +20,14 @@ export async function requireProjectOwner(session: Session, projectId: number) {
   return project;
 }
 
-export async function requireExperienceOwner(session: Session, projectId: number) {
-  const project = await projectService.getProject(projectId);
-  if (!project) throw new BusinessError("Project not found", 404);
-  if (session.user.role !== "ADMIN" && project.ownerId !== session.user.id) {
+export async function requireExperienceOwner(
+  session: Session,
+  projectId: number,
+) {
+  const experience = await experienceService.getExperienceById(projectId);
+  if (!experience) throw new BusinessError("Project not found", 404);
+  if (session.user.role !== "ADMIN" && experience.userId !== session.user.id) {
     throw new BusinessError("Forbidden", 403);
   }
-  return project;
+  return experience;
 }
