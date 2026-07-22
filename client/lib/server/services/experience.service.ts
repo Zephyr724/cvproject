@@ -3,7 +3,10 @@ import { toApiResponse } from "@/lib/server/mappers/experience.mapper";
 import { BusinessError } from "../errors";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth/next";
-import { ValidateCreateExperienceType } from "@/app/api/experiences/validationSchema";
+import {
+  ValidateCreateExperienceType,
+  ValidateUpdateExperienceType,
+} from "@/app/api/experiences/validationSchema";
 import { Prisma } from "@/src/generated/prisma/client";
 import error from "next/dist/api/error";
 
@@ -11,6 +14,12 @@ export const experienceService = {
   async getAllExperiences() {
     const experiences = await experienceRepository.findMany();
     return experiences.map(toApiResponse);
+  },
+
+  async getExperienceById(id: number) {
+    const experience = await experienceRepository.findById(id);
+    if (!experience) return null;
+    return toApiResponse(experience);
   },
 
   async createExperience(data: ValidateCreateExperienceType) {
@@ -32,7 +41,7 @@ export const experienceService = {
 
   async updateExperience(
     experienceId: number,
-    data: ValidateCreateExperienceType,
+    data: ValidateUpdateExperienceType,
   ) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) throw new BusinessError("Unauthorized", 401);
@@ -99,19 +108,36 @@ function toPrismaCreateExperienceInput(
 }
 
 function toPrismaUpdateExperienceInput(
-  data: ValidateCreateExperienceType,
+  data: ValidateUpdateExperienceType,
 ): Prisma.ExperienceUpdateInput {
-  return {
-    title: data.title,
-    company: data.company,
-    startDate: new Date(data.startDate),
-    endDate:
-      data.isCurrentlyWorking || !data.endDate ? null : new Date(data.endDate),
-    description: data.description ?? undefined,
+  const updateData: Prisma.ExperienceUpdateInput = {};
 
-    techItems: {
+  if (data.title !== undefined) {
+    updateData.title = data.title;
+  }
+
+  if (data.company !== undefined) {
+    updateData.company = data.company;
+  }
+
+  if (data.startDate !== undefined) {
+    updateData.startDate = new Date(data.startDate);
+  }
+
+  if (data.isCurrentlyWorking === true) {
+    updateData.endDate = null;
+  } else if (data.endDate !== undefined) {
+    updateData.endDate = data.endDate ? new Date(data.endDate) : null;
+  }
+
+  if (data.description !== undefined) {
+    updateData.description = data.description;
+  }
+
+  if (data.techItems !== undefined) {
+    updateData.techItems = {
       deleteMany: {},
-      create: (data.techItems ?? []).map((item) => ({
+      create: data.techItems.map((item) => ({
         techItem: {
           connectOrCreate: {
             where: {
@@ -126,8 +152,10 @@ function toPrismaUpdateExperienceInput(
           },
         },
       })),
-    },
-  };
+    };
+  }
+
+  return updateData;
 }
 
 function handlePrismaError(error: unknown): never {

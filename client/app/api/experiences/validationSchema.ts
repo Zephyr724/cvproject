@@ -26,4 +26,10 @@ export type ValidateCreateExperienceType = z.infer<
   typeof validateCreateExperienceSchema
 >;
 
+export const validateUpdateExperienceSchema =
+  validateCreateExperienceSchema.partial();
+
+export type ValidateUpdateExperienceType = z.infer<
+  typeof validateUpdateExperienceSchema
+>;
 export type TechItem = z.infer<typeof techItemSchema>;
