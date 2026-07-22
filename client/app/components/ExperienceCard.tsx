@@ -52,7 +52,10 @@ function ExperienceCard({
             />
           </div>
 
-          <TiptapRenderer content={experience.description as JSONContent} />
+          <TiptapRenderer
+            content={experience.description as JSONContent}
+            isProject={false}
+          />
           {experience.techItems.length > 0 && (
             <div>
               <div className="flex flex-wrap gap-2">
