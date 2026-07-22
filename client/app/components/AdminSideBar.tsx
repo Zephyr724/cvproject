@@ -7,7 +7,7 @@ export const AdminSideBar = () => {
 
   const navLinks = [
     { name: "Projects", href: "/admin/projects" },
-    { name: "Experience & Education", href: "/admin/about" },
+    { name: "Experience", href: "/admin/experience" },
   ];
 
   return (
