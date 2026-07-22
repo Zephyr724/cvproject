@@ -1,15 +1,31 @@
 "use client";
 
 import { Button } from "@radix-ui/themes/components/index";
-import ExperienceFormContent from "./ExperienceForm";
-import Link from "next/link";
+import ExperienceForm from "./ExperienceForm";
 import { Experience } from "@/app/admin/about/types";
 import ExperienceCard from "@/app/components/ExperienceCard";
 import { useState } from "react";
+import experienceApiService from "@/lib/api/experience-api-service";
+import { useRouter } from "next/navigation";
 
 function ExperienceSection({ experiences }: { experiences: Experience[] }) {
   const [showExperienceFormContent, setShowExperienceFormContent] =
     useState(false);
+  const router = useRouter();
+
+  const handleDelete = async (id: number) => {
+    console.log("Test delete id get: ", id);
+    const res = await experienceApiService.delete(id);
+
+    if (res.status == 200) {
+      console.log(res.data);
+    } else {
+      console.log("Have error");
+    }
+
+    router.refresh();
+  };
+
   return (
     <>
       <h1>Experience</h1>
@@ -24,8 +40,9 @@ function ExperienceSection({ experiences }: { experiences: Experience[] }) {
       </div>
 
       {showExperienceFormContent && (
-        <ExperienceFormContent
+        <ExperienceForm
           onCancel={() => setShowExperienceFormContent(false)}
+          onSuccess={() => setShowExperienceFormContent(false)}
         />
       )}
       {experiences?.map((experience) => (
@@ -33,6 +50,7 @@ function ExperienceSection({ experiences }: { experiences: Experience[] }) {
           key={experience.id}
           experience={experience}
           showActions={true}
+          onDelete={() => handleDelete(experience.id)}
         />
       ))}
     </>

@@ -1,10 +1,14 @@
+"use client";
+
 import YearBadge from "@/app/about/_components/YearBadge";
 import { Experience } from "@/app/admin/about/types";
 import TipTapRenderer from "@/lib/tiptap/extensions/TiptapRenderer";
-
+import ExperienceForm from "../admin/about/_components/ExperienceForm";
 import EditDeleteButtons from "@/app/admin/about/_components/EditDeleteButtons";
 import TiptapRenderer from "@/lib/tiptap/extensions/TiptapRenderer";
 import { JSONContent } from "@tiptap/react";
+import { useState } from "react";
+import { fa } from "zod/v4/locales";
 
 interface ExperienceCardProps {
   experience: Experience;
@@ -19,6 +23,17 @@ function ExperienceCard({
   onEdit,
   onDelete,
 }: ExperienceCardProps) {
+  const [showEditForm, setShowEditForm] = useState(false);
+  if (showEditForm) {
+    return (
+      <ExperienceForm
+        experience={experience}
+        experienceId={experience.id}
+        onCancel={() => setShowEditForm(false)}
+        onSuccess={() => setShowEditForm(false)}
+      />
+    );
+  }
   return (
     <div key={experience.id}>
       <div className="card card-border bg-base-100 shadow-xl border boderder-neutral/20 m-2 ">
@@ -54,7 +69,10 @@ function ExperienceCard({
           )}
 
           {showActions && (
-            <EditDeleteButtons onEdit={onEdit} onDelete={onDelete} />
+            <EditDeleteButtons
+              onEdit={() => setShowEditForm(true)}
+              onDelete={onDelete}
+            />
           )}
         </div>
       </div>
