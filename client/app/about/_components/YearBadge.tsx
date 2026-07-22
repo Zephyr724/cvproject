@@ -4,9 +4,18 @@ interface YearBadgeProps {
 }
 
 function YearBadge({ startDate, endDate }: YearBadgeProps) {
+  function formatDate(date: string | null): string | null {
+    if (!date) return null;
+
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+    });
+  }
+
   return (
     <div className="bg-neutral text-neutral-content rounded-xl px-4 py-2 text-sm ">
-      {startDate} - {endDate ? endDate : "present"}
+      {formatDate(startDate)} - {endDate ? formatDate(endDate) : "present"}
     </div>
   );
 }
