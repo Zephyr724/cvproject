@@ -8,14 +8,14 @@ interface TechItem {
   name?: string;
   order: number;
   slug?: string;
-  category: "frontend" | "backend";
+  category?: "frontend" | "backend";
 }
 
 interface TechItemInputProps {
   value: TechItem[];
   onChange: (TechItems: TechItem[]) => void;
   placeholder?: string;
-  category: "frontend" | "backend";
+  category?: "frontend" | "backend";
 }
 
 const TechItemInput = ({
@@ -47,8 +47,8 @@ const TechItemInput = ({
       newTechItems.push({
         name,
         order: newTechItems.length,
-        category: category,
         slug: name.toLowerCase(),
+        ...(category && { category }),
       });
     }
 

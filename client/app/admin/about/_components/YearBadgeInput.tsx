@@ -2,8 +2,20 @@
 
 import { useState } from "react";
 
-function YearBadgeInput() {
-  const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(false);
+import type {
+  UseFormRegister,
+  UseFormWatch,
+  UseFormSetValue,
+} from "react-hook-form";
+import { ValidateCreateExperienceType } from "@/app/api/experiences/validationSchema";
+interface YearBadgeInputProps {
+  register: UseFormRegister<ValidateCreateExperienceType>;
+  watch: UseFormWatch<ValidateCreateExperienceType>;
+  setValue: UseFormSetValue<ValidateCreateExperienceType>;
+}
+
+function YearBadgeInput({ register, watch, setValue }: YearBadgeInputProps) {
+  const isCurrentlyWorking = watch("isCurrentlyWorking");
 
   return (
     <div className="bg-neutral text-neutral-content rounded-xl px-4 py-2">
@@ -13,6 +25,7 @@ function YearBadgeInput() {
           <input
             type="date"
             className="input input-bordered w-full rounded-md text-primary"
+            {...register("startDate")}
           />
         </label>
 
@@ -26,7 +39,7 @@ function YearBadgeInput() {
             <input
               type="date"
               className="input input-bordered w-full rounded-md text-primary"
-              disabled={isCurrentlyWorking}
+              {...register("endDate")}
             />
           )}
         </label>
@@ -36,8 +49,15 @@ function YearBadgeInput() {
           <input
             type="checkbox"
             className="checkbox checkbox-sm checkbox-primary border-2 border-secondary"
-            checked={isCurrentlyWorking}
-            onChange={(e) => setIsCurrentlyWorking(e.target.checked)}
+            {...register("isCurrentlyWorking", {
+              onChange: (e) => {
+                const checked = e.target.checked;
+
+                if (checked) {
+                  setValue("endDate", "");
+                }
+              },
+            })}
           />
           <span className="text-sm">Currently working here</span>
         </label>
