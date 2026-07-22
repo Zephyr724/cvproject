@@ -46,8 +46,6 @@ export const experienceService = {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) throw new BusinessError("Unauthorized", 401);
     try {
-      // logic for update the experience
-
       const prismaInput = toPrismaUpdateExperienceInput(data);
       const updatedExperience = await experienceRepository.update(
         experienceId,

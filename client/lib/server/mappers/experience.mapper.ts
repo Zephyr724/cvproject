@@ -2,6 +2,7 @@
 
 import { Experience, Prisma } from "@/src/generated/prisma/client";
 import { JSONContent } from "@tiptap/react";
+import { exp } from "three/src/nodes/math/MathNode.js";
 
 type ExperienceWithTechItems = Prisma.ExperienceGetPayload<{
   include: {
@@ -22,5 +23,6 @@ export function toApiResponse(experience: ExperienceWithTechItems) {
     endDate: experience.endDate?.toISOString(),
     description: experience.description as JSONContent,
     techItems: experience.techItems.map((item) => item.techItem),
+    userId: experience.userId,
   };
 }

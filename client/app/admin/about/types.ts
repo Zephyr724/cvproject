@@ -16,4 +16,5 @@ export interface Experience {
   endDate?: string | null;
   description: JSONContent | null;
   techItems: TechItem[];
+  userId: string;
 }
