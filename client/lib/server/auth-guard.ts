@@ -17,3 +17,12 @@ export async function requireProjectOwner(session: Session, projectId: number) {
   }
   return project;
 }
+
+export async function requireExperienceOwner(session: Session, projectId: number) {
+  const project = await projectService.getProject(projectId);
+  if (!project) throw new BusinessError("Project not found", 404);
+  if (session.user.role !== "ADMIN" && project.ownerId !== session.user.id) {
+    throw new BusinessError("Forbidden", 403);
+  }
+  return project;
+}
