@@ -8,7 +8,7 @@ import { VideoNode } from "./VideoNode";
 
 interface Props {
   content: object;
-  isProject: boolean;
+  isProject?: boolean;
 }
 
 const TiptapRenderer = ({ content, isProject = true }: Props) => {
