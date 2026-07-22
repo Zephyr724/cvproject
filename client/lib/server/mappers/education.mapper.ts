@@ -18,5 +18,6 @@ export function toApiResponse(education: Education) {
     startDate: formatDate(education.startDate),
     endDate: formatDate(education.endDate),
     description: education.description,
+    userId: education.userId,
   };
 }

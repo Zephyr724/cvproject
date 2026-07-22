@@ -6,6 +6,7 @@ export const validateCreateEducationSchema = z.object({
   startDate: z.string(),
   endDate: z.string().optional(),
   description: z.any().optional(),
+  isCurrentlyStudying: z.boolean(),
 });
 
 export type ValidateCreateEducationType = z.infer<
