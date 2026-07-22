@@ -15,6 +15,20 @@ export const experienceRepository = {
     });
   },
 
+  async findById(id: number) {
+    return prisma.experience.findFirst({
+      where: { id },
+      include: {
+        techItems: {
+          include: {
+            techItem: true,
+          },
+        },
+      },
+      orderBy: { startDate: "desc" },
+    });
+  },
+
   async create(data: Prisma.ExperienceCreateInput) {
     return prisma.experience.create({
       data,
