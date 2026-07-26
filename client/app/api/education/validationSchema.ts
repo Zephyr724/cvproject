@@ -17,5 +17,5 @@ export const validateUpdateEducationSchema =
   validateCreateEducationSchema.partial();
 
 export type ValidateUpdateEducationType = z.infer<
-  typeof validateCreateEducationSchema
+  typeof validateUpdateEducationSchema
 >;

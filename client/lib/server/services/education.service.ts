@@ -103,9 +103,6 @@ function toPrismaUpdateEducationInput(
   } else if (data.endDate !== undefined) {
     updateData.endDate = data.endDate ? new Date(data.endDate) : null;
   }
-  if (data.degree !== undefined) {
-    updateData.degree = data.degree;
-  }
 
   if (data.description !== undefined) {
     updateData.description = data.description;
