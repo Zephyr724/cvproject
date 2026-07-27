@@ -1,9 +1,9 @@
 "use client";
 
-import YearBadge from "@/app/about/_components/YearBadge";
+import YearBadge from "@/app/components/YearBadge/YearBadge";
 import { Experience } from "@/app/admin/experience/types";
 import ExperienceForm from "../admin/experience/_components/ExperienceForm";
-import EditDeleteButtons from "@/app/admin/experience/_components/EditDeleteButtons";
+import EditDeleteButtons from "@/app/components/EditDeleteButtons";
 import TiptapRenderer from "@/lib/tiptap/extensions/TiptapRenderer";
 import { JSONContent } from "@tiptap/react";
 import { useState } from "react";

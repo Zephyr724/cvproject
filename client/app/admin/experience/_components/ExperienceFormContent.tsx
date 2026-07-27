@@ -13,7 +13,7 @@ import {
 } from "react-hook-form";
 import { Button } from "@radix-ui/themes/components/button";
 import TechItemInput from "@/app/admin/_components/TechItemInput";
-import YearBadgeInput from "./YearBadgeInput";
+import YearBadgeInput from "../../../components/YearBadge/YearBadgeInput";
 import ContentEditorWYSIWYG from "@/app/admin/_components/ContentEditorWYSIWYG";
 import { Callout } from "@radix-ui/themes/components/index";
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
