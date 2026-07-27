@@ -73,6 +73,8 @@ const ExperienceFormContent = ({
             register={register}
             watch={watch}
             setValue={setValue}
+            currentField="isCurrentlyWorking"
+            currentLabel="Currently working here"
           />
         </div>
         <div>
