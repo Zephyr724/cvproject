@@ -1,3 +1,4 @@
+"use client";
 import YearBadge from "@/app/components/YearBadge/YearBadge";
 import { Education } from "@/app/admin/education/types";
 import { useState } from "react";
