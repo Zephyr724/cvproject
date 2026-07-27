@@ -1,7 +1,3 @@
-import {
-  ValidateCreateExperienceType,
-  TechItem,
-} from "@/app/api/experiences/validationSchema";
 import dynamic from "next/dynamic";
 import {
   Control,
@@ -12,26 +8,26 @@ import {
   UseFormSetValue,
 } from "react-hook-form";
 import { Button } from "@radix-ui/themes/components/button";
-import TechItemInput from "@/app/admin/_components/TechItemInput";
 import YearBadgeInput from "../../../components/YearBadge/YearBadgeInput";
 import ContentEditorWYSIWYG from "@/app/admin/_components/ContentEditorWYSIWYG";
 import { Callout } from "@radix-ui/themes/components/index";
+import { ValidateCreateEducationType } from "@/app/api/educations/validationSchema";
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
 });
 
-interface ExperienceFormContentProps {
-  register: UseFormRegister<ValidateCreateExperienceType>;
-  control: Control<ValidateCreateExperienceType>;
-  errors: FieldErrors<ValidateCreateExperienceType>;
-  watch: UseFormWatch<ValidateCreateExperienceType>;
-  setValue: UseFormSetValue<ValidateCreateExperienceType>;
+interface EducationFormContentProps {
+  register: UseFormRegister<ValidateCreateEducationType>;
+  control: Control<ValidateCreateEducationType>;
+  errors: FieldErrors<ValidateCreateEducationType>;
+  watch: UseFormWatch<ValidateCreateEducationType>;
+  setValue: UseFormSetValue<ValidateCreateEducationType>;
   onSubmit: (e: React.FormEvent) => void;
   isEdit?: boolean;
   onCancel: () => void;
 }
 
-const ExperienceFormContent = ({
+const EducationFormContent = ({
   register,
   control,
   errors,
@@ -40,13 +36,13 @@ const ExperienceFormContent = ({
   onSubmit,
   isEdit,
   onCancel,
-}: ExperienceFormContentProps) => {
+}: EducationFormContentProps) => {
   return (
     <div className="card card-border bg-base-100 shadow-xl border boderder-neutral/20 m-2 ">
       <div className="card-body">
-        {errors.title && (
+        {errors.degree && (
           <Callout.Root color="red">
-            <Callout.Text>{errors.title.message}</Callout.Text>
+            <Callout.Text>{errors.degree.message}</Callout.Text>
           </Callout.Root>
         )}
         <div className="flex justify-between items-start gap-4">
@@ -54,17 +50,17 @@ const ExperienceFormContent = ({
             <h2 className="card-title mb-2">
               <input
                 type="text"
-                placeholder="Title"
+                placeholder="Degree"
                 className="input rounded-md"
-                {...register("title")}
+                {...register("degree")}
               />
             </h2>
             <p className="text-sm font-semibold text-slate-400 ">
               <input
                 type="text"
-                placeholder="Company"
+                placeholder="Institution"
                 className="input input-md rounded-md"
-                {...register("company")}
+                {...register("institution")}
               />
             </p>
           </div>
@@ -73,8 +69,8 @@ const ExperienceFormContent = ({
             register={register}
             watch={watch}
             setValue={setValue}
-            currentField="isCurrentlyWorking"
-            currentLabel="Currently working here"
+            currentField="isCurrentlyStudying"
+            currentLabel="Currently studying here"
           />
         </div>
         <div>
@@ -85,33 +81,10 @@ const ExperienceFormContent = ({
               return (
                 <>
                   <ContentEditorWYSIWYG
-                    title="Experience Description"
+                    title="Education Description"
                     onChange={field.onChange}
                     initialContent={field.value}
                   />
-                </>
-              );
-            }}
-          />
-        </div>
-
-        <div>
-          <Controller
-            name="techItems"
-            control={control}
-            render={({ field }) => {
-              const allItems: TechItem[] = field.value ?? [];
-              return (
-                <>
-                  <div>
-                    <label>Select related technologies (Optional):</label>
-                    <TechItemInput
-                      value={allItems}
-                      placeholder="Enter React, Vue, Next.js… press Enter to confirm"
-                      category="frontend"
-                      onChange={field.onChange}
-                    />
-                  </div>
                 </>
               );
             }}
@@ -131,4 +104,4 @@ const ExperienceFormContent = ({
   );
 };
 
-export default ExperienceFormContent;
+export default EducationFormContent;

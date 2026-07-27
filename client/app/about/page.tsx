@@ -1,7 +1,7 @@
 import { experienceService } from "@/lib/server/services/experience.service";
 import { educationService } from "@/lib/server/services/education.service";
 import ExperienceCard from "@/app/components/ExperienceCard";
-import EducationCard from "./_components/EducationCard";
+import EducationCard from "../components/EducationCard";
 import SectionTitle from "./_components/SectionTitle";
 export const dynamic = "force-dynamic";
 
@@ -26,9 +26,9 @@ const AboutPage = async () => {
         description="Here are some of my educational achievements."
         color="neutral-content"
       />
-      {/* {educations?.map((education) => (
+      {educations?.map((education) => (
         <EducationCard key={education.id} education={education} />
-      ))} */}
+      ))}
     </div>
   );
 };

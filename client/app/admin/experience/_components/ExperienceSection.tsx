@@ -9,19 +9,22 @@ import experienceApiService from "@/lib/api/experience-api-service";
 import { useRouter } from "next/navigation";
 
 function ExperienceSection({ experiences }: { experiences: Experience[] }) {
-  const [showExperienceFormContent, setShowExperienceFormContent] =
-    useState(false);
+  const [showExperienceForm, setShowExperienceForm] = useState(false);
   const router = useRouter();
 
   const handleDelete = async (id: number) => {
     console.log("Test delete id get: ", id);
-    const res = await experienceApiService.delete(id);
-
-    if (res.status == 200) {
-      console.log(res.data);
-    } else {
-      console.log("Have error");
-    }
+    
+    try {
+          const res = await experienceApiService.delete(id);
+          if (res.status == 200) {
+            console.log(res.data);
+          } else {
+            console.log("Have error");
+          }
+        } catch (error) {
+          console.log("Have server error");
+        }
 
     router.refresh();
   };
@@ -31,18 +34,15 @@ function ExperienceSection({ experiences }: { experiences: Experience[] }) {
       <h1>Experience</h1>
 
       <div className="my-2">
-        <Button
-          color="green"
-          onClick={() => setShowExperienceFormContent(true)}
-        >
+        <Button color="green" onClick={() => setShowExperienceForm(true)}>
           New Experience
         </Button>
       </div>
 
-      {showExperienceFormContent && (
+      {showExperienceForm && (
         <ExperienceForm
-          onCancel={() => setShowExperienceFormContent(false)}
-          onSuccess={() => setShowExperienceFormContent(false)}
+          onCancel={() => setShowExperienceForm(false)}
+          onSuccess={() => setShowExperienceForm(false)}
         />
       )}
       {experiences?.map((experience) => (

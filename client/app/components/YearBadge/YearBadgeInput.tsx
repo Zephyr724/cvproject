@@ -3,19 +3,31 @@
 import { useState } from "react";
 
 import type {
+  FieldValues,
+  Path,
+  PathValue,
   UseFormRegister,
   UseFormWatch,
   UseFormSetValue,
 } from "react-hook-form";
-import { ValidateCreateExperienceType } from "@/app/api/experiences/validationSchema";
-interface YearBadgeInputProps {
-  register: UseFormRegister<ValidateCreateExperienceType>;
-  watch: UseFormWatch<ValidateCreateExperienceType>;
-  setValue: UseFormSetValue<ValidateCreateExperienceType>;
+
+interface YearBadgeInputProps<T extends FieldValues> {
+  register: UseFormRegister<T>;
+  watch: UseFormWatch<T>;
+  setValue: UseFormSetValue<T>;
+
+  currentField: Path<T>;
+  currentLabel: string;
 }
 
-function YearBadgeInput({ register, watch, setValue }: YearBadgeInputProps) {
-  const isCurrentlyWorking = watch("isCurrentlyWorking");
+function YearBadgeInput<T extends FieldValues>({
+  register,
+  watch,
+  setValue,
+  currentField,
+  currentLabel,
+}: YearBadgeInputProps<T>) {
+  const isCurrentlyWorking = watch(currentField);
 
   return (
     <div className="bg-neutral text-neutral-content rounded-xl px-4 py-2">
@@ -25,7 +37,7 @@ function YearBadgeInput({ register, watch, setValue }: YearBadgeInputProps) {
           <input
             type="date"
             className="input input-bordered w-full rounded-md text-primary"
-            {...register("startDate")}
+            {...register("startDate" as Path<T>)}
           />
         </label>
 
@@ -39,7 +51,7 @@ function YearBadgeInput({ register, watch, setValue }: YearBadgeInputProps) {
             <input
               type="date"
               className="input input-bordered w-full rounded-md text-primary"
-              {...register("endDate")}
+              {...register("endDate" as Path<T>)}
             />
           )}
         </label>
@@ -49,17 +61,17 @@ function YearBadgeInput({ register, watch, setValue }: YearBadgeInputProps) {
           <input
             type="checkbox"
             className="checkbox checkbox-sm checkbox-primary border-2 border-secondary"
-            {...register("isCurrentlyWorking", {
+            {...register(currentField, {
               onChange: (e) => {
                 const checked = e.target.checked;
 
                 if (checked) {
-                  setValue("endDate", "");
+                  setValue("endDate" as Path<T>, "" as PathValue<T, Path<T>>);
                 }
               },
             })}
           />
-          <span className="text-sm">Currently working here</span>
+          <span className="text-sm">{currentLabel}</span>
         </label>
       </div>
     </div>
