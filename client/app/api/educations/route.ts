@@ -11,7 +11,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
-  const validateReq = validateCreateEducationSchema.safeParse(req);
+  const validateReq = validateCreateEducationSchema.safeParse(body);
   if (!validateReq.success) {
     return NextResponse.json(
       { error: validateReq.error.issues },
