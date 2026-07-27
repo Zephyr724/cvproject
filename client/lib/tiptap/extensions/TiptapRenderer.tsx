@@ -8,9 +8,10 @@ import { VideoNode } from "./VideoNode";
 
 interface Props {
   content: object;
+  isProject?: boolean;
 }
 
-const TiptapRenderer = ({ content }: Props) => {
+const TiptapRenderer = ({ content, isProject = true }: Props) => {
   const editor = useEditor({
     extensions: [StarterKit, TextStyleKit, ImageCarouselNode, VideoNode],
     content,
@@ -24,6 +25,16 @@ const TiptapRenderer = ({ content }: Props) => {
   }, [content, editor]);
 
   if (!editor) return null;
+
+  if (!isProject) {
+    return (
+      <div className="">
+        <div className="overflow-hidden">
+          <EditorContent editor={editor} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-600 rounded text-white p-3">

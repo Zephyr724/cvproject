@@ -5,9 +5,10 @@ import { FaListOl, FaListUl } from "react-icons/fa";
 
 interface Props {
   editor: Editor;
+  haveMedia: boolean;
 }
 
-const ContentEditorToolBar = ({ editor }: Props) => {
+const ContentEditorToolBar = ({ editor, haveMedia }: Props) => {
   const ToolsConfig = [
     { label: "B", action: "toggleBold", title: "Bold Ctrl+B" },
     {
@@ -164,28 +165,31 @@ const ContentEditorToolBar = ({ editor }: Props) => {
           </option>
         ))}
       </select>
+      {haveMedia && (
+        <button
+          type="button"
+          className="w-9 h-9 btn btn-ghost rounded border"
+          title="Insert Image Carousel"
+          onClick={() => editor.chain().focus().insertImageCarousel().run()}
+        >
+          <span>
+            <TbPhotoPlus size={24} />
+          </span>
+        </button>
+      )}
 
-      <button
-        type="button"
-        className="w-9 h-9 btn btn-ghost rounded border"
-        title="Insert Image Carousel"
-        onClick={() => editor.chain().focus().insertImageCarousel().run()}
-      >
-        <span>
-          <TbPhotoPlus size={24} />
-        </span>
-      </button>
-
-      <button
-        type="button"
-        className="w-9 h-9 btn btn-ghost rounded border"
-        title="Insert a video"
-        onClick={() => editor.chain().focus().insertVideo().run()}
-      >
-        <span>
-          <RiMovieAiLine size={24} />
-        </span>
-      </button>
+      {haveMedia && (
+        <button
+          type="button"
+          className="w-9 h-9 btn btn-ghost rounded border"
+          title="Insert a video"
+          onClick={() => editor.chain().focus().insertVideo().run()}
+        >
+          <span>
+            <RiMovieAiLine size={24} />
+          </span>
+        </button>
+      )}
     </div>
   );
 };

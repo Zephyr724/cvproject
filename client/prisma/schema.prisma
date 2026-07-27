@@ -52,6 +52,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   projects      Project[]
+  experiences   Experience[]
+  educations    Education[]
 
   @@map("users")
 }
@@ -115,6 +117,7 @@ model TechItem {
   isFrontend Boolean           @default(false)
   isBackend  Boolean           @default(false)
   projects   ProjectTechItem[]
+  experiences ExperienceTechItem[]
 
   @@map("tech_item")
 }
@@ -157,3 +160,42 @@ model ProjectRole {
 
 
 
+// Add user ID with each experience
+model Experience {
+  id          Int      @id @default(autoincrement())
+  title       String
+  company     String
+  startDate   DateTime
+  endDate     DateTime?
+  description Json?
+  techItems   ExperienceTechItem[]
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("experience")
+  @@unique([userId, title, company])
+}
+
+model ExperienceTechItem {
+  experienceId Int
+  techItemId   Int
+
+  experience Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  techItem   TechItem   @relation(fields: [techItemId], references: [id], onDelete: Cascade)
+
+  @@id([experienceId, techItemId])
+  @@map("experience_tech_item")
+}
+
+model Education {
+  id          Int      @id @default(autoincrement())
+  degree      String
+  institution String
+  startDate   DateTime
+  endDate     DateTime?
+  description Json?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("education")
+  @@unique([userId, degree, institution])
+}

@@ -8,11 +8,18 @@ import { ImageCarouselNode } from "@/lib/tiptap/extensions/ImageCarouselNode";
 import { VideoNode } from "@/lib/tiptap/extensions/VideoNode";
 
 interface Props {
+  title: string;
   onChange: (json: object) => void;
   initialContent?: object;
+  haveMedia: boolean;
 }
 
-const ContentEditorWYSIWYG = ({ onChange, initialContent }: Props) => {
+const ContentEditorWYSIWYG = ({
+  title,
+  onChange,
+  initialContent,
+  haveMedia,
+}: Props) => {
   const [jsonOutput, setJsonOutput] = useState("");
   const editor = useEditor({
     extensions: [StarterKit, TextStyleKit, ImageCarouselNode, VideoNode],
@@ -36,10 +43,10 @@ const ContentEditorWYSIWYG = ({ onChange, initialContent }: Props) => {
 
   return (
     <div>
-      <div>Project Details:</div>
+      <div className="mb-2">{title}</div>
 
       {/* Tools bar */}
-      <ContentEditorToolBar editor={editor} />
+      <ContentEditorToolBar editor={editor} haveMedia={haveMedia} />
 
       {/* Editor */}
       <div className="border border-gray-300 rounded bg-base-100 p-1 overflow-hidden ">
