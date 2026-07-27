@@ -9,7 +9,6 @@ export default async function Home() {
     <div className="w-full">
       <main>
         <h1>Hello {session && <span>{session.user!.name}</span>}</h1>
-        <HomeClient />
       </main>
     </div>
   );
