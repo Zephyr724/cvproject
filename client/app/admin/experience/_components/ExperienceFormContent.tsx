@@ -88,6 +88,7 @@ const ExperienceFormContent = ({
                     title="Experience Description"
                     onChange={field.onChange}
                     initialContent={field.value}
+                    haveMedia={false}
                   />
                 </>
               );

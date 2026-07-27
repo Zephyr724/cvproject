@@ -84,6 +84,7 @@ const EducationFormContent = ({
                     title="Education Description"
                     onChange={field.onChange}
                     initialContent={field.value}
+                    haveMedia={false}
                   />
                 </>
               );
