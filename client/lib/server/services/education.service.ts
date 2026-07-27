@@ -3,7 +3,7 @@ import { toApiResponse } from "@/lib/server/mappers/education.mapper";
 import {
   ValidateCreateEducationType,
   ValidateUpdateEducationType,
-} from "@/app/api/education/validationSchema";
+} from "@/app/api/educations/validationSchema";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { BusinessError } from "../errors";

@@ -1,5 +1,6 @@
 // education.mapper.ts
 import { Education } from "@/src/generated/prisma/client";
+import { JSONContent } from "@tiptap/react";
 
 function formatDate(date: Date | null): string | null {
   if (!date) return null;
@@ -17,7 +18,7 @@ export function toApiResponse(education: Education) {
     institution: education.institution,
     startDate: formatDate(education.startDate),
     endDate: formatDate(education.endDate),
-    description: education.description,
+    description: education.description as JSONContent,
     userId: education.userId,
   };
 }
