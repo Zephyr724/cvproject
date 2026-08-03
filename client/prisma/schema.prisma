@@ -55,6 +55,9 @@ model User {
   experiences   Experience[]
   educations    Education[]
 
+  profile Profile?
+  resume      Resume?
+
   @@map("users")
 }
 
@@ -198,4 +201,38 @@ model Education {
 
   @@map("education")
   @@unique([userId, degree, institution])
+}
+
+model Profile {
+  id          Int      @id @default(autoincrement())
+  displayName String
+  headline    String?
+  bio         String?
+  slug        String   @unique
+  isPublic    Boolean  @default(true)
+  linkedin String?
+  github String?
+  email String?
+  website String?
+
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Resume {
+  id           Int      @id @default(autoincrement())
+  originalName String
+  fileUrl      String
+  mimeType     String?
+  fileSize     Int?
+  uploadedAt   DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  userId       String   @unique
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("resume")
 }

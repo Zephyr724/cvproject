@@ -794,6 +794,74 @@ async function main() {
   });
   console.log(`✅ Test user: ${testUser.email} (id=${testUser.id})`);
 
+  // Upsert admin profile
+  await prisma.profile.upsert({
+    where: {
+      userId: adminUser.id,
+    },
+    update: {
+      displayName: adminUser.name ?? "Portfolio Owner",
+      headline: "Software Developer",
+      bio: "Welcome to my portfolio.",
+      email: adminUser.email,
+      linkedin: "https://www.linkedin.com/in/your-linkedin",
+      github: "https://github.com/your-github",
+      website: null,
+      isPublic: true,
+    },
+    create: {
+      displayName: adminUser.name ?? "Portfolio Owner",
+      headline: "Software Developer",
+      bio: "Welcome to my portfolio.",
+      slug: "tiffani-ho",
+      email: adminUser.email,
+      linkedin: "https://www.linkedin.com/in/your-linkedin",
+      github: "https://github.com/your-github",
+      website: null,
+      isPublic: true,
+      user: {
+        connect: {
+          id: adminUser.id,
+        },
+      },
+    },
+  });
+
+  // Upsert test-user profile
+  await prisma.profile.upsert({
+    where: {
+      userId: testUser.id,
+    },
+    update: {
+      displayName: testUser.name ?? "Test User",
+      headline: "Test Profile",
+      bio: "This profile is used for permission testing.",
+      email: testUser.email,
+      linkedin: null,
+      github: null,
+      website: null,
+      isPublic: false,
+    },
+    create: {
+      displayName: testUser.name ?? "Test User",
+      headline: "Test Profile",
+      bio: "This profile is used for permission testing.",
+      slug: "test-user",
+      email: testUser.email,
+      linkedin: null,
+      github: null,
+      website: null,
+      isPublic: false,
+      user: {
+        connect: {
+          id: testUser.id,
+        },
+      },
+    },
+  });
+
+  console.log("✅ Profiles seeded");
+
   // ──────────────────────────────────────
   // 1. Upsert tags, techItems, roles
   // ──────────────────────────────────────
