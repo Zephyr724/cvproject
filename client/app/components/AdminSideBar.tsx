@@ -6,6 +6,7 @@ export const AdminSideBar = () => {
   const pathname = usePathname();
 
   const navLinks = [
+    { name: "Profile", href: "/admin/profile" },
     { name: "Projects", href: "/admin/projects" },
     { name: "Experience", href: "/admin/experience" },
     { name: "Education", href: "/admin/education" },
