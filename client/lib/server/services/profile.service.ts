@@ -10,6 +10,7 @@ import { Prisma } from "@/src/generated/prisma/client";
 import { handlePrismaError } from "./errorHandle.service";
 import { toApiResponse } from "../mappers/profile.mapper";
 import { randomUUID } from "node:crypto";
+import { email } from "zod";
 
 export const profileService = {
   async getProfileBySlug(slug: string) {
@@ -18,35 +19,49 @@ export const profileService = {
     return profile;
   },
 
-  async getProfileById(id: number) {
-    const profile = await profileRepository.findById(id);
+  async getProfileByUserId(userId: string) {
+    const profile = await profileRepository.findById(userId);
     if (!profile) return null;
     return profile;
   },
 
-  async createProfile(data: ValidateCreateProfileType) {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) throw new BusinessError("Unauthorized", 401);
+  async createProfile(user: {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+  }) {
+    const displayName =
+      user.name?.trim() || user.email?.split("@")[0] || "New User";
+    const slug = generateProfileSlug(displayName);
+    const websiteDomain = process.env.WEBSITEDOMAIN;
 
-    const userId = session.user.id;
-    const slug = generateProfileSlug(data.displayName);
+    if (!websiteDomain) {
+      throw new Error("WEBSITEDOMAIN is not configured");
+    }
+
+    const website = new URL(slug, websiteDomain).toString();
     try {
-      const prismaInput = toPrismaCreateProfileInput(data, userId, slug);
-      const createdProfile = await profileRepository.create(prismaInput);
+      const createdProfile = await profileRepository.create({
+        userId: user.id,
+        displayName,
+        email: user.email ?? null,
+        slug,
+        website,
+      });
       return toApiResponse(createdProfile);
     } catch (error) {
       handlePrismaError(error);
     }
   },
 
-  async updateProfile(userId: number, data: ValidateUpdateProfileType) {
+  async updateProfile(data: ValidateUpdateProfileType) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) throw new BusinessError("Unauthorized", 401);
 
     try {
       const prismaInput = toPrismaUpdateProfileInput(data);
       const updatedProfile = await profileRepository.update(
-        userId,
+        session.user.id,
         prismaInput,
       );
       return toApiResponse(updatedProfile);
@@ -76,30 +91,6 @@ function generateProfileSlug(displayName: string): string {
 
   const uniquePart = randomUUID();
   return namePart ? `${namePart}-${uniquePart}` : uniquePart;
-}
-
-function toPrismaCreateProfileInput(
-  data: ValidateCreateProfileType,
-  userId: string,
-  slug: string,
-): Prisma.ProfileCreateInput {
-  return {
-    displayName: data.displayName,
-    headline: data.headline || null,
-    bio: data.bio || null,
-    linkedin: data.linkedin || null,
-    github: data.github || null,
-    email: data.email || null,
-    website: data.website || null,
-    isPublic: data.isPublic,
-    slug,
-
-    user: {
-      connect: {
-        id: userId,
-      },
-    },
-  };
 }
 
 function toPrismaUpdateProfileInput(

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Prisma, Profile, Resume } from "@/src/generated/prisma/client";
+import { Prisma, Profile } from "@/src/generated/prisma/client";
 export const profileRepository = {
   async findBySlug(slug: string) {
     return prisma.profile.findUnique({
@@ -34,48 +34,51 @@ export const profileRepository = {
     });
   },
 
-  async findById(id: number) {
+  async findById(id: string) {
     return prisma.profile.findUnique({
       where: {
-        id,
+        userId: id,
       },
-      select: {
-        displayName: true,
-        headline: true,
-        bio: true,
-        email: true,
-        linkedin: true,
-        github: true,
-        isPublic: true,
-
+      include: {
         user: {
           select: {
-            resume: {
-              select: {
-                id: true,
-                originalName: true,
-                fileUrl: true,
-                mimeType: true,
-                fileSize: true,
-                uploadedAt: true,
-                updatedAt: true,
-              },
-            },
+            resume: true,
           },
         },
       },
     });
   },
 
-  async create(data: Prisma.ProfileCreateInput) {
-    return prisma.profile.create({
-      data,
+  async create(data: {
+    userId: string;
+    displayName: string;
+    email: string | null;
+    slug: string;
+    website: string;
+  }) {
+    return prisma.profile.upsert({
+      where: {
+        userId: data.userId,
+      },
+      update: {},
+      create: {
+        displayName: data.displayName,
+        email: data.email,
+        slug: data.slug,
+        isPublic: false,
+        website: data.website,
+        user: {
+          connect: {
+            id: data.userId,
+          },
+        },
+      },
     });
   },
 
-  async update(id: number, data: Prisma.ProfileUpdateInput) {
+  async update(userId: string, data: Prisma.ProfileUpdateInput) {
     return prisma.profile.update({
-      where: { id },
+      where: { userId: userId },
       data,
     });
   },
