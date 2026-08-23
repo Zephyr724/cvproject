@@ -2,6 +2,7 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
+import { profileService } from "@/lib/server/services/profile.service";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -13,6 +14,15 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: "jwt",
+  },
+  events: {
+    async createUser({ user }) {
+      await profileService.createProfile({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      });
+    },
   },
   callbacks: {
     // write user.id to JWT token
