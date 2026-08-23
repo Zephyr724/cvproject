@@ -10,11 +10,11 @@ import { useRouter } from "next/dist/client/components/navigation";
 import { useForm } from "react-hook-form";
 import profileApiService from "@/lib/api/profile-api-service";
 import ProfileFormContent from "./ProfileFormContent";
+import { useSession } from "next-auth/react";
 
 interface ProfileFormProps {
   onCancel?: () => void;
   onSuccess?: () => void;
-  profileId?: number;
   profile?: Profile | null;
 }
 
@@ -31,14 +31,11 @@ function profileToFormData(profile: Profile): ValidateCreateProfileType {
   };
 }
 
-const ProfileForm = ({
-  onCancel,
-  profileId,
-  profile,
-  onSuccess,
-}: ProfileFormProps) => {
+const ProfileForm = ({ profile, onSuccess }: ProfileFormProps) => {
   const router = useRouter();
-  const isEdit = profileId != null;
+
+  const { data: session } = useSession();
+  const email = session?.user?.email || "";
 
   const {
     register,
@@ -55,7 +52,7 @@ const ProfileForm = ({
           displayName: "",
           headline: "",
           bio: "",
-          email: "",
+          email: email,
           linkedin: "",
           github: "",
           website: "",
@@ -64,13 +61,7 @@ const ProfileForm = ({
   });
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    if (isEdit) {
-      console.log("Editing profile with ID:", profileId, "Data:", data);
-      await profileApiService.update(profileId, data);
-    } else {
-      console.log("Creating new profile with data:", data);
-      await profileApiService.create(data);
-    }
+    await profileApiService.updateCurrent(data);
 
     onSuccess?.();
     router.refresh();
@@ -86,6 +77,8 @@ const ProfileForm = ({
         setValue={setValue}
         errors={errors}
         slug={profile?.slug ?? ""}
+        email={email}
+        website={profile?.website ?? ""}
       />
     </>
   );

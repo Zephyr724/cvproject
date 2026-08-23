@@ -21,6 +21,8 @@ interface ProfileFormContentProps {
   onSubmit: (e: React.FormEvent) => void;
   isEdit?: boolean;
   slug: string;
+  email: string;
+  website: string;
 }
 
 const ProfileFormContent = ({
@@ -32,6 +34,8 @@ const ProfileFormContent = ({
   onSubmit,
   isEdit,
   slug,
+  email,
+  website,
 }: ProfileFormContentProps) => {
   return (
     <form onSubmit={onSubmit} className="space-y-5">
@@ -42,8 +46,8 @@ const ProfileFormContent = ({
           <input
             type="text"
             {...register("displayName")}
-            className="input input-bordered w-full"
-            placeholder="Tiffani Ho"
+            className="input input-bordered w-full rounded-md mt-2"
+            placeholder="Display name"
           />
 
           {errors.displayName && (
@@ -59,7 +63,7 @@ const ProfileFormContent = ({
           <input
             type="text"
             {...register("headline")}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full rounded-md mt-2"
             placeholder="Graduate Software Developer"
           />
 
@@ -76,7 +80,7 @@ const ProfileFormContent = ({
 
         <textarea
           {...register("bio")}
-          className="textarea textarea-bordered min-h-32 w-full"
+          className="textarea textarea-bordered min-h-32 w-full rounded-md mt-2 mb-2"
           placeholder="Write a short introduction about yourself..."
         />
 
@@ -92,32 +96,10 @@ const ProfileFormContent = ({
           <input
             type="email"
             {...register("email")}
-            className="input input-bordered w-full"
-            placeholder="name@example.com"
+            className="input input-bordered w-full rounded-md mt-2"
+            placeholder={email}
+            disabled={true}
           />
-
-          {errors.email && (
-            <span className="mt-1 text-sm text-error">
-              {errors.email.message}
-            </span>
-          )}
-        </label>
-
-        <label className="form-control">
-          <span className="mb-2 text-sm font-medium">Website</span>
-
-          <input
-            type="url"
-            {...register("website")}
-            className="input input-bordered w-full"
-            placeholder="https://yourwebsite.com"
-          />
-
-          {errors.website && (
-            <span className="mt-1 text-sm text-error">
-              {errors.website.message}
-            </span>
-          )}
         </label>
 
         <label className="form-control">
@@ -126,7 +108,7 @@ const ProfileFormContent = ({
           <input
             type="url"
             {...register("linkedin")}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full rounded-md mt-2"
             placeholder="https://linkedin.com/in/..."
           />
 
@@ -143,7 +125,7 @@ const ProfileFormContent = ({
           <input
             type="url"
             {...register("github")}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full rounded-md mt-2"
             placeholder="https://github.com/..."
           />
 
@@ -168,13 +150,13 @@ const ProfileFormContent = ({
 
         <p className="mt-3 text-sm text-base-content/60">
           Your portfolio link:
-          <span className="ml-1">https://yourwebsite.com/{slug}</span>
+          <span className="ml-1">{website}</span>
         </p>
       </div>
 
       <div className="flex justify-end">
         <button type="submit" className="btn btn-primary">
-          {isEdit ? "Update Profile" : "Create Profile"}
+          Update Profile
         </button>
       </div>
     </form>
