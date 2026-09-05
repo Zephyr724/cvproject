@@ -1,4 +1,4 @@
-import { ModelCanvas } from "../_components/ModelCanvas";
+import { ModelCanvas } from "./_components/ModelCanvas";
 
 export default async function ModelPage() {
   return (
