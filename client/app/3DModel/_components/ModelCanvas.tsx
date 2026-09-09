@@ -3,7 +3,7 @@
 // This component uses React hooks and WebGL APIs, so it must run in the browser.
 import { Suspense, useEffect, useRef, useState, type ElementRef } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, useHelper } from "@react-three/drei";
 import { MainModel } from "./MainModel";
 import * as THREE from "three";
 
@@ -23,6 +23,9 @@ function ModelScene({ resetRequest }: { resetRequest: number }) {
   // We select `state.get` so we can read the current camera only when needed,
   // without subscribing this component to every camera movement.
   const getThreeState = useThree((state) => state.get);
+  const lightRef = useRef<THREE.DirectionalLight>(null);
+
+  useHelper(lightRef, THREE.DirectionalLightHelper, 1, "red");
 
   // MainModel measures the loaded GLB and sends its world-space bounding box
   // back through onBoundsReady. Until loading and measurement finish, this is null.
@@ -110,10 +113,15 @@ function ModelScene({ resetRequest }: { resetRequest: number }) {
       <gridHelper args={[10, 10]} />
 
       {/* Ambient light illuminates every surface equally and softens dark areas. */}
-      <ambientLight intensity={0.6} />
+      <ambientLight intensity={1} />
 
       {/* Directional light acts like a distant light with parallel rays. */}
-      <directionalLight position={[-2, 1, -5]} intensity={5} color="#ffffff" />
+      <directionalLight
+        ref={lightRef}
+        position={[-3, 1.5, 3]}
+        intensity={5}
+        color="#fff1e6"
+      />
 
       {/*
         Suspense temporarily renders the fallback while useGLTF loads the GLB.
