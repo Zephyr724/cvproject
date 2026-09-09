@@ -23,9 +23,11 @@ function ModelScene({ resetRequest }: { resetRequest: number }) {
   // We select `state.get` so we can read the current camera only when needed,
   // without subscribing this component to every camera movement.
   const getThreeState = useThree((state) => state.get);
-  const lightRef = useRef<THREE.DirectionalLight>(null);
+  const keyLightRef = useRef<THREE.DirectionalLight>(null!);
+  const fillLightRef = useRef<THREE.DirectionalLight>(null!);
 
-  useHelper(lightRef, THREE.DirectionalLightHelper, 1, "red");
+  useHelper(keyLightRef, THREE.DirectionalLightHelper, 1, "red");
+  useHelper(fillLightRef, THREE.DirectionalLightHelper, 1, "cyan");
 
   // MainModel measures the loaded GLB and sends its world-space bounding box
   // back through onBoundsReady. Until loading and measurement finish, this is null.
@@ -117,10 +119,17 @@ function ModelScene({ resetRequest }: { resetRequest: number }) {
 
       {/* Directional light acts like a distant light with parallel rays. */}
       <directionalLight
-        ref={lightRef}
+        ref={keyLightRef}
         position={[-3, 1.5, 3]}
-        intensity={5}
+        intensity={6}
         color="#fff1e6"
+      />
+
+      <directionalLight
+        ref={fillLightRef}
+        position={[7.1, 0.86, -0.09]}
+        intensity={4}
+        color="#dbeafe"
       />
 
       {/*
