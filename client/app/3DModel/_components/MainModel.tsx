@@ -10,7 +10,7 @@ interface MainModelProps {
 
 export function MainModel({ onBoundsReady }: MainModelProps) {
   // Load the GLB file and get its root scene.
-  const { scene } = useGLTF("/models/coffee_shop.glb");
+  const { scene } = useGLTF("/models/coffee_shop-all.glb");
 
   // Store a reference to the loaded Three.js scene.
   const modelRef = useRef<THREE.Group>(null);
@@ -27,7 +27,17 @@ export function MainModel({ onBoundsReady }: MainModelProps) {
     model.updateWorldMatrix(true, true);
 
     // Create a box that contains the complete model.
-    const box = new THREE.Box3().setFromObject(model);
+    const box = new THREE.Box3();
+
+    model.traverse((object) => {
+      if (!(object instanceof THREE.Mesh)) return;
+
+      // GLTFLoader 会把 Plane.005 清理成 Plane005
+      if (object.name === "Plane005") return;
+
+      const objectBox = new THREE.Box3().setFromObject(object);
+      box.union(objectBox);
+    });
 
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3());
@@ -40,7 +50,6 @@ export function MainModel({ onBoundsReady }: MainModelProps) {
     setBounds(box);
     onBoundsReady(box);
   }, [scene, onBoundsReady]);
-  
 
   return (
     <>
