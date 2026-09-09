@@ -4,7 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
-export function MainModel() {
+interface MainModelProps {
+  onBoundsReady: (box: THREE.Box3) => void;
+}
+
+export function MainModel({ onBoundsReady }: MainModelProps) {
   // Load the GLB file and get its root scene.
   const { scene } = useGLTF("/models/coffee_shop.glb");
 
@@ -34,7 +38,9 @@ export function MainModel() {
     console.log("Model size:", size.toArray());
 
     setBounds(box);
-  }, [scene]);
+    onBoundsReady(box);
+  }, [scene, onBoundsReady]);
+  
 
   return (
     <>
