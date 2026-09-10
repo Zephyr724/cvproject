@@ -30,6 +30,12 @@ export function MainModel({ onBoundsReady }: MainModelProps) {
     const box = new THREE.Box3();
 
     model.traverse((object) => {
+      if (object instanceof THREE.PointLight) {
+        object.visible = false;
+      }
+
+      if (!(object instanceof THREE.Mesh)) return;
+
       if (!(object instanceof THREE.Mesh)) return;
 
       // GLTFLoader 会把 Plane.005 清理成 Plane005

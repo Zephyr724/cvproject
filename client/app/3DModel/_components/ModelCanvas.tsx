@@ -15,6 +15,7 @@ import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUnifo
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
 
 import { BlenderCamera } from "./BlenderCamera";
+import { EffectComposer, N8AO } from "@react-three/postprocessing";
 
 RectAreaLightUniformsLib.init();
 
@@ -149,11 +150,20 @@ function ModelScene({ resetRequest }: { resetRequest: number }) {
       <rectAreaLight
         ref={fillLightRef}
         position={[-1.5, 3.6, 2.5]}
-        color="#ffd0a3"
-        intensity={10}
+        color="#ffd0c7"
+        intensity={5}
         width={5}
         height={5}
       />
+
+      {/* <rectAreaLight
+        ref={fillLightRef}
+        position={[0.17, 2, 4.8]}
+        color="#ffd0a3"
+        intensity={5}
+        width={3}
+        height={3}
+      /> */}
 
       {/*
         Suspense temporarily renders the fallback while useGLTF loads the GLB.
@@ -164,7 +174,7 @@ function ModelScene({ resetRequest }: { resetRequest: number }) {
         <Environment
           files="/hdr/artist_workshop_1k.hdr"
           background={false}
-          environmentIntensity={1}
+          environmentIntensity={2}
           environmentRotation={[0, 0, 0]}
         />
         <MainModel onBoundsReady={setBounds} />
@@ -224,7 +234,7 @@ export function ModelCanvas() {
         gl={{
           antialias: true,
           toneMapping: THREE.AgXToneMapping,
-          toneMappingExposure: 0.8,
+          toneMappingExposure: 1.15,
         }}
         camera={{
           position: [0, 1, 5],
@@ -233,6 +243,9 @@ export function ModelCanvas() {
       >
         <ModelScene resetRequest={resetRequest} />
         <BlenderCamera />
+        <EffectComposer multisampling={4}>
+          <N8AO aoRadius={0.12} intensity={0.65} distanceFalloff={1} />
+        </EffectComposer>
       </Canvas>
 
       {/* This is a normal DOM button layered above the WebGL canvas. */}
