@@ -1,11 +1,15 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+
 
 export const NavBar = () => {
   const { data: session, status } = useSession();
   const pathname = usePathname();
+
+  const searchParams = useSearchParams();
+  const isEmbedded = searchParams.get("embed") === "1";
 
   const navLinks = [
     { name: "Homepage", href: "/" },
@@ -15,6 +19,8 @@ export const NavBar = () => {
     { name: "Admin", href: "/admin" },
     { name: "Sign in", href: "/api/auth/signin" },
   ];
+
+  if (isEmbedded) return null;
 
   return (
     <div className="w-full h-10 bg-blue-300 flex items-center gap-x-3 p-3 font-bold">

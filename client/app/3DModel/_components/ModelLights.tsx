@@ -16,11 +16,11 @@ export function ModelLights() {
   const fillLightRef007 = useRef<THREE.RectAreaLight>(null!);
 
   // 调试完成后建议删除或通过 debug 属性控制
-  useHelper(fillLightRef005, RectAreaLightHelper, "cyan");
-  useHelper(fillLightRef001, RectAreaLightHelper, "red");
-  useHelper(fillLightRef002, RectAreaLightHelper, "blue");
-  useHelper(fillLightRef006, RectAreaLightHelper, "green");
-  useHelper(fillLightRef007, RectAreaLightHelper, "orange");
+  //   useHelper(fillLightRef005, RectAreaLightHelper, "cyan");
+  //   useHelper(fillLightRef001, RectAreaLightHelper, "red");
+  //   useHelper(fillLightRef002, RectAreaLightHelper, "blue");
+  //   useHelper(fillLightRef006, RectAreaLightHelper, "green");
+  //   useHelper(fillLightRef007, RectAreaLightHelper, "orange");
 
   return (
     <>
