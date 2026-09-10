@@ -6,16 +6,20 @@ import * as THREE from "three";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
 
+// Register the shader support required by Three.js rectangular area lights.
 RectAreaLightUniformsLib.init();
 
 export function ModelLights() {
+  // Each ref points to one light after it mounts. useHelper can use these refs
+  // to draw colored rectangles that make invisible light positions easy to debug.
   const fillLightRef005 = useRef<THREE.RectAreaLight>(null!);
   const fillLightRef001 = useRef<THREE.RectAreaLight>(null!);
   const fillLightRef002 = useRef<THREE.RectAreaLight>(null!);
   const fillLightRef006 = useRef<THREE.RectAreaLight>(null!);
   const fillLightRef007 = useRef<THREE.RectAreaLight>(null!);
 
-  // 调试完成后建议删除或通过 debug 属性控制
+  // Uncomment these helpers while adjusting the lights, then comment them again
+  // for the normal view. The colors only identify helpers; they do not change lighting.
   //   useHelper(fillLightRef005, RectAreaLightHelper, "cyan");
   //   useHelper(fillLightRef001, RectAreaLightHelper, "red");
   //   useHelper(fillLightRef002, RectAreaLightHelper, "blue");
@@ -24,6 +28,10 @@ export function ModelLights() {
 
   return (
     <>
+      {/*
+        Area.005 is a warm overhead fill. Its rotation is written in radians
+        because Three.js does not accept Blender's degree values directly.
+      */}
       <rectAreaLight
         ref={fillLightRef005}
         position={[0.003429, 2.2628, 0.62193]}
@@ -38,7 +46,7 @@ export function ModelLights() {
         height={1.117}
       />
 
-      {/* Area.001：左侧补光 */}
+      {/* Area.001 adds white fill from the left to soften dark-facing surfaces. */}
       <rectAreaLight
         ref={fillLightRef001}
         position={[-1.65232, 1.09966, 1.76845]}
@@ -49,7 +57,7 @@ export function ModelLights() {
         height={1}
       />
 
-      {/* Area.002：右侧补光 */}
+      {/* Area.002 balances the scene from the right at a lower intensity. */}
       <rectAreaLight
         ref={fillLightRef002}
         position={[1.53388, 1.09966, -2.03715]}
@@ -60,7 +68,7 @@ export function ModelLights() {
         height={2.023}
       />
 
-      {/* Area.006：另一盏暖色近距离补光 */}
+      {/* Area.006 is a second warm fill placed close to the model. */}
       <rectAreaLight
         ref={fillLightRef006}
         position={[0.003429, 1.98808, -0.764253]}
@@ -71,7 +79,10 @@ export function ModelLights() {
         height={1.117}
       />
 
-      {/* Area.007：远处的大型柔光板 */}
+      {/*
+        Area.007 behaves like a large, distant softbox. Its large width and height
+        spread gentle light across the whole scene instead of one small area.
+      */}
       <rectAreaLight
         ref={fillLightRef007}
         position={[0.01486, 14.7381, -24.80346]}
