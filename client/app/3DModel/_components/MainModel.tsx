@@ -108,8 +108,17 @@ export function MainModel() {
         // `primitive` inserts the already-built Three.js scene into React Three Fiber.
         object={scene}
         onClick={(event: ThreeEvent<MouseEvent>) => {
-          // Ignore clicks outside the menu stand. A valid click opens the HTML overlay.
-          if (!isMenuBoard(event.object)) return;
+          // Only a real left-mouse click should open Projects. Ignore keyboard-made
+          // clicks, other mouse buttons, and pointer drags that end on the menu stand.
+          if (
+            event.nativeEvent.button !== 0 ||
+            event.nativeEvent.detail === 0 ||
+            event.delta > 2 ||
+            !isMenuBoard(event.object)
+          ) {
+            return;
+          }
+
           event.stopPropagation();
           setProjectsOpen(true);
         }}
