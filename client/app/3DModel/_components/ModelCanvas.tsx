@@ -8,6 +8,7 @@ import {
   type ModelControlsRef,
 } from "./ModelScene";
 import { ModelPostProcessing } from "./ModelPostProcessing";
+import { MODEL_PERF } from "./ModelPerfToggles";
 
 export function ModelCanvas() {
   // OrbitControls lives inside the canvas, while the reset button is regular HTML.
@@ -17,6 +18,8 @@ export function ModelCanvas() {
   return (
     <div className="relative h-[calc(100dvh-4rem)] w-full overflow-hidden">
       <Canvas
+        // Pixel ratio directly controls the number of pixels shaded per frame.
+        dpr={MODEL_PERF.pixelRatio}
         // Configure the WebGL renderer once when the canvas is created. Antialiasing
         // smooths model edges; AgX and exposure control how HDR light becomes screen color.
         gl={{

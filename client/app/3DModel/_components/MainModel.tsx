@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Html, useGLTF, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { ThreeEvent } from "@react-three/fiber";
+import { MODEL_PERF } from "./ModelPerfToggles";
 
 export function MainModel() {
   // `scene` is the root Object3D containing all meshes, lights, and groups from Blender.
@@ -23,13 +24,45 @@ export function MainModel() {
 
   const [projectsOpen, setProjectsOpen] = useState(false);
 
+  // Blender's "Plane.005" is sanitized to "Plane005" by GLTFLoader.
+  // Toggle hidePlane005 in ModelPerfToggles.tsx to compare the backdrop cost.
+  useLayoutEffect(() => {
+    const plane005 = scene.getObjectByName("Plane005");
+    if (plane005 && MODEL_PERF.hidePlane005) plane005.visible = false;
+
+    return () => {
+      if (plane005 && MODEL_PERF.hidePlane005) plane005.visible = true;
+    };
+  }, [scene]);
+
   useEffect(() => {
     // Walk through the complete Blender scene and normalize its point lights.
     // This reuses the exported light positions instead of rebuilding them in JSX.
     scene.traverse((object) => {
       if (object instanceof THREE.PointLight) {
-        object.visible = true;
+        object.visible = !MODEL_PERF.disableImportedPointLights;
         object.intensity = 1;
+      }
+
+      if (object instanceof THREE.Mesh) {
+        const materials = Array.isArray(object.material)
+          ? object.material
+          : [object.material];
+        for (const material of materials) {
+          if (MODEL_PERF.forceFrontSide) material.side = THREE.FrontSide;
+          if (
+            MODEL_PERF.disableTransmission &&
+            material instanceof THREE.MeshPhysicalMaterial &&
+            material.transmission > 0
+          ) {
+            material.transmission = 0;
+            material.transparent = true;
+            material.opacity = 0.28;
+            material.depthWrite = false;
+            material.roughness = 0.15;
+          }
+          material.needsUpdate = true;
+        }
       }
     });
   }, [scene]);

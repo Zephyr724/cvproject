@@ -5,6 +5,7 @@ import { useHelper } from "@react-three/drei";
 import * as THREE from "three";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
+import { MODEL_PERF } from "./ModelPerfToggles";
 
 // Register the shader support required by Three.js rectangular area lights.
 RectAreaLightUniformsLib.init();
@@ -16,7 +17,7 @@ export function ModelLights() {
   const fillLightRef001 = useRef<THREE.RectAreaLight>(null!);
   const fillLightRef002 = useRef<THREE.RectAreaLight>(null!);
   const fillLightRef006 = useRef<THREE.RectAreaLight>(null!);
-  const fillLightRef007 = useRef<THREE.RectAreaLight>(null!);
+  // const fillLightRef007 = useRef<THREE.RectAreaLight>(null!);
 
   // Uncomment these helpers while adjusting the lights, then comment them again
   // for the normal view. The colors only identify helpers; they do not change lighting.
@@ -84,13 +85,14 @@ export function ModelLights() {
         spread gentle light across the whole scene instead of one small area.
       */}
       <rectAreaLight
-        ref={fillLightRef007}
         position={[0.01486, 14.7381, -24.80346]}
         quaternion={[0.8547624, 0, 0, 0.5190195]}
         color="#ffffff"
         intensity={0.516}
         width={30.704}
         height={18.232}
+        // Toggle disableArea007 in ModelPerfToggles.tsx to compare this light.
+        visible={!MODEL_PERF.disableArea007}
       />
     </>
   );
