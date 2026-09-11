@@ -1,7 +1,7 @@
 /** Change one switch at a time, then refresh /3DModel and test rotation. */
 export const MODEL_PERF = {
   // Hide the large Blender backdrop; it covers most pixels in the viewport.
-  hidePlane005: true,
+  hidePlane005: false,
   // Replace physical glass transmission with cheap alpha transparency.
   disableTransmission: false,
   // Render closed meshes front-sided only to avoid drawing hidden back faces.
