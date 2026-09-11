@@ -24,6 +24,22 @@ export function MainModel() {
 
   const [projectsOpen, setProjectsOpen] = useState(false);
 
+  useEffect(() => {
+    if (!projectsOpen) return;
+
+    const closeProjectsOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setProjectsOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", closeProjectsOnEscape);
+
+    return () => {
+      window.removeEventListener("keydown", closeProjectsOnEscape);
+    };
+  }, [projectsOpen]);
+
   // Blender's "Plane.005" is sanitized to "Plane005" by GLTFLoader.
   // Toggle hidePlane005 in ModelPerfToggles.tsx to compare the backdrop cost.
   useLayoutEffect(() => {
@@ -113,7 +129,7 @@ export function MainModel() {
               onClick={(event) => event.stopPropagation()}
             >
               <div className="flex h-12 items-center justify-between border-b px-4">
-                <h2 className="font-semibold text-slate-900">Projects</h2>
+                <h2 className="font-semibold text-slate-900">My Projects</h2>
 
                 <button
                   type="button"
