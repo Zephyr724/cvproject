@@ -4,8 +4,9 @@ export const MODEL_PERF = {
   hidePlane005: false,
   // Replace physical glass transmission with cheap alpha transparency.
   disableTransmission: false,
-  // Render closed meshes front-sided only to avoid drawing hidden back faces.
-  forceFrontSide: true,
+  // Preserve exported sides: the delivery cavity and thin surfaces need back faces.
+  // Forcing FrontSide globally makes those surfaces disappear from some views.
+  forceFrontSide: false,
   // Hide point lights embedded in the GLB (the JSX lights remain available).
   disableImportedPointLights: false,
   // Lower values reduce the number of pixels shaded every frame. Test 1 vs 1.25.
