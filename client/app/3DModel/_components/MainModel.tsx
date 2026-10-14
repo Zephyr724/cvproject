@@ -119,6 +119,7 @@ export function MainModel() {
             return;
           }
 
+          // Stop the click from reaching parent objects or meshes behind this one.
           event.stopPropagation();
           setProjectsOpen(true);
         }}
