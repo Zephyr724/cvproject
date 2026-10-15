@@ -6,6 +6,13 @@ import * as THREE from "three";
 import { ThreeEvent } from "@react-three/fiber";
 import { MODEL_PERF } from "./ModelPerfToggles";
 
+type ModelAction = { type: "projects" } | { type: "external"; url: string };
+
+const MODEL_ACTIONS: Record<string, ModelAction> = {
+  MenuStand: { type: "projects" },
+  GitHubBag: { type: "external", url: "https://github.com/Zephyr724" },
+};
+
 export function MainModel() {
   // `scene` is the root Object3D containing all meshes, lights, and groups from Blender.
   const { scene } = useGLTF("/models/coffee_shop-all.glb");
@@ -108,20 +115,35 @@ export function MainModel() {
         // `primitive` inserts the already-built Three.js scene into React Three Fiber.
         object={scene}
         onClick={(event: ThreeEvent<MouseEvent>) => {
+          console.log(event.object);
+
+          const action = findModelAction(event.object);
+
+          if (!action) return;
+
           // Only a real left-mouse click should open Projects. Ignore keyboard-made
           // clicks, other mouse buttons, and pointer drags that end on the menu stand.
           if (
             event.nativeEvent.button !== 0 ||
             event.nativeEvent.detail === 0 ||
-            event.delta > 2 ||
-            !isMenuBoard(event.object)
+            event.delta > 2
+            // !isMenuBoard(event.object)
           ) {
             return;
           }
 
           // Stop the click from reaching parent objects or meshes behind this one.
           event.stopPropagation();
-          setProjectsOpen(true);
+          if (action.type === "projects") {
+            setProjectsOpen(true);
+            return;
+          }
+
+          if (action.type === "external") {
+            // Open the external URL in a new tab without giving it access to this page
+            // or sending this page's URL as referrer information.
+            window.open(action.url, "_blank", "noopener,noreferrer");
+          }
         }}
       />
 
@@ -178,4 +200,18 @@ function isMenuBoard(object: THREE.Object3D) {
   }
 
   return false;
+}
+
+function findModelAction(object: THREE.Object3D): ModelAction | undefined {
+  let current: THREE.Object3D | null = object;
+
+  while (current) {
+    const action = MODEL_ACTIONS[current.name];
+
+    if (action) return action;
+
+    current = current.parent;
+  }
+
+  return undefined;
 }
