@@ -6,11 +6,38 @@ import * as THREE from "three";
 import { ThreeEvent } from "@react-three/fiber";
 import { MODEL_PERF } from "./ModelPerfToggles";
 
-type ModelAction = { type: "projects" } | { type: "external"; url: string };
+type ModelAction =
+  | { type: "embedded"; title: string; url: string }
+  | { type: "external"; url: string };
+
+type ModalContent = { url: string; title: string };
 
 const MODEL_ACTIONS: Record<string, ModelAction> = {
-  MenuStand: { type: "projects" },
+  MenuStand: {
+    type: "embedded",
+    title: "My Projects",
+    url: "/projects?embed=1",
+  },
   GitHubBag: { type: "external", url: "https://github.com/Zephyr724" },
+  LinkedInBag: {
+    type: "external",
+    url: "https://www.linkedin.com/in/zephyr-chan-7269a06a/",
+  },
+  VendingMachine: {
+    type: "embedded",
+    title: "My Experience",
+    url: "/about?embed=1#experience",
+  },
+  FreeBookLibrary: {
+    type: "embedded",
+    title: "My Education",
+    url: "/about?embed=1#education",
+  },
+  Postbox: {
+    type: "embedded",
+    title: "Send Me Email",
+    url: "mailto:",
+  },
 };
 
 export function MainModel() {
@@ -29,23 +56,23 @@ export function MainModel() {
     },
   );
 
-  const [projectsOpen, setProjectsOpen] = useState(false);
+  const [modalContent, setModalContent] = useState<ModalContent | null>(null);
 
   useEffect(() => {
-    if (!projectsOpen) return;
+    if (!modalContent) return;
 
-    const closeProjectsOnEscape = (event: KeyboardEvent) => {
+    const closeModalOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setProjectsOpen(false);
+        setModalContent(null);
       }
     };
 
-    window.addEventListener("keydown", closeProjectsOnEscape);
+    window.addEventListener("keydown", closeModalOnEscape);
 
     return () => {
-      window.removeEventListener("keydown", closeProjectsOnEscape);
+      window.removeEventListener("keydown", closeModalOnEscape);
     };
-  }, [projectsOpen]);
+  }, [modalContent]);
 
   // Blender's "Plane.005" is sanitized to "Plane005" by GLTFLoader.
   // Toggle hidePlane005 in ModelPerfToggles.tsx to compare the backdrop cost.
@@ -115,27 +142,24 @@ export function MainModel() {
         // `primitive` inserts the already-built Three.js scene into React Three Fiber.
         object={scene}
         onClick={(event: ThreeEvent<MouseEvent>) => {
-          console.log(event.object);
-
           const action = findModelAction(event.object);
 
           if (!action) return;
 
-          // Only a real left-mouse click should open Projects. Ignore keyboard-made
-          // clicks, other mouse buttons, and pointer drags that end on the menu stand.
+          // Only a genuine left-button click should trigger a model action.
+          // Ignore other buttons and pointer drags that end over an interactive object.
           if (
             event.nativeEvent.button !== 0 ||
             event.nativeEvent.detail === 0 ||
             event.delta > 2
-            // !isMenuBoard(event.object)
           ) {
             return;
           }
 
           // Stop the click from reaching parent objects or meshes behind this one.
           event.stopPropagation();
-          if (action.type === "projects") {
-            setProjectsOpen(true);
+          if (action.type === "embedded") {
+            setModalContent({ title: action.title, url: action.url });
             return;
           }
 
@@ -147,35 +171,42 @@ export function MainModel() {
         }}
       />
 
-      {projectsOpen && (
+      {modalContent && (
         // Html renders regular DOM above the WebGL canvas. fullscreen makes the
         // overlay cover the canvas rather than follow a point in the 3D scene.
         <Html fullscreen zIndexRange={[100, 0]}>
           {/* The outer backdrop closes the modal; the inner panel stops that click. */}
           <div
             className="flex h-full w-full items-center justify-center bg-black/60 p-4"
-            onClick={() => setProjectsOpen(false)}
+            onClick={() => {
+              setModalContent(null);
+            }}
           >
             <div
               className="flex h-[85vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
               onClick={(event) => event.stopPropagation()}
             >
               <div className="flex h-12 items-center justify-between border-b px-4">
-                <h2 className="font-semibold text-slate-900">My Projects</h2>
+                <h2 className="font-semibold text-slate-900">
+                  {modalContent.title}
+                </h2>
 
                 <button
                   type="button"
-                  onClick={() => setProjectsOpen(false)}
+                  onClick={() => {
+                    setModalContent(null);
+                  }}
                   className="rounded px-3 py-1 text-xl text-slate-900 hover:bg-slate-100"
+                  aria-label="Close dialog"
                 >
                   ×
                 </button>
               </div>
 
               <iframe
-                // embed=1 tells the Projects page to hide its own navigation bar.
-                src="/projects?embed=1"
-                title="Projects"
+                // embed=1 tells internal pages to hide the site's main navigation.
+                src={modalContent.url}
+                title={modalContent.title}
                 className="min-h-0 flex-1 border-0"
               />
             </div>
@@ -184,22 +215,6 @@ export function MainModel() {
       )}
     </>
   );
-}
-
-function isMenuBoard(object: THREE.Object3D) {
-  let current: THREE.Object3D | null = object;
-
-  // A pointer ray usually hits a child mesh rather than the top-level MenuStand
-  // group. Follow each parent until that group is found or the scene root is passed.
-  while (current) {
-    if (current.name === "MenuStand") {
-      return true;
-    }
-
-    current = current.parent;
-  }
-
-  return false;
 }
 
 function findModelAction(object: THREE.Object3D): ModelAction | undefined {
