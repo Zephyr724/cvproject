@@ -11,24 +11,28 @@ const AboutPage = async () => {
 
   return (
     <div>
-      <SectionTitle
-        title="Experience"
-        description="Here are some of my work experiences."
-      />
-      {experiences?.map((experience) => (
-        <ExperienceCard key={experience.id} experience={experience} />
-      ))}
+      <section id="experience">
+        <SectionTitle
+          title="Experience"
+          description="Here are some of my work experiences."
+        />
+        {experiences?.map((experience) => (
+          <ExperienceCard key={experience.id} experience={experience} />
+        ))}
 
-      <br />
+        <br />
+      </section>
 
-      <SectionTitle
-        title="Education"
-        description="Here are some of my educational achievements."
-        color="neutral-content"
-      />
-      {educations?.map((education) => (
-        <EducationCard key={education.id} education={education} />
-      ))}
+      <section id="education" className="min-h-screen">
+        <SectionTitle
+          title="Education"
+          description="Here are some of my educational achievements."
+          color="neutral-content"
+        />
+        {educations?.map((education) => (
+          <EducationCard key={education.id} education={education} />
+        ))}
+      </section>
     </div>
   );
 };
