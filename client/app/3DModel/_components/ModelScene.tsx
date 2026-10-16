@@ -3,7 +3,7 @@
 import { ContactShadows, Environment, OrbitControls } from "@react-three/drei";
 import { Suspense, type ComponentRef, type RefObject } from "react";
 import { BlenderCamera } from "./BlenderCamera";
-import { MainModel } from "./MainModel";
+import { CoffeeShopModel } from "./CoffeeShopModel";
 import { ModelLights } from "./ModelLights";
 import { useThree } from "@react-three/fiber";
 
@@ -36,7 +36,7 @@ export function ModelScene({ controlsRef }: ModelSceneProps) {
           background={false}
           environmentIntensity={2}
         />
-        <MainModel />
+        <CoffeeShopModel />
       </Suspense>
 
       {/*
