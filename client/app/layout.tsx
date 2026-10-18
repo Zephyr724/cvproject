@@ -5,6 +5,7 @@ import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 import NavBar from "./components/NavBar";
 import AuthProvider from "./auth/Provider";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,9 @@ export default function RootLayout({
       >
         <AuthProvider>
           <Theme>
-            <NavBar />
+            <Suspense fallback={null}>
+              <NavBar />
+            </Suspense>
             {children}
           </Theme>
         </AuthProvider>
