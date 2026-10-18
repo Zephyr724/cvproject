@@ -1,6 +1,7 @@
 import { educationService } from "@/lib/server/services/education.service";
 import EducationCard from "../components/EducationCard";
-import SectionTitle from "../about/_components/SectionTitle";
+import SectionTitle from "../about/_components/SectionTitle"
+export const dynamic = "force-dynamic";
 
 export default async function EducationPage() {
   const educations = await educationService.getAllEducations();
