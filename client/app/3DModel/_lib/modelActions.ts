@@ -23,12 +23,12 @@ export const MODEL_ACTIONS: Record<string, ModelAction> = {
   VendingMachine: {
     type: "embedded",
     title: "My Experience",
-    url: "/about?embed=1#experience",
+    url: "/experience?embed=1",
   },
   FreeBookLibrary: {
     type: "embedded",
     title: "My Education",
-    url: "/about?embed=1#education",
+    url: "/education?embed=1",
   },
   Postbox: {
     type: "embedded",

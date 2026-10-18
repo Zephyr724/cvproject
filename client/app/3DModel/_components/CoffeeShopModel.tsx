@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useGLTF } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
 import useModelPerfOverrides from "../_hooks/useModelPerfOverrides";
