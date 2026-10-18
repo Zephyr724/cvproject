@@ -806,7 +806,7 @@ async function main() {
       email: adminUser.email,
       linkedin: "https://www.linkedin.com/in/your-linkedin",
       github: "https://github.com/your-github",
-      website: null,
+      website: "http://localhost:5050/profile-test",
       isPublic: true,
     },
     create: {
@@ -817,7 +817,7 @@ async function main() {
       email: adminUser.email,
       linkedin: "https://www.linkedin.com/in/your-linkedin",
       github: "https://github.com/your-github",
-      website: null,
+      website: "http://localhost:5050/profile-test",
       isPublic: true,
       user: {
         connect: {
