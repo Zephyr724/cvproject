@@ -1,6 +1,7 @@
 import { experienceService } from "@/lib/server/services/experience.service";
 import ExperienceCard from "../components/ExperienceCard";
 import SectionTitle from "../about/_components/SectionTitle";
+export const dynamic = "force-dynamic";
 
 export default async function ExperiencePage() {
   const experiences = await experienceService.getAllExperiences();
