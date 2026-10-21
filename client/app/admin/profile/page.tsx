@@ -9,8 +9,12 @@ export default async function AdminProfilePage() {
   if (!session?.user?.id) {
     redirect("/api/auth/signin");
   }
-  const userId = session.user.id;
-  const profile = await profileService.getProfileByUserId(userId);
+  const profile = await profileService.ensureProfile({
+    id: session.user.id,
+    name: session.user.name,
+    email: session.user.email,
+  });
+
   return (
     <div className="mx-auto max-w-4xl space-y-8 px-6 py-10">
       <section className="rounded-md border border-base-300 bg-base-100 p-6 shadow-sm">

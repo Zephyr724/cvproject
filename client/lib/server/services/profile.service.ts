@@ -25,6 +25,20 @@ export const profileService = {
     return profile;
   },
 
+  async ensureProfile(user: {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+  }) {
+    const existingProfile = await profileRepository.findById(user.id);
+
+    if (existingProfile) {
+      return existingProfile;
+    }
+
+    return profileService.createProfile(user);
+  },
+
   async createProfile(user: {
     id: string;
     name?: string | null;
@@ -48,7 +62,7 @@ export const profileService = {
         slug,
         website,
       });
-      return toApiResponse(createdProfile);
+      return createdProfile;
     } catch (error) {
       handlePrismaError(error);
     }

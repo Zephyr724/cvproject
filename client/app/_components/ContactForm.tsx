@@ -1,8 +1,9 @@
 import { Button } from "@radix-ui/themes";
 interface ContactFormProps {
   email: string;
+  profileSlug: string;
 }
-function ContactForm({ email }: ContactFormProps) {
+function ContactForm({ email, profileSlug }: ContactFormProps) {
   return (
     <section className="mx-auto max-w-4xl py-20">
       <div className="rounded-2xl border border-base-300 bg-base-100 p-8 shadow-lg">

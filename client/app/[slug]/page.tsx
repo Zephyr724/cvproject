@@ -77,7 +77,7 @@ export default async function ProfolioPage({ params }: ProfolioPageProps) {
         </div>
 
         <div>
-          <ContactForm email={profile.email || ""} />
+          <ContactForm email={profile.email || ""} profileSlug={slug} />
         </div>
       </main>
     </div>
