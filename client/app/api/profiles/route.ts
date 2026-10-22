@@ -35,7 +35,10 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    console.log("Unexpected error: ", error);
+    console.error("Unexpected error: ", error);
+    return NextResponse.json(
+      { error: "Unable to update profile." },
+      { status: 500 },
+    );
   }
 }
-

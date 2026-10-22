@@ -3,14 +3,16 @@
 import { useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
-import {
-  ModelScene,
-  type ModelControlsRef,
-} from "./ModelScene";
+import { ModelScene, type ModelControlsRef } from "./ModelScene";
 import { ModelPostProcessing } from "./ModelPostProcessing";
 import { MODEL_PERF } from "./ModelPerfToggles";
+import { ModelProfileContext } from "../_lib/modelActions";
 
-export function ModelCanvas() {
+interface ModelCanvasProps {
+  profile: ModelProfileContext;
+}
+
+export function ModelCanvas({ profile }: ModelCanvasProps) {
   // OrbitControls lives inside the canvas, while the reset button is regular HTML.
   // Sharing this ref lets the outside button call the controls' reset() method.
   const controlsRef = useRef<ModelControlsRef>(null);
@@ -31,7 +33,7 @@ export function ModelCanvas() {
         camera={{ position: [0, 1, 5], fov: 50 }}
       >
         {/* ModelScene contains the 3D objects; post-processing affects its final image. */}
-        <ModelScene controlsRef={controlsRef} />
+        <ModelScene controlsRef={controlsRef} profile={profile} />
         <ModelPostProcessing />
       </Canvas>
 

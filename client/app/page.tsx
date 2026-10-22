@@ -1,72 +1,16 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
-import { experienceService } from "@/lib/server/services/experience.service";
-import { educationService } from "@/lib/server/services/education.service";
-import SectionTitle from "./about/_components/SectionTitle";
-import ExperienceCard from "./components/ExperienceCard";
-import EducationCard from "./components/EducationCard";
-import { projectService } from "@/lib/server/services/project.service";
-import ProjectCard from "./components/ProjectCard";
+// app/page.tsx
+import Link from "next/link";
 
-export default async function Home() {
-  const session = await getServerSession(authOptions);
-  const experiences = await experienceService.getAllExperiences();
-  const educations = await educationService.getAllEducations();
-  const projects = await projectService.getAccessibleProjectsList(session);
-
+export default function HomePage() {
   return (
-    <div className="w-full">
-      <main>
-        <div>
-          <SectionTitle
-            title={`Hello ${session?.user?.name ?? ""}`}
-            description=""
-            color="neutral-content"
-          />
-        </div>
+    <main className="flex min-h-screen flex-col items-center justify-center gap-6">
+      <h1 className="text-4xl font-bold">Welcome to CVProject</h1>
 
-        <div>
-          <SectionTitle
-            title="Experience"
-            description="Here are some of my work experiences."
-          />
-          {experiences?.map((experience) => (
-            <ExperienceCard key={experience.id} experience={experience} />
-          ))}
-        </div>
+      <p>Create and share your interactive portfolio.</p>
 
-        <div>
-          <SectionTitle
-            title="Project"
-            description=""
-            color="neutral-content"
-          />
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(360px,1fr))] gap-3 place-items-start p-3">
-            {projects?.map((project) => (
-              <ProjectCard project={project} key={project.id} />
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <SectionTitle
-            title="Education"
-            description="Here are some of my educational achievements."
-            color="neutral-content"
-          />
-          {educations?.map((education) => (
-            <EducationCard key={education.id} education={education} />
-          ))}
-        </div>
-
-        <div>
-          <SectionTitle
-            title="Contact Card"
-            description="Contact me here~"
-            color="neutral-content"
-          />
-        </div>
-      </main>
-    </div>
+      <Link href="/tiffani-ho" className="btn btn-primary">
+        View Example Portfolio
+      </Link>
+    </main>
   );
 }

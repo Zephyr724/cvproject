@@ -1,27 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useGLTF } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
 import useModelPerfOverrides from "../_hooks/useModelPerfOverrides";
 import useMenuPosterTexture from "../_hooks/useMenuPosterTexture";
 import {
+  createModelActions,
   type EmbeddedModelAction,
   findModelAction,
+  ModelProfileContext,
 } from "../_lib/modelActions";
 import EmbeddedPageDialog from "./EmbeddedPageDialog";
 
-export function CoffeeShopModel() {
+interface CoffeeShopModelProps {
+  profile: ModelProfileContext;
+}
+
+export function CoffeeShopModel({ profile }: CoffeeShopModelProps) {
   // `scene` is the root Object3D containing all meshes, lights, and groups from Blender.
   const { scene } = useGLTF("/models/coffee_shop-all.glb");
+
   const [activeEmbeddedAction, setActiveEmbeddedAction] =
     useState<EmbeddedModelAction | null>(null);
+
+  const modelActions = useMemo(() => createModelActions(profile), [profile]);
 
   useModelPerfOverrides(scene);
   useMenuPosterTexture(scene);
 
   const handleModelClick = (event: ThreeEvent<MouseEvent>) => {
-    const action = findModelAction(event.object);
+    const action = findModelAction(event.object, modelActions);
 
     if (!action) return;
 

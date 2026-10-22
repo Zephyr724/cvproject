@@ -55,6 +55,12 @@ export const projectService = {
     return toApiResponse(project);
   },
 
+  async getProjectByOwnerId(id: number, ownerId: string) {
+    const project = await projectRepository.findByIdAndOwnerId(id, ownerId);
+    if (!project) return null;
+    return toApiResponse(project);
+  },
+
   async getAccessibleProjects(session: Session | null) {
     const projects =
       session?.user?.role === "ADMIN"

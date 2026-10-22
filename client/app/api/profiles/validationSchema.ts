@@ -1,5 +1,18 @@
 import { z } from "zod";
 
+// These names already belong to application routes and cannot identify a
+// public profile at the root of the site.
+const RESERVED_PROFILE_SLUGS = new Set([
+  "about",
+  "admin",
+  "api",
+  "education",
+  "experience",
+  "projects",
+  "3dmodel",
+  "test-tiptap",
+]);
+
 export const validateCreateProfileSchema = z.object({
   displayName: z
     .string()
@@ -32,6 +45,20 @@ export const validateCreateProfileSchema = z.object({
     .url("Please enter a valid website URL")
     .optional()
     .or(z.literal("")),
+
+  slug: z
+    .string()
+    .trim()
+    .min(3, "Slug must be at least 3 characters")
+    .max(60, "Slug is too long")
+    .regex(
+      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      "Use lowercase letters, numbers, and hyphens only",
+    )
+    .refine(
+      (slug) => !RESERVED_PROFILE_SLUGS.has(slug),
+      "This portfolio URL is reserved",
+    ),
 });
 
 export type ValidateCreateProfileType = z.infer<

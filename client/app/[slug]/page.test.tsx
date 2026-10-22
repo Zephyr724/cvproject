@@ -67,7 +67,7 @@ vi.mock("../_components/ContactForm", () => ({
   default: () => <form aria-label="Contact form" />,
 }));
 
-import ProfolioPage from "./page";
+import OverviewPage from "./overview/page";
 
 describe("public profile isolation", () => {
   beforeEach(() => {
@@ -103,7 +103,7 @@ describe("public profile isolation", () => {
   });
 
   it("loads and renders only the owner of the requested profile", async () => {
-    const page = await ProfolioPage({ params: { slug: "user-a-profile" } });
+    const page = await OverviewPage({ params: { slug: "user-a-profile" } });
     const html = renderToStaticMarkup(page);
 
     expect(getProfileBySlug).toHaveBeenCalledWith("user-a-profile");
