@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@radix-ui/themes";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { FaRegCopy } from "react-icons/fa";
 
 interface ContactFormProps {
@@ -14,9 +14,39 @@ interface SubmitFeedback {
   message: string;
 }
 
+interface CopyFeedback {
+  type: "success" | "error";
+  message: string;
+}
+
 function ContactForm({ email, profileSlug }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<SubmitFeedback | null>(null);
+  const [copyFeedback, setCopyFeedback] = useState<CopyFeedback | null>(null);
+
+  const feedbackRef = useRef<HTMLParagraphElement>(null);
+
+  // Move focus to the result so keyboard and assistive-technology users
+  // receive immediate confirmation after the asynchronous submission.
+  useEffect(() => {
+    if (feedback) {
+      feedbackRef.current?.focus();
+    }
+  }, [feedback]);
+
+  // Keep copy feedback temporary while cleaning up the timer on rerenders
+  // and unmounts to avoid updating an inactive component.
+  useEffect(() => {
+    if (!copyFeedback) return;
+
+    const timeoutId = window.setTimeout(() => {
+      setCopyFeedback(null);
+    }, 2000);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [copyFeedback]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -46,18 +76,18 @@ function ContactForm({ email, profileSlug }: ContactFormProps) {
         await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || "Unable to send the message");
+        throw new Error(result.error || "Unable to send the message.");
       }
 
       setFeedback({
         type: "success",
-        message: result.message || "Message sent successfully",
+        message: result.message || "Message sent successfully!",
       });
 
       form.reset();
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Unable to send the message";
+        error instanceof Error ? error.message : "Unable to send the message.";
 
       setFeedback({
         type: "error",
@@ -68,13 +98,29 @@ function ContactForm({ email, profileSlug }: ContactFormProps) {
     }
   }
 
+  async function handleCopyEmail() {
+    try {
+      await navigator.clipboard.writeText(email);
+
+      setCopyFeedback({
+        type: "success",
+        message: "Email copied!",
+      });
+    } catch {
+      setCopyFeedback({
+        type: "error",
+        message: "Unable to copy email.",
+      });
+    }
+  }
+
   return (
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="mx-auto max-w-4xl py-20"
+      className="mx-auto max-w-4xl scroll-mt-16 py-12 sm:py-20"
     >
-      <div className="rounded-2xl border border-base-300 bg-base-100 p-8 shadow-lg">
+      <div className="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-lg sm:p-8">
         <h2 id="contact-heading" className="text-3xl font-bold sm:text-4xl">
           Contact Me
         </h2>
@@ -85,16 +131,29 @@ function ContactForm({ email, profileSlug }: ContactFormProps) {
         </p>
 
         {email && (
-          <p className="mt-2 flex flex-nowrap items-center gap-2 whitespace-nowrap text-base-content/70">
+          <p className="mt-2 flex flex-wrap items-center gap-2  text-base-content/70">
             Prefer email?{" "}
             <button
               type="button"
-              className="inline-flex cursor-pointer items-center gap-1 transition-opacity hover:opacity-70"
-              onClick={() => navigator.clipboard.writeText(email)}
+              aria-label={`Copy ${email} to clipboard`}
+              className="inline-flex max-w-full min-w-0 cursor-pointer items-center gap-1 transition-opacity hover:opacity-70"
+              onClick={handleCopyEmail}
             >
-              {email}
-              <FaRegCopy aria-hidden="true" />
+              <span className="break-all">{email}</span>
+              <FaRegCopy className="shrink-0" aria-hidden="true" />
             </button>
+            {copyFeedback && (
+              <span
+                role="status"
+                className={
+                  copyFeedback.type === "success"
+                    ? "text-sm text-success"
+                    : "text-sm text-error"
+                }
+              >
+                {copyFeedback.message}
+              </span>
+            )}
             <a className="link" href={`mailto:${email}`}>
               Or email me directly.
             </a>
@@ -166,6 +225,8 @@ function ContactForm({ email, profileSlug }: ContactFormProps) {
 
           {feedback && (
             <p
+              ref={feedbackRef}
+              tabIndex={-1}
               role={feedback.type === "error" ? "alert" : "status"}
               aria-live="polite"
               className={
@@ -178,12 +239,16 @@ function ContactForm({ email, profileSlug }: ContactFormProps) {
             </p>
           )}
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-base-content/60">
               I&apos;ll reply as soon as possible.
             </p>
 
-            <Button type="submit" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full sm:w-auto"
+            >
               {isSubmitting ? "Sending..." : "Send Message"}
             </Button>
           </div>

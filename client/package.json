@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start -p $PORT",
     "lint": "eslint",
+    "test": "vitest run",
     "release": "standard-version",
     "check-gltf": "node scripts/check-gltf.mjs public/models/house.glb"
   },
@@ -70,7 +71,8 @@
     "tailwindcss": "^4.2.4",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.22.4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.0.5"
   },
   "overrides": {
     "postcss": "8.5.10",

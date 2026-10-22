@@ -1,4 +1,4 @@
-import notFound from "next/navigation";
+import { notFound } from "next/navigation";
 import { profileService } from "@/lib/server/services/profile.service";
 import { experienceService } from "@/lib/server/services/experience.service";
 import { educationService } from "@/lib/server/services/education.service";
@@ -7,8 +7,6 @@ import SectionTitle from "@/app/about/_components/SectionTitle";
 import ExperienceCard from "@/app/components/ExperienceCard";
 import EducationCard from "@/app/components/EducationCard";
 import ProjectCard from "@/app/components/ProjectCard";
-import { Button } from "@radix-ui/themes";
-import { FaGithub, FaLinkedin, FaRegFile } from "react-icons/fa";
 import ProfolioHeader from "@/app/_components/ProfileHeader";
 import ContactForm from "../_components/ContactForm";
 
@@ -23,18 +21,17 @@ export default async function ProfolioPage({ params }: ProfolioPageProps) {
 
   const profile = await profileService.getProfileBySlug(slug);
   if (!profile || !profile.isPublic) {
-    return (
-      <div>
-        <h1>Profile Not Found</h1>
-      </div>
-    );
+    notFound();
   }
   const resume = profile?.user?.resume?.fileUrl;
+  const userId = profile?.userId;
 
-  // Later add project
-  const [experiences, educations] = await Promise.all([
-    experienceService.getAllExperiences(),
-    educationService.getAllEducations(),
+  // Load every portfolio section with the same owner ID so one public profile
+  // can never display another user's content.
+  const [experiences, educations, projects] = await Promise.all([
+    experienceService.getExperiencesByUserId(userId),
+    educationService.getEducationsByUserId(userId),
+    projectService.getProjectsByUserId(userId),
   ]);
 
   return (
@@ -54,19 +51,6 @@ export default async function ProfolioPage({ params }: ProfolioPageProps) {
 
         <div>
           <SectionTitle
-            title="Project"
-            description=""
-            color="neutral-content"
-          />
-          {/* <div className="grid grid-cols-[repeat(auto-fill,minmax(360px,1fr))] gap-3 place-items-start p-3">
-            {projects?.map((project) => (
-              <ProjectCard project={project} key={project.id} />
-            ))}
-          </div> */}
-        </div>
-
-        <div>
-          <SectionTitle
             title="Education"
             description="Here are some of my educational achievements."
             color="neutral-content"
@@ -74,6 +58,19 @@ export default async function ProfolioPage({ params }: ProfolioPageProps) {
           {educations?.map((education) => (
             <EducationCard key={education.id} education={education} />
           ))}
+        </div>
+
+        <div>
+          <SectionTitle
+            title="Project"
+            description=""
+            color="neutral-content"
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-3 place-items-start p-3">
+            {projects?.map((project) => (
+              <ProjectCard project={project} key={project.id} />
+            ))}
+          </div>
         </div>
 
         {profile.email ? (

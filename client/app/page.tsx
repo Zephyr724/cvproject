@@ -7,7 +7,6 @@ import ExperienceCard from "./components/ExperienceCard";
 import EducationCard from "./components/EducationCard";
 import { projectService } from "@/lib/server/services/project.service";
 import ProjectCard from "./components/ProjectCard";
-import { Button } from "@radix-ui/themes";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -24,9 +23,6 @@ export default async function Home() {
             description=""
             color="neutral-content"
           />
-          <Button asChild>
-            <a href="#contact">Hire Me</a>
-          </Button>
         </div>
 
         <div>

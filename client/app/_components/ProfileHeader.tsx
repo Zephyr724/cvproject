@@ -31,14 +31,6 @@ export default function ProfileHeader({ profile, resume }: ProfileHeaderProps) {
             </Button>
           )}
 
-          {/* {resume && (
-                <Button asChild className="w-full">
-                  <a href={resume} target="_blank" rel="noopener noreferrer">
-                    Download Resume
-                  </a>
-                </Button>
-              )} */}
-
           <div className="flex gap-3">
             {profile.email && (
               <Button asChild>

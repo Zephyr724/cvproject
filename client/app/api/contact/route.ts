@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     body = await request.json();
   } catch {
     return NextResponse.json(
-      { error: "Request body must be valid JSON" },
+      { error: "Request body must be valid JSON." },
       { status: 400 },
     );
   }
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
   if (!validation.success) {
     return NextResponse.json(
       {
-        error: "Invalid contact request",
+        error: "Invalid contact request.",
         issues: validation.error.issues,
       },
       { status: 400 },
@@ -36,14 +36,14 @@ export async function POST(request: NextRequest) {
     // Treat private and missing profiles the same to avoid exposing private data.
     if (!profile || !profile.isPublic) {
       return NextResponse.json(
-        { error: "Public profile not found" },
+        { error: "Public profile not found." },
         { status: 404 },
       );
     }
 
     if (!profile.email) {
       return NextResponse.json(
-        { error: "This profile cannot receive contact messages" },
+        { error: "This profile cannot receive contact messages." },
         { status: 422 },
       );
     }
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(
-      { message: "Message sent successfully" },
+      { message: "Message sent successfully!" },
       { status: 200 },
     );
   } catch (error) {
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
     console.error("Failed to process contact request:", error);
 
     return NextResponse.json(
-      { error: "Unable to send the message at this time" },
+      { error: "Unable to send the message at this time." },
       { status: 500 },
     );
   }

@@ -15,6 +15,10 @@ export const experienceService = {
     const experiences = await experienceRepository.findMany();
     return experiences.map(toApiResponse);
   },
+  async getExperiencesByUserId(userId: string) {
+    const experiences = await experienceRepository.findManyByUserId(userId);
+    return experiences.map(toApiResponse);
+  },
 
   async getExperienceById(id: number) {
     const experience = await experienceRepository.findById(id);

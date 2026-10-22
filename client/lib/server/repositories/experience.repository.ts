@@ -15,6 +15,20 @@ export const experienceRepository = {
     });
   },
 
+  async findManyByUserId(userId: string) {
+    return prisma.experience.findMany({
+      where: { userId },
+      include: {
+        techItems: {
+          include: {
+            techItem: true,
+          },
+        },
+      },
+      orderBy: { startDate: "desc" },
+    });
+  },
+
   async findById(id: number) {
     return prisma.experience.findFirst({
       where: { id },
