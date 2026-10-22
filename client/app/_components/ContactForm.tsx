@@ -2,6 +2,7 @@
 
 import { Button } from "@radix-ui/themes";
 import { FormEvent, useState } from "react";
+import { FaRegCopy } from "react-icons/fa";
 
 interface ContactFormProps {
   email: string;
@@ -68,14 +69,37 @@ function ContactForm({ email, profileSlug }: ContactFormProps) {
   }
 
   return (
-    <section className="mx-auto max-w-4xl py-20">
+    <section
+      id="contact"
+      aria-labelledby="contact-heading"
+      className="mx-auto max-w-4xl py-20"
+    >
       <div className="rounded-2xl border border-base-300 bg-base-100 p-8 shadow-lg">
-        <h2 className="text-4xl font-bold">Contact Me</h2>
+        <h2 id="contact-heading" className="text-3xl font-bold sm:text-4xl">
+          Contact Me
+        </h2>
 
         <p className="mt-3 text-base-content/70">
           Have a project in mind or interested in working together? Feel free to
-          send me a message. Or you can reach me directly at {email}.
+          send me a message.
         </p>
+
+        {email && (
+          <p className="mt-2 flex flex-nowrap items-center gap-2 whitespace-nowrap text-base-content/70">
+            Prefer email?{" "}
+            <button
+              type="button"
+              className="inline-flex cursor-pointer items-center gap-1 transition-opacity hover:opacity-70"
+              onClick={() => navigator.clipboard.writeText(email)}
+            >
+              {email}
+              <FaRegCopy aria-hidden="true" />
+            </button>
+            <a className="link" href={`mailto:${email}`}>
+              Or email me directly.
+            </a>
+          </p>
+        )}
 
         <form className="mt-10 space-y-6" onSubmit={handleSubmit}>
           <div className="grid gap-6 md:grid-cols-2">

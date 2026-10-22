@@ -24,7 +24,9 @@ export default async function Home() {
             description=""
             color="neutral-content"
           />
-          <Button>Hire Me</Button>
+          <Button asChild>
+            <a href="#contact">Hire Me</a>
+          </Button>
         </div>
 
         <div>

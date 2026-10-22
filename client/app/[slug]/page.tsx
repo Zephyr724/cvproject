@@ -76,9 +76,13 @@ export default async function ProfolioPage({ params }: ProfolioPageProps) {
           ))}
         </div>
 
-        <div>
-          <ContactForm email={profile.email || ""} profileSlug={slug} />
-        </div>
+        {profile.email ? (
+          <ContactForm email={profile.email} profileSlug={slug} />
+        ) : (
+          <section className="mx-auto max-w-4xl py-20">
+            <p>Currently unavailable</p>
+          </section>
+        )}
       </main>
     </div>
   );
