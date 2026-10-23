@@ -12,6 +12,7 @@ import {
   ModelProfileContext,
 } from "../_lib/modelActions";
 import EmbeddedPageDialog from "./EmbeddedPageDialog";
+import useEntranceDoor from "../_hooks/useEntranceDoor";
 
 interface CoffeeShopModelProps {
   profile: ModelProfileContext;
@@ -26,14 +27,11 @@ export function CoffeeShopModel({ profile }: CoffeeShopModelProps) {
 
   const modelActions = useMemo(() => createModelActions(profile), [profile]);
 
+  const { handleDoorClick } = useEntranceDoor(scene);
   useModelPerfOverrides(scene);
   useMenuPosterTexture(scene);
 
   const handleModelClick = (event: ThreeEvent<MouseEvent>) => {
-    const action = findModelAction(event.object, modelActions);
-
-    if (!action) return;
-
     // Only a genuine left-button click should trigger a model action.
     // Ignore other buttons and pointer drags that end over an interactive object.
     if (
@@ -43,6 +41,17 @@ export function CoffeeShopModel({ profile }: CoffeeShopModelProps) {
     ) {
       return;
     }
+
+    const wasDoorClick = handleDoorClick(event.object);
+
+    if (wasDoorClick) {
+      event.stopPropagation();
+      return;
+    }
+
+    const action = findModelAction(event.object, modelActions);
+
+    if (!action) return;
 
     // Stop the click from reaching parent objects or meshes behind this one.
     event.stopPropagation();
