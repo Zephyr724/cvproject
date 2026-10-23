@@ -9,39 +9,62 @@ export type ExternalModelAction = { type: "external"; url: string };
 
 export type ModelAction = EmbeddedModelAction | ExternalModelAction;
 
-export const MODEL_ACTIONS: Record<string, ModelAction> = {
-  MenuStand: {
-    type: "embedded",
-    title: "My Projects",
-    url: "/projects?embed=1",
-  },
-  GitHubBag: { type: "external", url: "https://github.com/Zephyr724" },
-  LinkedInBag: {
-    type: "external",
-    url: "https://www.linkedin.com/in/zephyr-chan-7269a06a/",
-  },
-  VendingMachine: {
-    type: "embedded",
-    title: "My Experience",
-    url: "/experience?embed=1",
-  },
-  FreeBookLibrary: {
-    type: "embedded",
-    title: "My Education",
-    url: "/education?embed=1",
-  },
-  Postbox: {
-    type: "embedded",
-    title: "Send Me Email",
-    url: "mailto:",
-  },
-};
+export interface ModelProfileContext {
+  slug: string;
+  github: string | null;
+  linkedin: string | null;
+}
 
-export function findModelAction(object: THREE.Object3D) {
+export function createModelActions(
+  profile: ModelProfileContext,
+): Record<string, ModelAction> {
+  const profilePath = `/${encodeURIComponent(profile.slug)}`;
+
+  const actions: Record<string, ModelAction> = {
+    MenuStand: {
+      type: "embedded",
+      title: "My Projects",
+      url: `${profilePath}/projects?embed=1`,
+    },
+
+    VendingMachine: {
+      type: "embedded",
+      title: "My Experience",
+      url: `${profilePath}/experience?embed=1`,
+    },
+
+    FreeBookLibrary: {
+      type: "embedded",
+      title: "My Education",
+      url: `${profilePath}/education?embed=1`,
+    },
+
+    Postbox: {
+      type: "embedded",
+      title: "Contact Me",
+      url: `${profilePath}/contact?embed=1`,
+    },
+  };
+
+  if (profile.github) {
+    actions.GitHubBag = { type: "external", url: profile.github };
+  }
+
+  if (profile.linkedin) {
+    actions.LinkedInBag = { type: "external", url: profile.linkedin };
+  }
+
+  return actions;
+}
+
+export function findModelAction(
+  object: THREE.Object3D,
+  actions: Record<string, ModelAction>,
+) {
   let current: THREE.Object3D | null = object;
 
   while (current) {
-    const action = MODEL_ACTIONS[current.name];
+    const action = actions[current.name];
 
     if (action) return action;
 

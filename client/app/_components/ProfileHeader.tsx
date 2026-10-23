@@ -22,24 +22,21 @@ export default function ProfileHeader({ profile, resume }: ProfileHeaderProps) {
         </p>
 
         <div className="mt-8 flex max-w-md flex-col gap-3 items-center">
-          <Button asChild className="w-full">
-            <a href={resume} target="_blank" rel="noopener noreferrer">
-              <FaRegFile />
-              Download Resume
-            </a>
-          </Button>
-          {/* {resume && (
-                <Button asChild className="w-full">
-                  <a href={resume} target="_blank" rel="noopener noreferrer">
-                    Download Resume
-                  </a>
-                </Button>
-              )} */}
+          {resume && (
+            <Button asChild className="w-full">
+              <a href={resume} target="_blank" rel="noopener noreferrer">
+                <FaRegFile />
+                Download Resume
+              </a>
+            </Button>
+          )}
 
           <div className="flex gap-3">
-            <Button asChild>
-              <a href={`mailto:${profile.email}`}>Hire Me</a>
-            </Button>
+            {profile.email && (
+              <Button asChild>
+                <a href="#contact">Hire Me</a>
+              </Button>
+            )}
 
             {profile.github && (
               <Button asChild variant="outline">

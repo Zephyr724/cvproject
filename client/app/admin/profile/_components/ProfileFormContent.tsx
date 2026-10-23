@@ -1,42 +1,39 @@
-import dynamic from "next/dynamic";
 import {
-  Control,
-  Controller,
   FieldErrors,
   UseFormRegister,
   UseFormWatch,
-  UseFormSetValue,
 } from "react-hook-form";
 import { ValidateCreateProfileType } from "@/app/api/profiles/validationSchema";
-import { Callout } from "@radix-ui/themes/components/index";
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  ssr: false,
-});
 interface ProfileFormContentProps {
   register: UseFormRegister<ValidateCreateProfileType>;
-  control: Control<ValidateCreateProfileType>;
   errors: FieldErrors<ValidateCreateProfileType>;
   watch: UseFormWatch<ValidateCreateProfileType>;
-  setValue: UseFormSetValue<ValidateCreateProfileType>;
   onSubmit: (e: React.FormEvent) => void;
-  isEdit?: boolean;
-  slug: string;
   email: string;
   website: string;
 }
 
 const ProfileFormContent = ({
   register,
-  control,
   errors,
   watch,
-  setValue,
   onSubmit,
-  isEdit,
-  slug,
   email,
   website,
 }: ProfileFormContentProps) => {
+  const slugValue = watch("slug");
+
+  let portfolioOrigin = "";
+
+  try {
+    portfolioOrigin = website ? new URL(website).origin : "";
+  } catch {
+    portfolioOrigin = "";
+  }
+
+  const previewUrl = portfolioOrigin
+    ? `${portfolioOrigin}/${slugValue}`
+    : `/${slugValue}`;
   return (
     <form onSubmit={onSubmit} className="space-y-5">
       <div className="grid gap-5 md:grid-cols-2">
@@ -137,21 +134,77 @@ const ProfileFormContent = ({
         </label>
       </div>
 
-      <div className="rounded-md border border-base-300 p-4">
-        <label className="flex items-center gap-3">
+      <div className="rounded-xl border border-base-300 p-5">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <h3 className="font-semibold">Public portfolio</h3>
+            <p className="mt-1 text-sm text-base-content/60">
+              Allow anyone with the link to view your portfolio.
+            </p>
+          </div>
+
           <input
             type="checkbox"
             {...register("isPublic")}
-            className="checkbox checkbox-primary"
+            className="toggle toggle-primary"
+            aria-label="Make portfolio public"
           />
+        </div>
 
-          <span className="text-sm font-medium">Make my portfolio public</span>
-        </label>
+        <div className="mt-6">
+          <label htmlFor="profile-slug" className="text-sm font-semibold">
+            Portfolio address
+          </label>
 
-        <p className="mt-3 text-sm text-base-content/60">
-          Your portfolio link:
-          <span className="ml-1">{website}</span>
-        </p>
+          <div className="mt-2 flex overflow-hidden rounded-lg border border-base-300 focus-within:border-primary">
+            {portfolioOrigin && (
+              <span className="flex items-center bg-base-200 px-3 text-sm text-base-content/60">
+                {portfolioOrigin}/
+              </span>
+            )}
+
+            <input
+              id="profile-slug"
+              type="text"
+              {...register("slug")}
+              className="min-w-0 flex-1 bg-base-100 px-3 py-3 outline-none"
+              placeholder="zephyr-chen"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+            />
+          </div>
+
+          {errors.slug ? (
+            <p role="alert" className="mt-2 text-sm text-error">
+              {errors.slug.message}
+            </p>
+          ) : (
+            <p className="mt-2 text-sm text-base-content/60">
+              Use lowercase letters, numbers, and hyphens.
+            </p>
+          )}
+
+          {errors.root?.server?.message && (
+            <p role="alert" className="mt-2 text-sm text-error">
+              {errors.root.server.message}
+            </p>
+          )}
+
+          {slugValue && (
+            <p className="mt-4 text-sm">
+              Preview:{" "}
+              <a
+                href={previewUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="link link-primary break-all"
+              >
+                {previewUrl}
+              </a>
+            </p>
+          )}
+        </div>
       </div>
 
       <div className="flex justify-end">

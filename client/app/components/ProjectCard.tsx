@@ -15,15 +15,22 @@ interface Props {
     | "githubUrl"
     | "tags"
   >;
+  profileSlug?: string;
+  embedded?: boolean;
 }
 
-export const ProjectCard = ({ project }: Props) => {
+export const ProjectCard = ({ project, profileSlug, embedded }: Props) => {
   const router = useRouter();
+  const projectPath = profileSlug
+    ? `/${encodeURIComponent(profileSlug)}/projects/${project.id}`
+    : `/projects/${project.id}`;
+
+  const projectUrl = embedded ? `${projectPath}?embed=1` : projectPath;
   return (
     <div>
       <Box maxWidth="480px" maxHeight="720px">
         <div
-          onClick={() => router.push(`/projects/${project.id}`)}
+          onClick={() => router.push(projectUrl)}
           className="block cursor-pointer transition-shadow overflow-hidden  hover:shadow-md rounded-(--radius-4)"
         >
           <Card size="3">

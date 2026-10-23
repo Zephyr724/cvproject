@@ -55,12 +55,25 @@ export const projectService = {
     return toApiResponse(project);
   },
 
+  async getProjectByOwnerId(id: number, ownerId: string) {
+    const project = await projectRepository.findByIdAndOwnerId(id, ownerId);
+    if (!project) return null;
+    return toApiResponse(project);
+  },
+
   async getAccessibleProjects(session: Session | null) {
     const projects =
       session?.user?.role === "ADMIN"
         ? await projectRepository.findMany()
-        : await projectRepository.findMany(session?.user?.id);
+        : session?.user?.id
+          ? await projectRepository.findManyByOwnerId(session.user.id)
+          : [];
 
+    return projects.map(toApiResponse);
+  },
+
+  async getProjectsByUserId(userId: string) {
+    const projects = await projectRepository.findManyByOwnerId(userId);
     return projects.map(toApiResponse);
   },
 
@@ -68,7 +81,9 @@ export const projectService = {
     const projects =
       session?.user?.role === "ADMIN"
         ? await projectRepository.findMany()
-        : await projectRepository.findMany(session?.user?.id);
+        : session?.user?.id
+          ? await projectRepository.findManyByOwnerId(session.user.id)
+          : [];
 
     return projects.map(toApiResponseSummary);
   },

@@ -6,14 +6,16 @@ import { BlenderCamera } from "./BlenderCamera";
 import { CoffeeShopModel } from "./CoffeeShopModel";
 import { ModelLights } from "./ModelLights";
 import { useThree } from "@react-three/fiber";
+import { ModelProfileContext } from "../_lib/modelActions";
 
 export type ModelControlsRef = ComponentRef<typeof OrbitControls>;
 
 interface ModelSceneProps {
   controlsRef: RefObject<ModelControlsRef | null>;
+  profile: ModelProfileContext;
 }
 
-export function ModelScene({ controlsRef }: ModelSceneProps) {
+export function ModelScene({ controlsRef, profile }: ModelSceneProps) {
   // `state.get` reads the latest canvas state when an interaction ends, avoiding
   // the need to re-render this component every time the camera moves.
   const getThreeState = useThree((state) => state.get);
@@ -36,7 +38,7 @@ export function ModelScene({ controlsRef }: ModelSceneProps) {
           background={false}
           environmentIntensity={2}
         />
-        <CoffeeShopModel />
+        <CoffeeShopModel profile={profile} />
       </Suspense>
 
       {/*

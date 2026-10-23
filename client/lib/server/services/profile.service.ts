@@ -1,8 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import {
-  ValidateCreateProfileType,
-  ValidateUpdateProfileType,
-} from "@/app/api/profiles/validationSchema";
+import { ValidateUpdateProfileType } from "@/app/api/profiles/validationSchema";
 import { profileRepository } from "@/lib/server/repositories/profile.repository";
 import { getServerSession } from "next-auth/next";
 import { BusinessError } from "../errors";
@@ -10,7 +7,6 @@ import { Prisma } from "@/src/generated/prisma/client";
 import { handlePrismaError } from "./errorHandle.service";
 import { toApiResponse } from "../mappers/profile.mapper";
 import { randomUUID } from "node:crypto";
-import { email } from "zod";
 
 export const profileService = {
   async getProfileBySlug(slug: string) {
@@ -23,6 +19,20 @@ export const profileService = {
     const profile = await profileRepository.findById(userId);
     if (!profile) return null;
     return profile;
+  },
+
+  async ensureProfile(user: {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+  }) {
+    const existingProfile = await profileRepository.findById(user.id);
+
+    if (existingProfile) {
+      return existingProfile;
+    }
+
+    return profileService.createProfile(user);
   },
 
   async createProfile(user: {
@@ -48,7 +58,7 @@ export const profileService = {
         slug,
         website,
       });
-      return toApiResponse(createdProfile);
+      return createdProfile;
     } catch (error) {
       handlePrismaError(error);
     }
@@ -58,8 +68,35 @@ export const profileService = {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) throw new BusinessError("Unauthorized", 401);
 
+    if (data.slug) {
+      // The slug column is unique, so this lookup returns at most one profile.
+      const existingProfile = await profileRepository.findBySlug(data.slug);
+
+      // Keeping the current user's existing slug is valid. A matching slug is
+      // a conflict only when it belongs to a different profile owner.
+      if (existingProfile && existingProfile.userId !== session.user.id) {
+        throw new BusinessError("This portfolio URL is already in use", 409);
+      }
+    }
+
     try {
       const prismaInput = toPrismaUpdateProfileInput(data);
+
+      if (data.slug) {
+        const websiteDomain = process.env.WEBSITEDOMAIN;
+
+        if (!websiteDomain) {
+          throw new Error("WEBSITEDOMAIN is not configured");
+        }
+
+        // Keep the stored public URL synchronized with the editable slug.
+        prismaInput.slug = data.slug;
+        prismaInput.website = new URL(
+          `/${data.slug}`,
+          websiteDomain,
+        ).toString();
+      }
+
       const updatedProfile = await profileRepository.update(
         session.user.id,
         prismaInput,
@@ -100,6 +137,10 @@ function toPrismaUpdateProfileInput(
 
   if (data.displayName !== undefined) {
     updateData.displayName = data.displayName;
+  }
+
+  if (data.slug !== undefined) {
+    updateData.slug = data.slug;
   }
 
   if (data.headline !== undefined) {

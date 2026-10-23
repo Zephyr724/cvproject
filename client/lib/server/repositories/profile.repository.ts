@@ -7,6 +7,7 @@ export const profileRepository = {
         slug,
       },
       select: {
+        userId: true,
         displayName: true,
         headline: true,
         bio: true,

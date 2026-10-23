@@ -8,12 +8,16 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { BusinessError } from "../errors";
 import { Prisma } from "@/src/generated/prisma/client";
-import { da } from "zod/v4/locales";
 import { handlePrismaError } from "./errorHandle.service";
 
 export const educationService = {
   async getAllEducations() {
     const educations = await educationRepository.findMany();
+    return educations.map(toApiResponse);
+  },
+
+  async getEducationsByUserId(userId: string) {
+    const educations = await educationRepository.findManyByUserId(userId);
     return educations.map(toApiResponse);
   },
 

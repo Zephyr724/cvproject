@@ -8,6 +8,13 @@ export const educationRepository = {
     });
   },
 
+  async findManyByUserId(userId: string) {
+    return prisma.education.findMany({
+      where: { userId },
+      orderBy: { startDate: "desc" },
+    });
+  },
+
   async findById(id: number) {
     return prisma.education.findFirst({
       where: { id },

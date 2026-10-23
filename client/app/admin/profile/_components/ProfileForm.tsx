@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import profileApiService from "@/lib/api/profile-api-service";
 import ProfileFormContent from "./ProfileFormContent";
 import { useSession } from "next-auth/react";
+import axios from "axios";
 
 interface ProfileFormProps {
   onCancel?: () => void;
@@ -21,6 +22,7 @@ interface ProfileFormProps {
 function profileToFormData(profile: Profile): ValidateCreateProfileType {
   return {
     displayName: profile.displayName,
+    slug: profile.slug,
     headline: profile.headline ?? "",
     bio: profile.bio ?? "",
     email: profile.email ?? "",
@@ -39,10 +41,10 @@ const ProfileForm = ({ profile, onSuccess }: ProfileFormProps) => {
 
   const {
     register,
-    control,
     handleSubmit,
     watch,
-    setValue,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<ValidateCreateProfileType>({
     resolver: zodResolver(validateCreateProfileSchema),
@@ -50,6 +52,7 @@ const ProfileForm = ({ profile, onSuccess }: ProfileFormProps) => {
       ? profileToFormData(profile)
       : {
           displayName: "",
+          slug: "",
           headline: "",
           bio: "",
           email: email,
@@ -61,22 +64,58 @@ const ProfileForm = ({ profile, onSuccess }: ProfileFormProps) => {
   });
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    await profileApiService.updateCurrent(data);
+    // Remove errors from the previous submission before trying again.
+    clearErrors();
 
-    onSuccess?.();
-    router.refresh();
+    try {
+      await profileApiService.updateCurrent(data);
+
+      onSuccess?.();
+      router.refresh();
+    } catch (error) {
+      if (axios.isAxiosError<{ error?: string }>(error)) {
+        const message =
+          error.response?.data?.error || "Unable to update profile.";
+
+        if (error.response?.status === 409) {
+          // A slug conflict belongs to the slug field so the message appears
+          // beside the value the user needs to change.
+          setError(
+            "slug",
+            {
+              type: "server",
+              message,
+            },
+            {
+              shouldFocus: true,
+            },
+          );
+
+          return;
+        }
+
+        setError("root.server", {
+          type: "server",
+          message,
+        });
+
+        return;
+      }
+
+      setError("root.server", {
+        type: "server",
+        message: "Something went wrong. Please try again.",
+      });
+    }
   });
 
   return (
     <>
       <ProfileFormContent
         register={register}
-        control={control}
         onSubmit={handleFormSubmit}
         watch={watch}
-        setValue={setValue}
         errors={errors}
-        slug={profile?.slug ?? ""}
         email={email}
         website={profile?.website ?? ""}
       />
