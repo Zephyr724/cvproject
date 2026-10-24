@@ -13,6 +13,7 @@ export interface ModelProfileContext {
   slug: string;
   github: string | null;
   linkedin: string | null;
+  resumeUrl: string | null;
 }
 
 export function createModelActions(
@@ -45,6 +46,13 @@ export function createModelActions(
       url: `${profilePath}/contact?embed=1`,
     },
   };
+
+  if (profile.resumeUrl) {
+    actions.CVBag = {
+      type: "external",
+      url: profile.resumeUrl,
+    };
+  }
 
   if (profile.github) {
     actions.GitHubBag = { type: "external", url: profile.github };

@@ -25,14 +25,22 @@ export const profileService = {
     id: string;
     name?: string | null;
     email?: string | null;
+    resume?: string | null;
   }) {
     const existingProfile = await profileRepository.findById(user.id);
 
     if (existingProfile) {
       return existingProfile;
     }
+    await profileService.createProfile(user);
 
-    return profileService.createProfile(user);
+    const createdProfile = await profileRepository.findById(user.id);
+
+    if (!createdProfile) {
+      throw new Error("Failed to create profile");
+    }
+
+    return createdProfile;
   },
 
   async createProfile(user: {
