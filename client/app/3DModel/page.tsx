@@ -1,3 +1,4 @@
+import { experienceService } from "@/lib/server/services/experience.service";
 import { ModelCanvas } from "./_components/ModelCanvas";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { profileService } from "@/lib/server/services/profile.service";
@@ -17,6 +18,10 @@ export default async function ModelPage() {
     email: session.user.email,
   });
 
+  const experiences = await experienceService.getExperiencesByUserId(
+    profile.userId,
+  );
+
   return (
     <div>
       <h3>3D Model</h3>
@@ -27,6 +32,7 @@ export default async function ModelPage() {
           linkedin: profile.linkedin,
           resumeUrl: profile?.user?.resume?.fileUrl ?? null,
         }}
+        experiences={experiences}
       />
     </div>
   );

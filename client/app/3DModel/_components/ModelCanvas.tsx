@@ -6,13 +6,15 @@ import * as THREE from "three";
 import { ModelScene, type ModelControlsRef } from "./ModelScene";
 import { ModelPostProcessing } from "./ModelPostProcessing";
 import { MODEL_PERF } from "./ModelPerfToggles";
-import { ModelProfileContext } from "../_lib/modelActions";
+import type { ModelProfileContext } from "../_lib/modelActions";
+import type { Experience } from "@/app/admin/experience/types";
 
 interface ModelCanvasProps {
   profile: ModelProfileContext;
+  experiences: Experience[];
 }
 
-export function ModelCanvas({ profile }: ModelCanvasProps) {
+export function ModelCanvas({ profile, experiences }: ModelCanvasProps) {
   // OrbitControls lives inside the canvas, while the reset button is regular HTML.
   // Sharing this ref lets the outside button call the controls' reset() method.
   const controlsRef = useRef<ModelControlsRef>(null);
@@ -33,7 +35,11 @@ export function ModelCanvas({ profile }: ModelCanvasProps) {
         camera={{ position: [0, 1, 5], fov: 50 }}
       >
         {/* ModelScene contains the 3D objects; post-processing affects its final image. */}
-        <ModelScene controlsRef={controlsRef} profile={profile} />
+        <ModelScene
+          controlsRef={controlsRef}
+          profile={profile}
+          experiences={experiences}
+        />
         <ModelPostProcessing />
       </Canvas>
 

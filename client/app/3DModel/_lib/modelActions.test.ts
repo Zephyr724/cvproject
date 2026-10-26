@@ -7,6 +7,7 @@ describe("createModelActions", () => {
       slug: "user-profile",
       github: "https://github.com/user",
       linkedin: "https://www.linkedin.com/in/user",
+      resumeUrl: null,
     });
 
     expect(actions.MenuStand).toEqual({
@@ -25,6 +26,7 @@ describe("createModelActions", () => {
       slug: "user-profile",
       github: null,
       linkedin: null,
+      resumeUrl: null,
     });
 
     expect(actions.GitHubBag).toBeUndefined();
