@@ -25,6 +25,7 @@ export default async function ModelPage() {
           slug: profile.slug,
           github: profile.github,
           linkedin: profile.linkedin,
+          resumeUrl: profile?.user?.resume?.fileUrl ?? null,
         }}
       />
     </div>
