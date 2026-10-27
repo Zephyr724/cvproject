@@ -34,7 +34,7 @@ function ExperienceCard({
     );
   }
   return (
-    <div key={experience.id}>
+    <div>
       <div className="card card-border bg-base-100 shadow-xl border boderder-neutral/20 m-2 ">
         <div className="card-body">
           <div className="flex justify-between items-start gap-4">

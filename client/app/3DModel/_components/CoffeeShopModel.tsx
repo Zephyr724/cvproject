@@ -9,6 +9,7 @@ import {
   createModelActions,
   type EmbeddedModelAction,
   findModelAction,
+  ModelAction,
   type ModelProfileContext,
 } from "../_lib/modelActions";
 import EmbeddedPageDialog from "./EmbeddedPageDialog";
@@ -66,16 +67,27 @@ export function CoffeeShopModel({
 
     // Stop the click from reaching parent objects or meshes behind this one.
     event.stopPropagation();
+
+    executeModelAction(action);
+  };
+
+  const executeModelAction = (action: ModelAction) => {
     if (action.type === "embedded") {
       setActiveEmbeddedAction(action);
       return;
     }
 
-    if (action.type === "external") {
-      // Open the external URL in a new tab without giving it access to this page
-      // or sending this page's URL as referrer information.
-      window.open(action.url, "_blank", "noopener,noreferrer");
-    }
+    window.open(action.url, "_blank", "noopener,noreferrer");
+  };
+
+  const openExperiencePage = (experienceId: number) => {
+    setActiveEmbeddedAction({
+      type: "embedded",
+      title: "My Experience",
+      url:
+        `/${encodeURIComponent(profile.slug)}/experience` +
+        `?embed=1#experience-${experienceId}`,
+    });
   };
 
   return (
@@ -90,6 +102,7 @@ export function CoffeeShopModel({
         <VendingMachineExperienceScreen
           screenLayout={screenLayout}
           experiences={experiences}
+          openExperiencePage={openExperiencePage}
         />
       )}
 

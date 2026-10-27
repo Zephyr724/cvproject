@@ -25,13 +25,19 @@ export default async function ContactPage({ params }: ContactPageProps) {
   const experiences = await experienceService.getExperiencesByUserId(userId);
 
   return (
-    <div>
+    <div className="pb-[70vh]">
       <SectionTitle
         title="Experience"
         description="Here are some of my work experiences."
       />
       {experiences?.map((experience) => (
-        <ExperienceCard key={experience.id} experience={experience} />
+        <div
+          key={experience.id}
+          id={`experience-${experience.id}`}
+          className="scroll-mt-4"
+        >
+          <ExperienceCard experience={experience} />{" "}
+        </div>
       ))}
     </div>
   );

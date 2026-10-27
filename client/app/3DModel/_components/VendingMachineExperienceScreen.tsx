@@ -1,24 +1,62 @@
 import { useState } from "react";
 import dayjs from "dayjs";
 import { Container, Text } from "@react-three/uikit";
-import { ArrowUpRightIcon } from "@react-three/uikit-lucide";
+import {
+  ArrowUpRightIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@react-three/uikit-lucide";
 import type { Experience } from "@/app/admin/experience/types";
 import type { VendingScreenLayout } from "../_hooks/useVendingScreen";
 
 interface Props {
   screenLayout: VendingScreenLayout;
   experiences: Experience[];
+  openExperiencePage: (experienceId: number) => void;
 }
 
 export default function VendingMachineExperienceScreen({
   screenLayout,
   experiences,
+  openExperiencePage,
 }: Props) {
   // Store only the selected id so the state stays valid when experience objects
   // are recreated. The newest experience is expanded on the first render.
   const [selectedExperience, setSelectedExperience] = useState<number | null>(
     experiences[0]?.id ?? null,
   );
+
+  const VISIBLE_COUNT = 3;
+
+  // Find the position of the currently selected experience.
+  const selectedIndex = Math.max(
+    experiences.findIndex((experience) => experience.id === selectedExperience),
+    0,
+  );
+
+  // Show the selected experience followed by the next two experiences.
+  const visibleExperiences = experiences.slice(
+    selectedIndex,
+    selectedIndex + VISIBLE_COUNT,
+  );
+
+  const hasPrevious = selectedIndex > 0;
+
+  const selectPrevious = () => {
+    if (!hasPrevious) return;
+
+    const previousExperience = experiences[selectedIndex - 1];
+    setSelectedExperience(previousExperience.id);
+  };
+
+  const hasNext = selectedIndex < experiences.length - 1;
+
+  const selectNext = () => {
+    if (!hasNext) return;
+
+    const nextExperience = experiences[selectedIndex + 1];
+    setSelectedExperience(nextExperience.id);
+  };
 
   return (
     <group
@@ -50,8 +88,35 @@ export default function VendingMachineExperienceScreen({
         >
           WORK EXPERIENCES
         </Text>
-
-        {experiences.map((experience, index) => {
+        {hasPrevious && (
+          <Container
+            width="100%"
+            height={13}
+            flexShrink={0}
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="center"
+            gap={3}
+            borderRadius={4}
+            backgroundColor="#ffffff"
+            cursor="pointer"
+            onClick={(event) => {
+              event.stopPropagation();
+              selectPrevious();
+            }}
+          >
+            <ChevronUpIcon width={10} height={10} color="#171717" />
+            <Text
+              color="#171717"
+              fontSize={10}
+              lineHeight={1}
+              fontWeight="bold"
+            >
+              PREVIOUS
+            </Text>
+          </Container>
+        )}
+        {visibleExperiences.map((experience, index) => {
           const isSelected = experience.id === selectedExperience;
 
           return (
@@ -144,7 +209,7 @@ export default function VendingMachineExperienceScreen({
                     active={{ backgroundColor: "#bbbbbb" }}
                     onClick={(event) => {
                       event.stopPropagation();
-                      // handleViewRole();
+                      openExperiencePage(experience.id);
                     }}
                   >
                     <Text
@@ -183,7 +248,7 @@ export default function VendingMachineExperienceScreen({
                     lineHeight={1}
                     fontWeight="semi-bold"
                   >
-                    {String(index + 1).padStart(2, "0")}
+                    {String(selectedIndex + index + 1).padStart(2, "0")}
                   </Text>
 
                   <Text
@@ -206,8 +271,7 @@ export default function VendingMachineExperienceScreen({
                   />
                 </Container>
               )}
-
-              {index < experiences.length - 1 && (
+              {index < visibleExperiences.length - 1 && (
                 <Container
                   alignSelf="center"
                   width="100%"
@@ -219,6 +283,36 @@ export default function VendingMachineExperienceScreen({
             </Container>
           );
         })}
+        <Container
+          width="100%"
+          height={13}
+          flexShrink={0}
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="center"
+          gap={3}
+          borderRadius={4}
+          backgroundColor={hasNext ? "#ffffff" : "#333333"}
+          cursor={hasNext ? "pointer" : undefined}
+          onClick={(event) => {
+            event.stopPropagation();
+            selectNext();
+          }}
+        >
+          <Text
+            color={hasNext ? "#171717" : "#777777"}
+            fontSize={10}
+            lineHeight={1}
+            fontWeight="bold"
+          >
+            NEXT
+          </Text>
+          <ChevronDownIcon
+            width={10}
+            height={10}
+            color={hasNext ? "#171717" : "#777777"}
+          />
+        </Container>
       </Container>
     </group>
   );
