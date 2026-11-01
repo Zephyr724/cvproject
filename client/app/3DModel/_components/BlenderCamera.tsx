@@ -19,7 +19,7 @@ export function BlenderCamera() {
   const camera = useMemo(() => {
     // Find the specifically named Blender camera instead of relying on array order.
     const source = cameras.find(
-      (item) => item.name === "WebCamera",
+      (item) => item.name === "web_camera_01",
     );
 
     // This component needs perspective-camera properties such as aspect.

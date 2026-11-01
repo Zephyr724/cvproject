@@ -22,25 +22,25 @@ export function createModelActions(
   const profilePath = `/${encodeURIComponent(profile.slug)}`;
 
   const actions: Record<string, ModelAction> = {
-    MenuStand: {
+    menu_stand_01: {
       type: "embedded",
       title: "My Projects",
       url: `${profilePath}/projects?embed=1`,
     },
 
-    VendingMachine: {
+    vending_machine_01_root: {
       type: "embedded",
       title: "My Experience",
       url: `${profilePath}/experience?embed=1`,
     },
 
-    FreeBookLibrary: {
+    free_book_library_01_root: {
       type: "embedded",
       title: "My Education",
       url: `${profilePath}/education?embed=1`,
     },
 
-    Postbox: {
+    postbox_01_root: {
       type: "embedded",
       title: "Contact Me",
       url: `${profilePath}/contact?embed=1`,
@@ -48,18 +48,24 @@ export function createModelActions(
   };
 
   if (profile.resumeUrl) {
-    actions.CVBag = {
+    actions.order_pickup_stand_01_cv_bag = {
       type: "external",
       url: profile.resumeUrl,
     };
   }
 
   if (profile.github) {
-    actions.GitHubBag = { type: "external", url: profile.github };
+    actions.order_pickup_stand_01_github_bag = {
+      type: "external",
+      url: profile.github,
+    };
   }
 
   if (profile.linkedin) {
-    actions.LinkedInBag = { type: "external", url: profile.linkedin };
+    actions.order_pickup_stand_01_linkedin_bag = {
+      type: "external",
+      url: profile.linkedin,
+    };
   }
 
   return actions;

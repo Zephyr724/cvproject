@@ -2,47 +2,70 @@ import { useTexture } from "@react-three/drei";
 import { useEffect } from "react";
 import * as THREE from "three";
 
+const POSTER_URLS = [
+  "/images/project-posters/outsidewall_projects-poster-01.png",
+  "/images/project-posters/outsidewall_projects-poster-02.png",
+  "/images/project-posters/outsidewall_projects-poster-03.png",
+];
+
+const POSTER_NAMES = [
+  "outside_wall_poster_01_surface",
+  "outside_wall_poster_02_surface",
+  "outside_wall_poster_03_surface",
+];
+
 export default function useOutsideWallPosterTexture(scene: THREE.Object3D) {
   // Load the Projects poster separately so it can replace the material texture
   // on the matching mesh inside the GLB scene.
-  const posterTexture = useTexture(
-    "/images/projects-poster.jpeg",
-    (texture) => {
-      // JPEG colors are authored in sRGB. GLTF texture coordinates also expect
-      // this replacement image to be flipped vertically for the correct orientation.
+  const [texture1, texture2, texture3] = useTexture(POSTER_URLS, (textures) => {
+    // Mirror each poster horizontally using its UV transform.
+    textures.forEach((texture) => {
       texture.colorSpace = THREE.SRGBColorSpace;
-      texture.flipY = false;
-    },
-  );
+      texture.flipY = true;
+      texture.needsUpdate = true;
+    });
+  });
 
   useEffect(() => {
-    // Blender object names are preserved in a GLB, so the poster mesh can be
-    // located without depending on its position in the scene hierarchy.
-    const poster = scene.getObjectByName("Poster001");
+    const textures = [texture1, texture2, texture3];
+    const originals: {
+      material: THREE.MeshStandardMaterial;
+      map: THREE.Texture | null;
+      color: THREE.Color;
+    }[] = [];
 
-    if (!(poster instanceof THREE.Mesh)) {
-      console.warn("MenuPoster was not found in the GLB scene");
-      return;
-    }
-    if (!(poster.material instanceof THREE.MeshStandardMaterial)) {
-      console.warn("MenuPoster does not use MeshStandardMaterial");
-      return;
-    }
+    POSTER_NAMES.forEach((name, index) => {
+      const mesh = scene.getObjectByName(name);
 
-    const material = poster.material as THREE.MeshStandardMaterial;
-    const originalMap = material.map;
-    const originalColor = material.color.clone();
+      if (!(mesh instanceof THREE.Mesh)) {
+        console.warn(`${name} was not found in the GLB scene`);
+        return;
+      }
+      if (!(mesh.material instanceof THREE.MeshStandardMaterial)) {
+        console.warn(`${name} does not use MeshStandardMaterial`);
+        return;
+      }
 
-    // Replace only this mesh's color map. Resetting the base color to white
-    // prevents it from tinting the poster, and needsUpdate refreshes the shader.
-    material.map = posterTexture;
-    material.color.set("#ffffff");
-    material.needsUpdate = true;
+      const texture = textures[index];
+
+      const material = mesh.material;
+      originals.push({
+        material,
+        map: material.map,
+        color: material.color.clone(),
+      });
+
+      material.map = texture;
+      material.color.set("#ffffff");
+      material.needsUpdate = true;
+    });
 
     return () => {
-      material.map = originalMap;
-      material.color.copy(originalColor);
-      material.needsUpdate = true;
+      originals.forEach(({ material, map, color }) => {
+        material.map = map;
+        material.color.copy(color);
+        material.needsUpdate = true;
+      });
     };
-  }, [scene, posterTexture]);
+  }, [scene, texture1, texture2, texture3]);
 }

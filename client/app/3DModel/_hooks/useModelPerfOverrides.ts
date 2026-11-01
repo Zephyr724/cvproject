@@ -6,7 +6,7 @@ export default function useModelPerfOverrides(scene: THREE.Object3D) {
   // Blender's "Plane.005" is sanitized to "Plane005" by GLTFLoader.
   // Toggle hidePlane005 in ModelPerfToggles.tsx to compare the backdrop cost.
   useLayoutEffect(() => {
-    const plane005 = scene.getObjectByName("Plane005");
+    const plane005 = scene.getObjectByName("studio_01_backdrop");
     if (!plane005 || !MODEL_PERF.hidePlane005) return;
 
     const originalVisible = plane005.visible;
@@ -63,7 +63,6 @@ export default function useModelPerfOverrides(scene: THREE.Object3D) {
           ? object.material
           : [object.material];
         for (const material of materials) {
-
           // Multiple meshes may share the same material, so record each material only
           // once and always capture its values before applying any overrides.
           if (!materialStates.has(material)) {

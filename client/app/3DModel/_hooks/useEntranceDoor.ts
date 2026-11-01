@@ -4,7 +4,7 @@ import { useLayoutEffect, useRef } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 
-const HINGE_NAME = "Entrance_door_01_hinge";
+const HINGE_NAME = "entrance_door_01_hinge";
 
 const OPEN_ANGLE = -90;
 

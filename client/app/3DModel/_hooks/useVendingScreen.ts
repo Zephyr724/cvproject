@@ -13,7 +13,9 @@ export default function useVendingScreen(scene: THREE.Object3D) {
     // The screen is a separate mesh inside the GLB. Looking it up by its
     // exported Blender name lets us prepare its background without changing
     // the vending machine model or any other material in the scene.
-    const screen = scene.getObjectByName("WorkExperienceScreen");
+    const screen = scene.getObjectByName(
+      "vending_machine_01_work_experience_screen",
+    );
 
     // getObjectByName can return undefined or a non-mesh Object3D, so stop if
     // the expected screen mesh is unavailable.
@@ -61,7 +63,9 @@ export default function useVendingScreen(scene: THREE.Object3D) {
   }, [scene]);
 
   const screenLayout: VendingScreenLayout | null = useMemo(() => {
-    const screen = scene.getObjectByName("WorkExperienceScreen");
+    const screen = scene.getObjectByName(
+      "vending_machine_01_work_experience_screen",
+    );
     if (!(screen instanceof THREE.Mesh)) return null;
 
     screen.geometry.computeBoundingBox();
