@@ -17,6 +17,7 @@ import useEntranceDoor from "../_hooks/useEntranceDoor";
 import useVendingScreen from "../_hooks/useVendingScreen";
 import VendingMachineExperienceScreen from "./VendingMachineExperienceScreen";
 import type { Experience } from "@/app/admin/experience/types";
+import useOutsideWallPosterTexture from "../_hooks/useOutsideWallPosterTexture";
 
 interface CoffeeShopModelProps {
   profile: ModelProfileContext;
@@ -38,6 +39,7 @@ export function CoffeeShopModel({
   const { handleDoorClick } = useEntranceDoor(scene);
   useModelPerfOverrides(scene);
   useMenuPosterTexture(scene);
+  useOutsideWallPosterTexture(scene);
 
   // Prepare the GLB screen material and calculate the transform used to place
   // the UIKit experience interface directly over the vending-machine display.
