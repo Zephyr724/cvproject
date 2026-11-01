@@ -45,6 +45,21 @@ export function createModelActions(
       title: "Contact Me",
       url: `${profilePath}/contact?embed=1`,
     },
+    outside_wall_poster_01_root: {
+      type: "embedded",
+      title: "My Project",
+      url: `/projects/11?embed=1`,
+    },
+    outside_wall_poster_02_root: {
+      type: "embedded",
+      title: "My Project",
+      url: `/projects/12?embed=1`,
+    },
+    outside_wall_poster_03_root: {
+      type: "embedded",
+      title: "My Project",
+      url: `/projects/13?embed=1`,
+    },
   };
 
   if (profile.resumeUrl) {
