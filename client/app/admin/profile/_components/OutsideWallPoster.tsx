@@ -1,27 +1,69 @@
 "use client";
 
-export default function OutsideWallPoster() {
-  const MAX_FILE_SIZE = 4_000_000;
+import { ValidateCreateProjectType } from "@/app/api/projects/validationSchema";
+import projectApiService from "@/lib/api/project-api-service";
+import type { Project } from "@/app/projects/_components/types";
+import z from "zod";
 
-  async function handleSubmit(data: FormData) {
-    try {
-      const file = data.get("file") as File;
-      console.log("File selected:", file);
-      if (!(file instanceof File) || file.size === 0) {
-        console.log("Please select a PDF file.");
-        return;
-      }
-      if (file.size > MAX_FILE_SIZE) {
-        console.log("Maximum file size is 4 MB.");
-        return;
-      }
-      // //   const res = await resumeApiService.create(data);
-      //   if (res.status == 200) {
-      //     console.log(res.data);
-      //   }
-    } catch (error) {
-      console.log("Have server error");
+interface OutsideWallPosterParam {
+  projects: Project[];
+}
+
+const outsideWallSchema = z
+  .array(z.url("Please enter a valid URL").or(z.literal("")))
+  .length(3);
+
+const projectIdsSchema = z
+  .array(z.string().regex(/^\d+$/, "Please select a project").or(z.literal("")))
+  .length(3);
+
+export default function OutsideWallPoster({
+  projects,
+}: OutsideWallPosterParam) {
+  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    const projectIdsResult = projectIdsSchema.safeParse(
+      formData.getAll("projectIds"),
+    );
+
+    const postersResult = outsideWallSchema.safeParse(
+      formData.getAll("outsideWallPosters"),
+    );
+
+    if (!projectIdsResult.success) {
+      console.log(projectIdsResult.error.issues);
+      return;
     }
+
+    if (!postersResult.success) {
+      console.log(postersResult.error.issues);
+      return;
+    }
+
+    const projectIds = projectIdsResult.data.map(
+      (projectId) => projectId || null,
+    );
+
+    const posters = postersResult.data.map((url) => url || null);
+
+    for (let index = 0; index < posters.length; index++) {
+      const projectId = projectIds[index];
+      const posterUrl = posters[index];
+      if (!projectId) return;
+
+      await projectApiService.update<Partial<ValidateCreateProjectType>>(
+        Number(projectId),
+        {
+          outsideWallPosterUrl: posterUrl || undefined,
+          outsideWallSlot: index + 1,
+        },
+      );
+    }
+
+    console.log(posters);
   }
   return (
     <section className="rounded-md border border-base-300 bg-base-100 p-6 shadow-sm">
@@ -30,38 +72,46 @@ export default function OutsideWallPoster() {
       </h2>
 
       <p className="mt-1 text-sm text-base-content/60">
-        Upload a PDF resume. Uploading a new file will replace the existing one.
+        Upload Poster URL. Uploading a new URL will replace the existing one.
       </p>
 
-      <form
-        className="mt-6 space-y-5"
-        onSubmit={(event) => {
-          event.preventDefault();
-          const data = new FormData(event.currentTarget);
-          void handleSubmit(data);
-        }}
-      >
-        <div className="rounded-md border border-dashed border-base-300 p-6">
-          <input
-            type="file"
-            name="file"
-            accept="application/pdf"
-            className="file-input file-input-bordered w-full"
-          />
+      <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-3">
+          {[1, 2, 3].map((slot) => (
+            <div key={slot}>
+              <label className="flex items-center gap-3">
+                <span className="w-32 shrink-0">Project #{slot}:</span>
 
-          <p className="mt-2 text-xs text-base-content/60">
-            PDF only. Maximum file size: 4 MB.
-          </p>
-        </div>
+                <select
+                  name="projectIds"
+                  className="select select-bordered select-sm w-[60%]"
+                  defaultValue=""
+                >
+                  <option value="">Select a project</option>
 
-        <div className="rounded-md bg-base-200 p-4">
-          <p className="text-sm font-semibold">Current resume</p>
-          <p className="mt-1 text-sm text-base-content/70">sample-cv.pdf</p>
+                  {projects.map((project) => (
+                    <option key={project.id} value={project.id}>
+                      {project.title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="flex gap-3 items-center  shrink-0">
+                OutsideWallPoster #{slot}:
+                <input
+                  className="file-input file-input-bordered border-2 w-[60%] file-input-sm pl-4  placeholder:text-gray-500 "
+                  name="outsideWallPosters"
+                  type="url"
+                  placeholder="URL only."
+                />
+              </label>
+            </div>
+          ))}
         </div>
 
         <div className="flex justify-end">
           <button type="submit" className="btn btn-primary">
-            Upload Resume
+            Update
           </button>
         </div>
       </form>

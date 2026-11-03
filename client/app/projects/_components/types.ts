@@ -3,8 +3,8 @@ export interface Project {
   title: string;
   introduction: string;
   coverImageUrl: string;
-  outsideWallPosterUrl: string;
-  outsideWallSlot: number;
+  outsideWallPosterUrl: string | null;
+  outsideWallSlot: number | null;
   tags: Tag[];
   projectUrl: string | null;
   githubUrl: string | null;

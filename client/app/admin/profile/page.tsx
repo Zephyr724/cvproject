@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { profileService } from "@/lib/server/services/profile.service";
 import ResumeForm from "./_components/ResumeForm";
 import OutsideWallPoster from "./_components/OutsideWallPoster";
+import { projectService } from "@/lib/server/services/project.service";
+
 export default async function AdminProfilePage() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
@@ -15,6 +17,8 @@ export default async function AdminProfilePage() {
     name: session.user.name,
     email: session.user.email,
   });
+
+  const projects = await projectService.getProjectsByUserId(profile.userId);
 
   return (
     <div className="mx-auto max-w-4xl space-y-8 px-6 py-10">
@@ -28,7 +32,7 @@ export default async function AdminProfilePage() {
       </section>
 
       <ResumeForm />
-      <OutsideWallPoster />
+      <OutsideWallPoster projects={projects} />
     </div>
   );
 }
