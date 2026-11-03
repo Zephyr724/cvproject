@@ -43,12 +43,12 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String       @id @default(cuid())
   name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
+  email         String?      @unique
+  emailVerified DateTime?    @map("email_verified")
   image         String?
-  role          UserRole  @default(USER)
+  role          UserRole     @default(USER)
   accounts      Account[]
   sessions      Session[]
   projects      Project[]
@@ -56,7 +56,7 @@ model User {
   educations    Education[]
 
   profile Profile?
-  resume      Resume?
+  resume  Resume?
 
   @@map("users")
 }
@@ -76,21 +76,24 @@ model VerificationToken {
 }
 
 model Project {
-  id            Int               @id @default(autoincrement())
-  title         String
-  introduction  String            @db.LongText
-  coverImageUrl String
-  tags          ProjectTag[]
-  ownerId       String
-  owner         User              @relation(fields: [ownerId], references: [id])
-  projectUrl    String?
-  githubUrl     String?
-  techItems     ProjectTechItem[]
-  roles         ProjectRole[]
-  content       Json?
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
+  id                   Int               @id @default(autoincrement())
+  title                String
+  introduction         String            @db.LongText
+  coverImageUrl        String
+  outsideWallPosterUrl String?
+  outsideWallSlot      Int?
+  tags                 ProjectTag[]
+  ownerId              String
+  owner                User              @relation(fields: [ownerId], references: [id])
+  projectUrl           String?
+  githubUrl            String?
+  techItems            ProjectTechItem[]
+  roles                ProjectRole[]
+  content              Json?
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
 
+  @@unique([ownerId, outsideWallSlot])
   @@map("project")
 }
 
@@ -114,12 +117,12 @@ model ProjectTag {
 }
 
 model TechItem {
-  id         Int               @id @default(autoincrement())
-  name       String            @unique
-  slug       String            @unique
-  isFrontend Boolean           @default(false)
-  isBackend  Boolean           @default(false)
-  projects   ProjectTechItem[]
+  id          Int                  @id @default(autoincrement())
+  name        String               @unique
+  slug        String               @unique
+  isFrontend  Boolean              @default(false)
+  isBackend   Boolean              @default(false)
+  projects    ProjectTechItem[]
   experiences ExperienceTechItem[]
 
   @@map("tech_item")
@@ -161,11 +164,9 @@ model ProjectRole {
   @@map("project_role")
 }
 
-
-
 // Add user ID with each experience
 model Experience {
-  id          Int      @id @default(autoincrement())
+  id          Int                  @id @default(autoincrement())
   title       String
   company     String
   startDate   DateTime
@@ -173,9 +174,10 @@ model Experience {
   description Json?
   techItems   ExperienceTechItem[]
   userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  @@map("experience")
+  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([userId, title, company])
+  @@map("experience")
 }
 
 model ExperienceTechItem {
@@ -190,36 +192,36 @@ model ExperienceTechItem {
 }
 
 model Education {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   degree      String
   institution String
   startDate   DateTime
   endDate     DateTime?
   description Json?
   userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("education")
   @@unique([userId, degree, institution])
+  @@map("education")
 }
 
 model Profile {
-  id          Int      @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   displayName String
   headline    String?
   bio         String?
-  slug        String   @unique
-  isPublic    Boolean  @default(true)
-  linkedin String?
-  github String?
-  email String?
-  website String?
+  slug        String  @unique
+  isPublic    Boolean @default(true)
+  linkedin    String?
+  github      String?
+  email       String?
+  website     String?
 
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Resume {
@@ -228,12 +230,12 @@ model Resume {
   fileUrl      String
   mimeType     String?
   fileSize     Int?
-  fileData Bytes? @db.MediumBlob
+  fileData     Bytes?   @db.MediumBlob
   uploadedAt   DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  userId       String   @unique
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("resume")
 }

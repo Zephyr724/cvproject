@@ -40,6 +40,8 @@ export const validateCreateProjectSchema = z.object({
   title: z.string().min(1),
   introduction: z.string().min(1).max(500),
   coverImageUrl: z.string(),
+  outsideWallPosterUrl: z.string(),
+  outsideWallSlot: z.number().min(1).max(3),
   projectUrl: z.string().optional(),
   githubUrl: z.string().optional(),
   tags: z.array(tagSchema).optional(),

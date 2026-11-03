@@ -24,6 +24,8 @@ export function toPrismaCreateInput(
     title: projectData.title,
     introduction: projectData.introduction,
     coverImageUrl: projectData.coverImageUrl,
+    outsideWallPosterUrl: projectData.outsideWallPosterUrl,
+    outsideWallSlot: projectData.outsideWallSlot,
     projectUrl: projectData.projectUrl ?? null,
     githubUrl: projectData.githubUrl ?? null,
     owner: { connect: { id: ownerId } },
