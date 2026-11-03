@@ -61,6 +61,8 @@ export function toApiResponse(project: ProjectWithIncludes) {
     title: project.title,
     introduction: project.introduction,
     coverImageUrl: project.coverImageUrl,
+    outsideWallPosterUrl: project.outsideWallPosterUrl,
+    outsideWallSlot: project.outsideWallSlot,
     projectUrl: project.projectUrl,
     githubUrl: project.githubUrl,
     createdAt: project.createdAt.toISOString(),

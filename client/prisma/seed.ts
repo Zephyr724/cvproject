@@ -927,6 +927,7 @@ async function main() {
         title: proj.title,
         introduction: `An introduction about ${proj.title}.`,
         coverImageUrl: `https://picsum.photos/seed/${i}/800/400`,
+        outsideWallPosterUrl: `https://picsum.photos/seed/${i}/400/800`,
         projectUrl: proj.projectUrl,
         githubUrl: proj.githubUrl,
         ownerId,
