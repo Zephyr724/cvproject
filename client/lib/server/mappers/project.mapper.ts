@@ -127,6 +127,10 @@ export function toPrismaUpdateInput(
     data.introduction = projectData.introduction;
   if (projectData.coverImageUrl !== undefined)
     data.coverImageUrl = projectData.coverImageUrl;
+  if (projectData.outsideWallPosterUrl !== undefined)
+    data.outsideWallPosterUrl = projectData.outsideWallPosterUrl;
+  if (projectData.outsideWallSlot !== undefined)
+    data.outsideWallSlot = projectData.outsideWallSlot;
   if (projectData.projectUrl !== undefined)
     data.projectUrl = projectData.projectUrl ?? null;
   if (projectData.githubUrl !== undefined)

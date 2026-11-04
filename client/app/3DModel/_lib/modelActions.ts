@@ -1,3 +1,4 @@
+import { Project } from "@/app/projects/_components/types";
 import * as THREE from "three";
 
 export type EmbeddedModelAction = {
@@ -18,6 +19,7 @@ export interface ModelProfileContext {
 
 export function createModelActions(
   profile: ModelProfileContext,
+  projects: Project[],
 ): Record<string, ModelAction> {
   const profilePath = `/${encodeURIComponent(profile.slug)}`;
 
@@ -48,17 +50,17 @@ export function createModelActions(
     outside_wall_poster_01_root: {
       type: "embedded",
       title: "My Project",
-      url: `/projects/11?embed=1`,
+      url: ``,
     },
     outside_wall_poster_02_root: {
       type: "embedded",
       title: "My Project",
-      url: `/projects/12?embed=1`,
+      url: ``,
     },
     outside_wall_poster_03_root: {
       type: "embedded",
       title: "My Project",
-      url: `/projects/13?embed=1`,
+      url: ``,
     },
   };
 
@@ -82,6 +84,16 @@ export function createModelActions(
       url: profile.linkedin,
     };
   }
+
+  projects.forEach((project) => {
+    if (project.outsideWallSlot !== null) {
+      actions[`outside_wall_poster_0${project.outsideWallSlot}_root`] = {
+        type: "embedded",
+        title: project.title,
+        url: `/projects/${project.id}?embed=1`,
+      };
+    }
+  });
 
   return actions;
 }

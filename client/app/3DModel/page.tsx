@@ -4,6 +4,8 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { profileService } from "@/lib/server/services/profile.service";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import projectApiService from "@/lib/api/project-api-service";
+import { projectService } from "@/lib/server/services/project.service";
 
 export default async function ModelPage() {
   const session = await getServerSession(authOptions);
@@ -22,6 +24,8 @@ export default async function ModelPage() {
     profile.userId,
   );
 
+  const projects = await projectService.getProjectsByUserId(profile.userId);
+
   return (
     <div>
       <h3>3D Model</h3>
@@ -33,6 +37,7 @@ export default async function ModelPage() {
           resumeUrl: profile?.user?.resume?.fileUrl ?? null,
         }}
         experiences={experiences}
+        projects={projects}
       />
     </div>
   );

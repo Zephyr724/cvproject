@@ -1,8 +1,9 @@
+import { Project } from "@/app/projects/_components/types";
 import { useTexture } from "@react-three/drei";
 import { useEffect } from "react";
 import * as THREE from "three";
 
-const POSTER_URLS = [
+let POSTER_URLS = [
   "/images/project-posters/outsidewall_projects-poster-01.png",
   "/images/project-posters/outsidewall_projects-poster-02.png",
   "/images/project-posters/outsidewall_projects-poster-03.png",
@@ -14,7 +15,10 @@ const POSTER_NAMES = [
   "outside_wall_poster_03_surface",
 ];
 
-export default function useOutsideWallPosterTexture(scene: THREE.Object3D) {
+export default function useOutsideWallPosterTexture(
+  scene: THREE.Object3D,
+  projects: Project[],
+) {
   // Load the Projects poster separately so it can replace the material texture
   // on the matching mesh inside the GLB scene.
   const [texture1, texture2, texture3] = useTexture(POSTER_URLS, (textures) => {
@@ -25,6 +29,19 @@ export default function useOutsideWallPosterTexture(scene: THREE.Object3D) {
       texture.needsUpdate = true;
     });
   });
+
+  projects.forEach((project) => {
+    if (
+      project.outsideWallPosterUrl !== null &&
+      project.outsideWallSlot != null &&
+      project.outsideWallSlot > 0 &&
+      project.outsideWallSlot <= POSTER_URLS.length
+    ) {
+      POSTER_URLS[project.outsideWallSlot - 1] = project.outsideWallPosterUrl;
+    }
+  });
+  console.log("POSTER_URLS", POSTER_URLS);
+  console.log("Projects", projects);
 
   useEffect(() => {
     const textures = [texture1, texture2, texture3];

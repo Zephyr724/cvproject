@@ -8,6 +8,7 @@ import { ModelLights } from "./ModelLights";
 import { useThree } from "@react-three/fiber";
 import type { ModelProfileContext } from "../_lib/modelActions";
 import type { Experience } from "@/app/admin/experience/types";
+import type { Project } from "@/app/projects/_components/types";
 
 export type ModelControlsRef = ComponentRef<typeof OrbitControls>;
 
@@ -15,12 +16,14 @@ interface ModelSceneProps {
   controlsRef: RefObject<ModelControlsRef | null>;
   profile: ModelProfileContext;
   experiences: Experience[];
+  projects: Project[];
 }
 
 export function ModelScene({
   controlsRef,
   profile,
   experiences,
+  projects,
 }: ModelSceneProps) {
   // `state.get` reads the latest canvas state when an interaction ends, avoiding
   // the need to re-render this component every time the camera moves.
@@ -44,7 +47,11 @@ export function ModelScene({
           background={false}
           environmentIntensity={2}
         />
-        <CoffeeShopModel profile={profile} experiences={experiences} />
+        <CoffeeShopModel
+          profile={profile}
+          experiences={experiences}
+          projects={projects}
+        />
       </Suspense>
 
       {/*

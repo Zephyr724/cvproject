@@ -18,15 +18,18 @@ import useVendingScreen from "../_hooks/useVendingScreen";
 import VendingMachineExperienceScreen from "./VendingMachineExperienceScreen";
 import type { Experience } from "@/app/admin/experience/types";
 import useOutsideWallPosterTexture from "../_hooks/useOutsideWallPosterTexture";
+import { Project } from "@/app/projects/_components/types";
 
 interface CoffeeShopModelProps {
   profile: ModelProfileContext;
   experiences: Experience[];
+  projects: Project[];
 }
 
 export function CoffeeShopModel({
   profile,
   experiences,
+  projects,
 }: CoffeeShopModelProps) {
   // `scene` is the root Object3D containing all meshes, lights, and groups from Blender.
   const { scene } = useGLTF("/models/coffee_shop-all.glb");
@@ -34,12 +37,12 @@ export function CoffeeShopModel({
   const [activeEmbeddedAction, setActiveEmbeddedAction] =
     useState<EmbeddedModelAction | null>(null);
 
-  const modelActions = useMemo(() => createModelActions(profile), [profile]);
+  const modelActions = useMemo(() => createModelActions(profile,projects), [profile]);
 
   const { handleDoorClick } = useEntranceDoor(scene);
   useModelPerfOverrides(scene);
   useMenuPosterTexture(scene);
-  useOutsideWallPosterTexture(scene);
+  useOutsideWallPosterTexture(scene, projects);
 
   // Prepare the GLB screen material and calculate the transform used to place
   // the UIKit experience interface directly over the vending-machine display.

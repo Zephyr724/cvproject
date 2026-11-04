@@ -4,7 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { profileService } from "@/lib/server/services/profile.service";
 import ResumeForm from "./_components/ResumeForm";
-import OutsideWallPoster from "./_components/OutsideWallPoster";
+import OutsideWallPosterForm from "./_components/OutsideWallPosterForm";
 import { projectService } from "@/lib/server/services/project.service";
 
 export default async function AdminProfilePage() {
@@ -32,7 +32,7 @@ export default async function AdminProfilePage() {
       </section>
 
       <ResumeForm />
-      <OutsideWallPoster projects={projects} />
+      <OutsideWallPosterForm projects={projects} />
     </div>
   );
 }

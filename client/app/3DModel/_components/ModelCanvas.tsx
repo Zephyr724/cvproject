@@ -8,13 +8,19 @@ import { ModelPostProcessing } from "./ModelPostProcessing";
 import { MODEL_PERF } from "./ModelPerfToggles";
 import type { ModelProfileContext } from "../_lib/modelActions";
 import type { Experience } from "@/app/admin/experience/types";
+import { Project } from "@/app/projects/_components/types";
 
 interface ModelCanvasProps {
   profile: ModelProfileContext;
   experiences: Experience[];
+  projects: Project[];
 }
 
-export function ModelCanvas({ profile, experiences }: ModelCanvasProps) {
+export function ModelCanvas({
+  profile,
+  experiences,
+  projects,
+}: ModelCanvasProps) {
   // OrbitControls lives inside the canvas, while the reset button is regular HTML.
   // Sharing this ref lets the outside button call the controls' reset() method.
   const controlsRef = useRef<ModelControlsRef>(null);
@@ -39,6 +45,7 @@ export function ModelCanvas({ profile, experiences }: ModelCanvasProps) {
           controlsRef={controlsRef}
           profile={profile}
           experiences={experiences}
+          projects={projects}
         />
         <ModelPostProcessing />
       </Canvas>

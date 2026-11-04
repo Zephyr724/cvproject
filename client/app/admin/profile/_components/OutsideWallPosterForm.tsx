@@ -17,7 +17,7 @@ const projectIdsSchema = z
   .array(z.string().regex(/^\d+$/, "Please select a project").or(z.literal("")))
   .length(3);
 
-export default function OutsideWallPoster({
+export default function OutsideWallPosterForm({
   projects,
 }: OutsideWallPosterParam) {
   async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
@@ -52,7 +52,6 @@ export default function OutsideWallPoster({
     for (let index = 0; index < posters.length; index++) {
       const projectId = projectIds[index];
       const posterUrl = posters[index];
-      if (!projectId) return;
 
       await projectApiService.update<Partial<ValidateCreateProjectType>>(
         Number(projectId),
