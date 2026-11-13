@@ -126,7 +126,7 @@ const NewProjectForm = ({ projectId, project: initialProject }: Props) => {
   } = useForm<ValidateCreateProjectType>({
     resolver: zodResolver(validateCreateProjectSchema),
     values: project ? projectToFormData(project) : undefined,
-  });
+  });  
 
   const formValues = watch();
   const liveProject = formDataToProject(formValues);

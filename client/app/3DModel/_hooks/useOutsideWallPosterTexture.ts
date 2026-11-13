@@ -3,11 +3,11 @@ import { useTexture } from "@react-three/drei";
 import { useEffect } from "react";
 import * as THREE from "three";
 
-let POSTER_URLS = [
+let DEFAULT_POSTER_URLS = [
   "/images/project-posters/outsidewall_projects-poster-01.png",
   "/images/project-posters/outsidewall_projects-poster-02.png",
   "/images/project-posters/outsidewall_projects-poster-03.png",
-];
+] as const;
 
 const POSTER_NAMES = [
   "outside_wall_poster_01_surface",
@@ -21,7 +21,25 @@ export default function useOutsideWallPosterTexture(
 ) {
   // Load the Projects poster separately so it can replace the material texture
   // on the matching mesh inside the GLB scene.
-  const [texture1, texture2, texture3] = useTexture(POSTER_URLS, (textures) => {
+
+  const posterUrls: string[] = [...DEFAULT_POSTER_URLS];
+
+  console.log("projects", projects);
+
+  projects.forEach((project) => {
+    if (
+      typeof project.outsideWallPosterUrl === "string" &&
+      project.outsideWallSlot != null &&
+      project.outsideWallSlot > 0 &&
+      project.outsideWallSlot <= DEFAULT_POSTER_URLS.length
+    ) {
+      posterUrls[project.outsideWallSlot - 1] = project.outsideWallPosterUrl;
+    }
+  });
+
+  // TODO: Handle invalid or unreachable poster URLs without blocking the whole
+  // 3D scene; fall back to the default poster for the affected slot.
+  const [texture1, texture2, texture3] = useTexture(posterUrls, (textures) => {
     // Mirror each poster horizontally using its UV transform.
     textures.forEach((texture) => {
       texture.colorSpace = THREE.SRGBColorSpace;
@@ -29,18 +47,7 @@ export default function useOutsideWallPosterTexture(
       texture.needsUpdate = true;
     });
   });
-
-  projects.forEach((project) => {
-    if (
-      project.outsideWallPosterUrl !== null &&
-      project.outsideWallSlot != null &&
-      project.outsideWallSlot > 0 &&
-      project.outsideWallSlot <= POSTER_URLS.length
-    ) {
-      POSTER_URLS[project.outsideWallSlot - 1] = project.outsideWallPosterUrl;
-    }
-  });
-  console.log("POSTER_URLS", POSTER_URLS);
+  console.log("POSTER_URLS", posterUrls);
   console.log("Projects", projects);
 
   useEffect(() => {

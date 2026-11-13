@@ -3,7 +3,24 @@
 import { ValidateCreateProjectType } from "@/app/api/projects/validationSchema";
 import projectApiService from "@/lib/api/project-api-service";
 import type { Project } from "@/app/projects/_components/types";
-import z from "zod";
+import z, { promise } from "zod";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { TextField } from "@radix-ui/themes";
+import ErrorMessage from "@/app/components/ErrorMessage";
+
+const outsideWallFormDataSchema = z.object({
+  id: z.string(),
+  outsideWallPosterUrl: z.string().optional(),
+  outsideWallSlot: z.string().optional(),
+});
+
+const postersFormDataSchema = z.object({
+  posters: z.array(outsideWallFormDataSchema).length(3),
+});
+
+type OutsideWallsFormType = z.infer<typeof postersFormDataSchema>;
 
 interface OutsideWallPosterParam {
   projects: Project[];
@@ -20,50 +37,88 @@ const projectIdsSchema = z
 export default function OutsideWallPosterForm({
   projects,
 }: OutsideWallPosterParam) {
-  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const {
+    register,
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<OutsideWallsFormType>({
+    resolver: zodResolver(postersFormDataSchema),
+  });
 
-    const formData = new FormData(event.currentTarget);
+  const handleFormSubmit = handleSubmit(async (data) => {
+    console.log("data", data);
 
-    const projectIdsResult = projectIdsSchema.safeParse(
-      formData.getAll("projectIds"),
+    const assignedProjects = projects.filter(
+      (project) => project.outsideWallSlot !== null,
     );
 
-    const postersResult = outsideWallSchema.safeParse(
-      formData.getAll("outsideWallPosters"),
+    await Promise.all(
+      assignedProjects.map((project) =>
+        projectApiService.update(project.id, {
+          outsideWallSlot: null,
+        }),
+      ),
     );
 
-    if (!projectIdsResult.success) {
-      console.log(projectIdsResult.error.issues);
-      return;
-    }
-
-    if (!postersResult.success) {
-      console.log(postersResult.error.issues);
-      return;
-    }
-
-    const projectIds = projectIdsResult.data.map(
-      (projectId) => projectId || null,
+    await Promise.all(
+      data.posters.map((poster, index) =>
+        projectApiService.update<Partial<ValidateCreateProjectType>>(
+          Number(poster.id),
+          {
+            outsideWallPosterUrl: poster.outsideWallPosterUrl,
+            outsideWallSlot: Number(index + 1),
+          },
+        ),
+      ),
     );
+  });
 
-    const posters = postersResult.data.map((url) => url || null);
+  // async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
+  //   event.preventDefault();
 
-    for (let index = 0; index < posters.length; index++) {
-      const projectId = projectIds[index];
-      const posterUrl = posters[index];
+  //   const formData = new FormData(event.currentTarget);
 
-      await projectApiService.update<Partial<ValidateCreateProjectType>>(
-        Number(projectId),
-        {
-          outsideWallPosterUrl: posterUrl || undefined,
-          outsideWallSlot: index + 1,
-        },
-      );
-    }
+  //   const projectIdsResult = projectIdsSchema.safeParse(
+  //     formData.getAll("projectIds"),
+  //   );
 
-    console.log(posters);
-  }
+  //   const postersResult = outsideWallSchema.safeParse(
+  //     formData.getAll("outsideWallPosters"),
+  //   );
+
+  //   if (!projectIdsResult.success) {
+  //     console.log(projectIdsResult.error.issues);
+  //     return;
+  //   }
+
+  //   if (!postersResult.success) {
+  //     console.log(postersResult.error.issues);
+  //     return;
+  //   }
+
+  //   const projectIds = projectIdsResult.data.map(
+  //     (projectId) => projectId || null,
+  //   );
+
+  //   const posters = postersResult.data.map((url) => url || null);
+
+  //   for (let index = 0; index < posters.length; index++) {
+  //     const projectId = projectIds[index];
+  //     const posterUrl = posters[index];
+
+  //     await projectApiService.update<Partial<ValidateCreateProjectType>>(
+  //       Number(projectId),
+  //       {
+  //         outsideWallPosterUrl: posterUrl || undefined,
+  //         outsideWallSlot: index + 1,
+  //       },
+  //     );
+  //   }
+
+  //   console.log(posters);
+  // }
   return (
     <section className="rounded-md border border-base-300 bg-base-100 p-6 shadow-sm">
       <h2 className="text-2xl font-bold">
@@ -74,17 +129,21 @@ export default function OutsideWallPosterForm({
         Upload Poster URL. Uploading a new URL will replace the existing one.
       </p>
 
-      <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
+      <form
+        className="mt-6 space-y-5"
+        onSubmit={handleFormSubmit}
+        id="new-project-form"
+      >
         <div className="flex flex-col gap-3">
-          {[1, 2, 3].map((slot) => (
-            <div key={slot}>
+          {[1, 2, 3].map((slot, index) => (
+            <div key={index + 1}>
               <label className="flex items-center gap-3">
                 <span className="w-32 shrink-0">Project #{slot}:</span>
 
                 <select
-                  name="projectIds"
                   className="select select-bordered select-sm w-[60%]"
                   defaultValue=""
+                  {...register(`posters.${index}.id`)}
                 >
                   <option value="">Select a project</option>
 
@@ -97,19 +156,24 @@ export default function OutsideWallPosterForm({
               </label>
               <label className="flex gap-3 items-center  shrink-0">
                 OutsideWallPoster #{slot}:
-                <input
-                  className="file-input file-input-bordered border-2 w-[60%] file-input-sm pl-4  placeholder:text-gray-500 "
-                  name="outsideWallPosters"
-                  type="url"
-                  placeholder="URL only."
+                <TextField.Root
+                  placeholder="E.g., E-Commerce Platform"
+                  {...register(`posters.${index}.outsideWallPosterUrl`)}
                 />
+                <ErrorMessage>
+                  {/* {errors.outsideWallPosterUrl?.message} */}
+                </ErrorMessage>
               </label>
             </div>
           ))}
         </div>
 
         <div className="flex justify-end">
-          <button type="submit" className="btn btn-primary">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            form="new-project-form"
+          >
             Update
           </button>
         </div>

@@ -37,6 +37,7 @@ export function ModelScene({
       <ModelLights />
 
       {/* Suspense waits for the HDR environment and GLB assets to finish loading. */}
+      {/* TODO: Replace the null fallback with a visible 3D scene loading state. */}
       <Suspense fallback={null}>
         {/*
           The HDR image supplies realistic light and reflections. background=false
