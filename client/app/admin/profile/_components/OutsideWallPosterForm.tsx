@@ -10,38 +10,51 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TextField } from "@radix-ui/themes";
 import ErrorMessage from "@/app/components/ErrorMessage";
 
-const outsideWallFormDataSchema = z
+const outsideWallPosterSchema = z
   .object({
     id: z.string(),
-    outsideWallPosterUrl: z.url("Please enter a valid URL").optional(),
-    outsideWallSlot: z.string().optional(),
+    outsideWallPosterUrl: z.url("Please enter a valid URL").or(z.literal("")),
   })
   .refine((poster) => poster.id === "" || poster.outsideWallPosterUrl !== "", {
     path: ["outsideWallPosterUrl"],
     message: "Please enter a poster URL",
   });
 
-const postersFormDataSchema = z.object({
-  posters: z.array(outsideWallFormDataSchema).length(3),
+const outsideWallPosterFormSchema = z.object({
+  posters: z.array(outsideWallPosterSchema).length(3),
 });
 
-type OutsideWallsFormType = z.infer<typeof postersFormDataSchema>;
+type OutsideWallPosterFormData = z.infer<typeof outsideWallPosterFormSchema>;
 
-interface OutsideWallPosterParam {
+interface OutsideWallPosterFormProps {
   projects: Project[];
 }
 
 export default function OutsideWallPosterForm({
   projects,
-}: OutsideWallPosterParam) {
+}: OutsideWallPosterFormProps) {
+  const defaultPosters: OutsideWallPosterFormData["posters"] = [1, 2, 3].map(
+    (slot) => {
+      const project = projects.find(
+        (project) => project.outsideWallSlot === slot,
+      );
+      return {
+        id: project ? String(project.id) : "",
+        outsideWallPosterUrl: project?.outsideWallPosterUrl ?? "",
+      };
+    },
+  );
+
   const {
     register,
-    control,
     handleSubmit,
     watch,
-    formState: { errors },
-  } = useForm<OutsideWallsFormType>({
-    resolver: zodResolver(postersFormDataSchema),
+    getValues,
+    setValue,
+    formState: { errors, isDirty },
+  } = useForm<OutsideWallPosterFormData>({
+    resolver: zodResolver(outsideWallPosterFormSchema),
+    defaultValues: { posters: defaultPosters },
   });
 
   const handleFormSubmit = handleSubmit(async (data) => {
@@ -59,23 +72,66 @@ export default function OutsideWallPosterForm({
       ),
     );
 
+    const selectedPosters = data.posters
+      .map((poster, index) => ({
+        ...poster,
+        outsideWallSlot: index + 1,
+      }))
+      .filter((poster) => poster.id !== "");
+
     await Promise.all(
-      data.posters.map((poster, index) =>
+      selectedPosters.map((poster) =>
         projectApiService.update<Partial<ValidateCreateProjectType>>(
           Number(poster.id),
           {
             outsideWallPosterUrl: poster.outsideWallPosterUrl,
-            outsideWallSlot: Number(index + 1),
+            outsideWallSlot: poster.outsideWallSlot,
           },
         ),
       ),
     );
   });
 
+  const handleProjectSelect = (targetIndex: number, selectedId: string) => {
+    const posters = [...getValues("posters")];
+
+    if (selectedId === "") {
+      posters[targetIndex] = {
+        id: "",
+        outsideWallPosterUrl: "",
+      };
+    } else {
+      const sourceIndex = posters.findIndex(
+        (poster) => poster.id === selectedId,
+      );
+
+      if (sourceIndex !== -1) {
+        [posters[targetIndex], posters[sourceIndex]] = [
+          posters[sourceIndex],
+          posters[targetIndex],
+        ];
+      } else {
+        const project = projects.find(
+          (project) => String(project.id) === selectedId,
+        );
+
+        posters[targetIndex] = {
+          id: selectedId,
+          outsideWallPosterUrl: project?.outsideWallPosterUrl ?? "",
+        };
+      }
+    }
+
+    setValue("posters", posters, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
+
   return (
     <section className="rounded-md border border-base-300 bg-base-100 p-6 shadow-sm">
       <h2 className="text-2xl font-bold">
-        Update Coffeshop outside wall poster
+        Update Coffeeshop outside wall poster
       </h2>
 
       <p className="mt-1 text-sm text-base-content/60">
@@ -96,9 +152,11 @@ export default function OutsideWallPosterForm({
                   <span className="w-32 shrink-0">Project #{slot}:</span>
 
                   <select
-                    className="select select-bordered select-sm w-[60%]"
-                    defaultValue=""
+                    className="select select-bordered select-sm w-[60%] justify-center text-lg"
                     {...register(`posters.${index}.id`)}
+                    onChange={(event) =>
+                      handleProjectSelect(index, event.target.value)
+                    }
                   >
                     <option value="">Select a project first</option>
 
@@ -109,16 +167,19 @@ export default function OutsideWallPosterForm({
                     ))}
                   </select>
                 </label>
-                <label className="flex gap-3 items-center  shrink-0">
+                <label className="flex gap-3 items-start  shrink-0">
                   OutsideWallPoster #{slot}:
-                  <TextField.Root
-                    placeholder="E.g., E-Commerce Platform"
-                    disabled={!selectedProject}
-                    {...register(`posters.${index}.outsideWallPosterUrl`)}
-                  />
-                  <ErrorMessage>
-                    {errors.posters?.[index]?.outsideWallPosterUrl?.message}
-                  </ErrorMessage>
+                  <div className="w-[75%] min-w-0  max-w-3xl">
+                    <TextField.Root
+                      className="w-full"
+                      placeholder="E.g., E-Commerce Platform"
+                      disabled={!selectedProject}
+                      {...register(`posters.${index}.outsideWallPosterUrl`)}
+                    />
+                    <ErrorMessage>
+                      {errors.posters?.[index]?.outsideWallPosterUrl?.message}
+                    </ErrorMessage>
+                  </div>
                 </label>
               </div>
             );
@@ -130,6 +191,7 @@ export default function OutsideWallPosterForm({
             type="submit"
             className="btn btn-primary"
             form="new-project-form"
+            disabled={!isDirty}
           >
             Update
           </button>
