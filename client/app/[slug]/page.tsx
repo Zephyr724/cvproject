@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { profileService } from "@/lib/server/services/profile.service";
 import { ModelCanvas } from "../3DModel/_components/ModelCanvas";
+import { experienceService } from "@/lib/server/services/experience.service";
+import { projectService } from "@/lib/server/services/project.service";
 
 interface ModelPageProps {
   params: Promise<{
@@ -17,13 +19,22 @@ export default async function ModelPage({ params }: ModelPageProps) {
     notFound();
   }
 
+  const experiences = await experienceService.getExperiencesByUserId(
+    profile.userId,
+  );
+
+  const projects = await projectService.getProjectsByUserId(profile.userId);
+
   return (
     <ModelCanvas
       profile={{
         slug,
         github: profile.github,
         linkedin: profile.linkedin,
+        resumeUrl: profile?.user?.resume?.fileUrl ?? null,
       }}
+      experiences={experiences}
+      projects={projects}
     />
   );
 }

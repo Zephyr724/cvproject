@@ -4,6 +4,9 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { profileService } from "@/lib/server/services/profile.service";
 import ResumeForm from "./_components/ResumeForm";
+import OutsideWallPosterForm from "./_components/OutsideWallPosterForm";
+import { projectService } from "@/lib/server/services/project.service";
+
 export default async function AdminProfilePage() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
@@ -14,6 +17,8 @@ export default async function AdminProfilePage() {
     name: session.user.name,
     email: session.user.email,
   });
+
+  const projects = await projectService.getProjectsByUserId(profile.userId);
 
   return (
     <div className="mx-auto max-w-4xl space-y-8 px-6 py-10">
@@ -26,16 +31,8 @@ export default async function AdminProfilePage() {
         <ProfileForm profile={profile} />
       </section>
 
-      <section className="rounded-md border border-base-300 bg-base-100 p-6 shadow-sm">
-        <h2 className="text-2xl font-bold">Update Resume</h2>
-
-        <p className="mt-1 text-sm text-base-content/60">
-          Upload a PDF resume. Uploading a new file will replace the existing
-          one.
-        </p>
-
-        <ResumeForm />
-      </section>
+      <ResumeForm />
+      <OutsideWallPosterForm projects={projects} />
     </div>
   );
 }

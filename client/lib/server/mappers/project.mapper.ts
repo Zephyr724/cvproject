@@ -24,6 +24,8 @@ export function toPrismaCreateInput(
     title: projectData.title,
     introduction: projectData.introduction,
     coverImageUrl: projectData.coverImageUrl,
+    outsideWallPosterUrl: projectData.outsideWallPosterUrl,
+    outsideWallSlot: projectData.outsideWallSlot,
     projectUrl: projectData.projectUrl ?? null,
     githubUrl: projectData.githubUrl ?? null,
     owner: { connect: { id: ownerId } },
@@ -59,6 +61,8 @@ export function toApiResponse(project: ProjectWithIncludes) {
     title: project.title,
     introduction: project.introduction,
     coverImageUrl: project.coverImageUrl,
+    outsideWallPosterUrl: project.outsideWallPosterUrl,
+    outsideWallSlot: project.outsideWallSlot,
     projectUrl: project.projectUrl,
     githubUrl: project.githubUrl,
     createdAt: project.createdAt.toISOString(),
@@ -123,6 +127,10 @@ export function toPrismaUpdateInput(
     data.introduction = projectData.introduction;
   if (projectData.coverImageUrl !== undefined)
     data.coverImageUrl = projectData.coverImageUrl;
+  if (projectData.outsideWallPosterUrl !== undefined)
+    data.outsideWallPosterUrl = projectData.outsideWallPosterUrl;
+  if (projectData.outsideWallSlot !== undefined)
+    data.outsideWallSlot = projectData.outsideWallSlot;
   if (projectData.projectUrl !== undefined)
     data.projectUrl = projectData.projectUrl ?? null;
   if (projectData.githubUrl !== undefined)

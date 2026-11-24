@@ -3,7 +3,7 @@ import { ValidateUpdateProfileType } from "@/app/api/profiles/validationSchema";
 import { profileRepository } from "@/lib/server/repositories/profile.repository";
 import { getServerSession } from "next-auth/next";
 import { BusinessError } from "../errors";
-import { Prisma } from "@/src/generated/prisma/client";
+import { Prisma, Project } from "@/src/generated/prisma/client";
 import { handlePrismaError } from "./errorHandle.service";
 import { toApiResponse } from "../mappers/profile.mapper";
 import { randomUUID } from "node:crypto";

@@ -35,6 +35,10 @@ class HttpService {
     return apiClient.patch<T>(this.endpoint + "/" + id, entity);
   }
 
+  put<T>(entity: T) {
+    return apiClient.put<T>(this.endpoint, entity);
+  }
+
   delete<T>(id: number) {
     return apiClient.delete<T>(this.endpoint + "/" + id);
   }

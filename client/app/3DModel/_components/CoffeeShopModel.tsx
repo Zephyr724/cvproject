@@ -2,34 +2,51 @@
 
 import { useMemo, useState } from "react";
 import { useGLTF } from "@react-three/drei";
-import { ThreeEvent } from "@react-three/fiber";
+import type { ThreeEvent } from "@react-three/fiber";
 import useModelPerfOverrides from "../_hooks/useModelPerfOverrides";
 import useMenuPosterTexture from "../_hooks/useMenuPosterTexture";
 import {
   createModelActions,
   type EmbeddedModelAction,
   findModelAction,
-  ModelProfileContext,
+  ModelAction,
+  type ModelProfileContext,
 } from "../_lib/modelActions";
 import EmbeddedPageDialog from "./EmbeddedPageDialog";
 import useEntranceDoor from "../_hooks/useEntranceDoor";
+import useVendingScreen from "../_hooks/useVendingScreen";
+import VendingMachineExperienceScreen from "./VendingMachineExperienceScreen";
+import type { Experience } from "@/app/admin/experience/types";
+import useOutsideWallPosterTexture from "../_hooks/useOutsideWallPosterTexture";
+import { Project } from "@/app/projects/_components/types";
 
 interface CoffeeShopModelProps {
   profile: ModelProfileContext;
+  experiences: Experience[];
+  projects: Project[];
 }
 
-export function CoffeeShopModel({ profile }: CoffeeShopModelProps) {
+export function CoffeeShopModel({
+  profile,
+  experiences,
+  projects,
+}: CoffeeShopModelProps) {
   // `scene` is the root Object3D containing all meshes, lights, and groups from Blender.
   const { scene } = useGLTF("/models/coffee_shop-all.glb");
 
   const [activeEmbeddedAction, setActiveEmbeddedAction] =
     useState<EmbeddedModelAction | null>(null);
 
-  const modelActions = useMemo(() => createModelActions(profile), [profile]);
+  const modelActions = useMemo(() => createModelActions(profile,projects), [profile]);
 
   const { handleDoorClick } = useEntranceDoor(scene);
   useModelPerfOverrides(scene);
   useMenuPosterTexture(scene);
+  useOutsideWallPosterTexture(scene, projects);
+
+  // Prepare the GLB screen material and calculate the transform used to place
+  // the UIKit experience interface directly over the vending-machine display.
+  const screenLayout = useVendingScreen(scene);
 
   const handleModelClick = (event: ThreeEvent<MouseEvent>) => {
     // Only a genuine left-button click should trigger a model action.
@@ -55,16 +72,27 @@ export function CoffeeShopModel({ profile }: CoffeeShopModelProps) {
 
     // Stop the click from reaching parent objects or meshes behind this one.
     event.stopPropagation();
+
+    executeModelAction(action);
+  };
+
+  const executeModelAction = (action: ModelAction) => {
     if (action.type === "embedded") {
       setActiveEmbeddedAction(action);
       return;
     }
 
-    if (action.type === "external") {
-      // Open the external URL in a new tab without giving it access to this page
-      // or sending this page's URL as referrer information.
-      window.open(action.url, "_blank", "noopener,noreferrer");
-    }
+    window.open(action.url, "_blank", "noopener,noreferrer");
+  };
+
+  const openExperiencePage = (experienceId: number) => {
+    setActiveEmbeddedAction({
+      type: "embedded",
+      title: "My Experience",
+      url:
+        `/${encodeURIComponent(profile.slug)}/experience` +
+        `?embed=1#experience-${experienceId}`,
+    });
   };
 
   return (
@@ -74,6 +102,14 @@ export function CoffeeShopModel({ profile }: CoffeeShopModelProps) {
         object={scene}
         onClick={handleModelClick}
       />
+
+      {screenLayout && (
+        <VendingMachineExperienceScreen
+          screenLayout={screenLayout}
+          experiences={experiences}
+          openExperiencePage={openExperiencePage}
+        />
+      )}
 
       {activeEmbeddedAction && (
         <EmbeddedPageDialog

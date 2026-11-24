@@ -19,6 +19,7 @@ import { Spinner } from "@radix-ui/themes";
 import useFetchProjectById from "@/hooks/useFetchProjectById";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { tr } from "zod/v4/locales";
 
 interface Props {
   projectId?: number;
@@ -35,6 +36,8 @@ function formDataToProject(data: Partial<ValidateCreateProjectType>): Project {
     title: data.title || "Untitled",
     introduction: data.introduction ?? "",
     coverImageUrl: data.coverImageUrl || "#",
+    outsideWallPosterUrl: data.outsideWallPosterUrl || null,
+    outsideWallSlot: data.outsideWallSlot ?? null,
     projectUrl: data.projectUrl ?? "#",
     githubUrl: data.githubUrl ?? "#",
     createdAt: "",
@@ -74,6 +77,8 @@ function projectToFormData(project: Project): ValidateCreateProjectType {
     title: project.title,
     introduction: project.introduction,
     coverImageUrl: project.coverImageUrl,
+    outsideWallPosterUrl: project.outsideWallPosterUrl ?? "",
+    outsideWallSlot: project.outsideWallSlot ?? undefined,
     projectUrl: project.projectUrl ?? "",
     githubUrl: project.githubUrl ?? "",
     tags: project.tags.map((t, i) => ({ ...t, order: t.order ?? i })),
@@ -128,23 +133,31 @@ const NewProjectForm = ({ projectId, project: initialProject }: Props) => {
   const liveProject = formDataToProject(formValues);
   useEffect(() => {
     console.log("liveProject", liveProject);
-  });
+  }, [liveProject]);
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    if (isEdit) {
-      await projectApiService
-        .update<ValidateCreateProjectType>(projectId, data)
-        .catch((err) => {
-          setError(err.message);
-        });
-    } else {
-      await projectApiService
-        .create<ValidateCreateProjectType>(data)
-        .catch((err) => {
-          setError(err.message);
-        });
+    try {
+      if (isEdit) {
+        await projectApiService
+          .update<ValidateCreateProjectType>(projectId, data)
+          .catch((err) => {
+            setError(err.message);
+          });
+      } else {
+        await projectApiService
+          .create<ValidateCreateProjectType>(data)
+          .catch((err) => {
+            setError(err.message);
+          });
+      }
+      router.push("/admin/projects");
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Unable to save project.");
+      }
     }
-    router.push("/admin/projects");
   });
 
   return (

@@ -6,16 +6,25 @@ import { BlenderCamera } from "./BlenderCamera";
 import { CoffeeShopModel } from "./CoffeeShopModel";
 import { ModelLights } from "./ModelLights";
 import { useThree } from "@react-three/fiber";
-import { ModelProfileContext } from "../_lib/modelActions";
+import type { ModelProfileContext } from "../_lib/modelActions";
+import type { Experience } from "@/app/admin/experience/types";
+import type { Project } from "@/app/projects/_components/types";
 
 export type ModelControlsRef = ComponentRef<typeof OrbitControls>;
 
 interface ModelSceneProps {
   controlsRef: RefObject<ModelControlsRef | null>;
   profile: ModelProfileContext;
+  experiences: Experience[];
+  projects: Project[];
 }
 
-export function ModelScene({ controlsRef, profile }: ModelSceneProps) {
+export function ModelScene({
+  controlsRef,
+  profile,
+  experiences,
+  projects,
+}: ModelSceneProps) {
   // `state.get` reads the latest canvas state when an interaction ends, avoiding
   // the need to re-render this component every time the camera moves.
   const getThreeState = useThree((state) => state.get);
@@ -28,6 +37,7 @@ export function ModelScene({ controlsRef, profile }: ModelSceneProps) {
       <ModelLights />
 
       {/* Suspense waits for the HDR environment and GLB assets to finish loading. */}
+      {/* TODO: Replace the null fallback with a visible 3D scene loading state. */}
       <Suspense fallback={null}>
         {/*
           The HDR image supplies realistic light and reflections. background=false
@@ -38,7 +48,11 @@ export function ModelScene({ controlsRef, profile }: ModelSceneProps) {
           background={false}
           environmentIntensity={2}
         />
-        <CoffeeShopModel profile={profile} />
+        <CoffeeShopModel
+          profile={profile}
+          experiences={experiences}
+          projects={projects}
+        />
       </Suspense>
 
       {/*

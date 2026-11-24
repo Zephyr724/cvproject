@@ -18,7 +18,7 @@ export default function useMenuPosterTexture(scene: THREE.Object3D) {
   useEffect(() => {
     // Blender object names are preserved in a GLB, so the poster mesh can be
     // located without depending on its position in the scene hierarchy.
-    const poster = scene.getObjectByName("MenuPoster");
+    const poster = scene.getObjectByName("menu_poster_01");
 
     if (!(poster instanceof THREE.Mesh)) {
       console.warn("MenuPoster was not found in the GLB scene");
