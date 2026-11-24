@@ -19,6 +19,7 @@ import { Spinner } from "@radix-ui/themes";
 import useFetchProjectById from "@/hooks/useFetchProjectById";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { tr } from "zod/v4/locales";
 
 interface Props {
   projectId?: number;
@@ -126,29 +127,37 @@ const NewProjectForm = ({ projectId, project: initialProject }: Props) => {
   } = useForm<ValidateCreateProjectType>({
     resolver: zodResolver(validateCreateProjectSchema),
     values: project ? projectToFormData(project) : undefined,
-  });  
+  });
 
   const formValues = watch();
   const liveProject = formDataToProject(formValues);
   useEffect(() => {
     console.log("liveProject", liveProject);
-  });
+  }, [liveProject]);
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    if (isEdit) {
-      await projectApiService
-        .update<ValidateCreateProjectType>(projectId, data)
-        .catch((err) => {
-          setError(err.message);
-        });
-    } else {
-      await projectApiService
-        .create<ValidateCreateProjectType>(data)
-        .catch((err) => {
-          setError(err.message);
-        });
+    try {
+      if (isEdit) {
+        await projectApiService
+          .update<ValidateCreateProjectType>(projectId, data)
+          .catch((err) => {
+            setError(err.message);
+          });
+      } else {
+        await projectApiService
+          .create<ValidateCreateProjectType>(data)
+          .catch((err) => {
+            setError(err.message);
+          });
+      }
+      router.push("/admin/projects");
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Unable to save project.");
+      }
     }
-    router.push("/admin/projects");
   });
 
   return (
