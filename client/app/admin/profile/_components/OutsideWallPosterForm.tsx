@@ -151,7 +151,7 @@ export default function OutsideWallPosterForm({
             return (
               <div
                 key={index + 1}
-                className="flex flex-col gap-2 bg-gray-200 rounded p-2 "
+                className="flex flex-col gap-2 bg-base-200 rounded p-2 "
               >
                 <label className="flex items-center gap-3">
                   <span className="w-32 shrink-0">Project #{slot}:</span>
