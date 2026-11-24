@@ -24,7 +24,6 @@ export default function useOutsideWallPosterTexture(
 
   const posterUrls: string[] = [...DEFAULT_POSTER_URLS];
 
-  console.log("projects", projects);
 
   projects.forEach((project) => {
     if (
@@ -47,8 +46,6 @@ export default function useOutsideWallPosterTexture(
       texture.needsUpdate = true;
     });
   });
-  console.log("POSTER_URLS", posterUrls);
-  console.log("Projects", projects);
 
   useEffect(() => {
     const textures = [texture1, texture2, texture3];

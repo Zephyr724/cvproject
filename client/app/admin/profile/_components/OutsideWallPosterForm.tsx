@@ -1,7 +1,6 @@
 "use client";
 
-import { ValidateCreateProjectType } from "@/app/api/projects/validationSchema";
-import projectApiService from "@/lib/api/project-api-service";
+import { outsideWallPosterApiService } from "@/lib/api/project-api-service";
 import type { Project } from "@/app/projects/_components/types";
 import z from "zod";
 
@@ -67,20 +66,9 @@ export default function OutsideWallPosterForm({
   });
 
   const handleFormSubmit = handleSubmit(async (data) => {
-    const assignedProjects = projects.filter(
-      (project) => project.outsideWallSlot !== null,
-    );
     try {
       setSaveMessage("");
       setIsSaveError(false);
-      // Clear existing assignments before applying the new slot order.
-      await Promise.all(
-        assignedProjects.map((project) =>
-          projectApiService.update(project.id, {
-            outsideWallSlot: null,
-          }),
-        ),
-      );
 
       // Convert zero-based form indexes to slot numbers before removing empty slots.
       const selectedPosters = data.posters
@@ -90,24 +78,15 @@ export default function OutsideWallPosterForm({
         }))
         .filter((poster) => poster.id !== "");
 
-      await Promise.all(
-        selectedPosters.map((poster) =>
-          projectApiService.update<Partial<ValidateCreateProjectType>>(
-            Number(poster.id),
-            {
-              outsideWallPosterUrl: poster.outsideWallPosterUrl,
-              outsideWallSlot: poster.outsideWallSlot,
-            },
-          ),
-        ),
-      );
+      // Submit one batch so the server can replace all slot assignments atomically.
+      await outsideWallPosterApiService.put(selectedPosters);
       // Treat the saved values as the new baseline so the form is no longer dirty.
       reset(data);
       setSaveMessage("Settings saved.");
       // Refresh server-provided project data after all updates succeed.
       router.refresh();
       setIsSaveError(false);
-    } catch (error) {
+    } catch {
       setIsSaveError(true);
       setSaveMessage("Saving failed. Please try again.");
     }
@@ -170,7 +149,10 @@ export default function OutsideWallPosterForm({
           {[1, 2, 3].map((slot, index) => {
             const selectedProject = watch(`posters.${index}.id`);
             return (
-              <div key={index + 1} className="flex flex-col gap-2">
+              <div
+                key={index + 1}
+                className="flex flex-col gap-2 bg-gray-200 rounded p-2 "
+              >
                 <label className="flex items-center gap-3">
                   <span className="w-32 shrink-0">Project #{slot}:</span>
 

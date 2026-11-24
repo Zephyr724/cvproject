@@ -1,3 +1,9 @@
 import create from "./http-service";
 
-export default create("/projects");
+const projectApiService = create("/projects");
+
+export const outsideWallPosterApiService = create(
+  "/projects/outside-wall-posters",
+);
+
+export default projectApiService;

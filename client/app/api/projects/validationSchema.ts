@@ -54,4 +54,17 @@ export type ValidateCreateProjectType = z.infer<
   typeof validateCreateProjectSchema
 >;
 
+// Normalize form-select IDs and validate the batch before it reaches the service.
+export const validateUpdateOutsideWallPosterSchema = z.array(
+  z.object({
+    id: z.coerce.number().int().positive(),
+    outsideWallPosterUrl: z.string().optional(),
+    outsideWallSlot: z.number().min(1).max(3).nullable().optional(),
+  }),
+);
+
+export type ValidateUpdateProjectType = z.infer<
+  typeof validateUpdateOutsideWallPosterSchema
+>;
+
 export type TechItem = z.infer<typeof techItemSchema>;

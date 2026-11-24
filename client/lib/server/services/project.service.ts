@@ -1,5 +1,6 @@
 // lib/services/project.service.ts
 import {
+  OutsideWallPosterUpdate,
   projectRepository,
   roleRepository,
   tagRepository,
@@ -11,11 +12,15 @@ import {
   toPrismaUpdateInput,
   toApiResponseSummary,
 } from "@/lib/server/mappers/project.mapper";
-import { ValidateCreateProjectType } from "@/app/api/projects/validationSchema";
+import {
+  ValidateCreateProjectType,
+  ValidateUpdateProjectType,
+} from "@/app/api/projects/validationSchema";
 import { BusinessError } from "@/lib/server/errors";
-import { Prisma, TechCategory } from "@/src/generated/prisma/client";
+import { TechCategory } from "@/src/generated/prisma/client";
 import { getServerSession, Session } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { handlePrismaError } from "./errorHandle.service";
 
 export const projectService = {
   async createProject(projectData: ValidateCreateProjectType) {
@@ -121,6 +126,33 @@ export const projectService = {
     }
   },
 
+  async updateOutsideWallPosters(
+    ownerId: string,
+    outsideWallPostersData: ValidateUpdateProjectType,
+  ) {
+    try {
+      // Convert the validated request into repository update commands.
+      const prismaInput: OutsideWallPosterUpdate[] = outsideWallPostersData.map(
+        (poster) => ({
+          projectId: poster.id,
+          outsideWallPosterUrl: poster.outsideWallPosterUrl,
+          outsideWallSlot: poster.outsideWallSlot,
+        }),
+      );
+
+      // Apply the complete slot assignment as one atomic repository operation.
+      const updated = await projectRepository.updateOutsideWallPosters(
+        String(ownerId),
+        prismaInput,
+      );
+
+      // Return the standard project API response shape.
+      return updated.map((poster) => toApiResponse(poster));
+    } catch (error) {
+      handlePrismaError(error, "Project not found");
+    }
+  },
+
   async deleteById(projectId: number) {
     try {
       const deleted = await projectRepository.deleteById(projectId);
@@ -171,29 +203,4 @@ async function ensureRole(role: { id?: number; name?: string; order: number }) {
   }
   const result = await roleRepository.upsertByName(role.name!);
   return { id: result.id, order: role.order };
-}
-
-function handlePrismaError(error: unknown): never {
-  if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    if (error.code === "P2025") {
-      throw new BusinessError(
-        `Related record not found: ${error.meta?.cause || "please check the IDs in tags / techItems / roles / content"}`,
-        422,
-      );
-    }
-    if (error.code === "P2002") {
-      throw new BusinessError(
-        "A record with that unique value already exists",
-        409,
-      );
-    }
-    if (error.code === "P2014") {
-      // The change you are trying to make would violate the required relation
-      throw new BusinessError(
-        `Cannot delete: related records still exist. Remove them first.`,
-        409,
-      );
-    }
-  }
-  throw error; // unknown error → let global error handler handle → 500
 }

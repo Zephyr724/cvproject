@@ -12,6 +12,10 @@ export type ProjectWithIncludes = Prisma.ProjectGetPayload<{
   include: typeof projectInclude;
 }>;
 
+export type OutsideWallPosterUpdate = {
+  projectId: number;
+} & Pick<Prisma.ProjectUpdateInput, "outsideWallPosterUrl" | "outsideWallSlot">;
+
 export const projectRepository = {
   async create(data: Prisma.ProjectCreateInput): Promise<ProjectWithIncludes> {
     return prisma.project.create({ data, include: projectInclude });
@@ -22,6 +26,36 @@ export const projectRepository = {
       where: { id },
       data,
       include: projectInclude,
+    });
+  },
+
+  async updateOutsideWallPosters(
+    ownerId: string,
+    updates: OutsideWallPosterUpdate[],
+  ) {
+    return prisma.$transaction(async (tx) => {
+      // Release existing slots before applying the new order to avoid unique conflicts.
+      await tx.project.updateMany({
+        where: { ownerId },
+        data: { outsideWallSlot: null },
+      });
+
+      const results = [];
+
+      // Keep the writes sequential on the transaction connection and roll back on failure.
+      for (const update of updates) {
+        const project = await tx.project.update({
+          where: { ownerId, id: update.projectId },
+          data: {
+            outsideWallPosterUrl: update.outsideWallPosterUrl,
+            outsideWallSlot: update.outsideWallSlot,
+          },
+          include: projectInclude,
+        });
+        results.push(project);
+      }
+
+      return results;
     });
   },
 

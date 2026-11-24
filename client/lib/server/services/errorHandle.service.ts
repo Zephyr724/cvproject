@@ -1,9 +1,11 @@
 import { Prisma } from "@/src/generated/prisma/client";
 import { BusinessError } from "../errors";
 
-export function handlePrismaError(error: unknown): never {
+export function handlePrismaError(error: unknown, message?: string): never {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     if (error.code === "P2025") {
+      // Allow callers to replace the generic P2025 text with resource-specific context.
+      if (message) throw new BusinessError(message, 404);
       throw new BusinessError(
         `Related record not found: ${error.meta?.cause || "please check the IDs in tags / techItems / roles / content"}`,
         422,
