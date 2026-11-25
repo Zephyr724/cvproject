@@ -18,9 +18,7 @@ export function BlenderCamera() {
   // Rebuild the camera only when the loaded cameras or canvas size change.
   const camera = useMemo(() => {
     // Find the specifically named Blender camera instead of relying on array order.
-    const source = cameras.find(
-      (item) => item.name === "web_camera_01",
-    );
+    const source = cameras.find((item) => item.name === "web_camera_01");
 
     // This component needs perspective-camera properties such as aspect.
     if (!(source instanceof THREE.PerspectiveCamera)) {
@@ -36,6 +34,14 @@ export function BlenderCamera() {
     // tall. updateProjectionMatrix() applies the new ratio to the final image.
     nextCamera.aspect = width / height;
     nextCamera.updateProjectionMatrix();
+
+    // Set the starting viewpoint on the camera that will actually render the
+    // scene. The Canvas camera is only a fallback: the effect below replaces it
+    // with this clone of the camera exported from Blender. Three.js uses Y as
+    // the vertical axis, so the middle value controls the camera's height.
+    // OrbitControls.target in ModelScene is a separate point that the camera
+    // looks toward; changing only this position also changes the viewing angle.
+    nextCamera.position.set(3, 2, 4.5);
 
     return nextCamera;
   }, [cameras, width, height]);

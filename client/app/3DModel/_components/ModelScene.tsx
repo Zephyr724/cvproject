@@ -72,6 +72,17 @@ export function ModelScene({
       <OrbitControls
         // Keep the controls instance available to ModelCanvas's Reset Camera button.
         ref={controlsRef}
+        // This is the point the camera looks at and orbits around, not the
+        // camera's own position. Its Y value raises or lowers the center of the
+        // initial view. Compare it with nextCamera.position in BlenderCamera:
+        // moving both upward keeps a similar viewing angle, while changing
+        // only one changes how steeply the camera looks up or down.
+        target={[0, 0.7, 0]}
+        // Polar angle measures vertical orbit from the +Y direction in radians.
+        // PI / 2 is level with the target, so this prevents orbiting below the
+        // target and looking up at the underside of the coffee shop. This
+        // limits rotation only; panning and zooming are separate controls.
+        maxPolarAngle={Math.PI/2}
         onEnd={() => {
           // Reading the camera only after interaction ends avoids logging every frame.
           const camera = getThreeState().camera;
