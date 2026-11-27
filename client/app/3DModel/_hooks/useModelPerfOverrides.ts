@@ -3,8 +3,7 @@ import * as THREE from "three";
 import { MODEL_PERF } from "../_components/ModelPerfToggles";
 
 export default function useModelPerfOverrides(scene: THREE.Object3D) {
-  // Blender's "Plane.005" is sanitized to "Plane005" by GLTFLoader.
-  // Toggle hidePlane005 in ModelPerfToggles.tsx to compare the backdrop cost.
+  // Hide the named GLB backdrop when the daylight panorama is enabled.
   useLayoutEffect(() => {
     const plane005 = scene.getObjectByName("studio_01_backdrop");
     if (!plane005 || !MODEL_PERF.hidePlane005) return;

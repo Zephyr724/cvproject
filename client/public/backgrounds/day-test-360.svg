@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="1024" viewBox="0 0 2048 1024">
+  <!-- Test panorama: its horizontal edges join; the direction labels may be outside the camera's view. -->
+  <rect width="2048" height="1024" fill="#e2d1c4"/>
+  <rect width="2048" height="500" fill="#9fcdf0"/>
+  <rect y="500" width="2048" height="32" fill="#f6e5c9"/>
+  <path d="M0 532 L0 485 L180 495 L330 472 L510 492 L690 482 L850 499 L1024 481 L1200 497 L1370 477 L1540 494 L1720 482 L1880 496 L2048 485 L2048 532Z" fill="#b9b8a4"/>
+  <path d="M0 532 H2048" stroke="#735e58" stroke-width="6"/>
+  <g fill="#31475a" font-family="Arial, sans-serif" font-size="60" font-weight="bold" text-anchor="middle">
+    <text x="256" y="410">FRONT</text>
+    <text x="768" y="410">RIGHT</text>
+    <text x="1280" y="410">BACK</text>
+    <text x="1792" y="410">LEFT</text>
+  </g>
+  <g fill="#514845" font-family="Arial, sans-serif" font-size="38" text-anchor="middle">
+    <text x="1024" y="730">DISTANT BACKGROUND - NOT PHYSICAL GROUND</text>
+  </g>
+</svg>

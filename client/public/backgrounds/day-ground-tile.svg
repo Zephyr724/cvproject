@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- Test image only; DayGround.tsx supplies the plane and repeats this tile. -->
+  <rect width="256" height="256" fill="#d1c4b9"/>
+  <path d="M0 0H256 M0 0V256" fill="none" stroke="#6e797b" stroke-width="8"/>
+  <path d="M128 0V256 M0 128H256" fill="none" stroke="#e8ded5" stroke-width="3"/>
+  <circle cx="128" cy="128" r="16" fill="#65858d"/>
+</svg>

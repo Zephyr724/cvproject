@@ -1,7 +1,7 @@
 /** Change one switch at a time, then refresh /3DModel and test rotation. */
 export const MODEL_PERF = {
-  // Hide the large Blender backdrop; it covers most pixels in the viewport.
-  hidePlane005: false,
+  // Hide the GLB's curved backdrop at runtime so the panorama stays visible.
+  hidePlane005: true,
   // Replace physical glass transmission with cheap alpha transparency.
   disableTransmission: false,
   // Preserve exported sides: the delivery cavity and thin surfaces need back faces.

@@ -5,6 +5,8 @@ import { Suspense, type ComponentRef, type RefObject } from "react";
 import { BlenderCamera } from "./BlenderCamera";
 import { CoffeeShopModel } from "./CoffeeShopModel";
 import { ModelLights } from "./ModelLights";
+import { DayBackground } from "./DayBackground";
+import { DayGround } from "./DayGround";
 import { useThree } from "@react-three/fiber";
 import type { ModelProfileContext } from "../_lib/modelActions";
 import type { Experience } from "@/app/admin/experience/types";
@@ -31,7 +33,8 @@ export function ModelScene({
 
   return (
     <>
-      <color attach="background" args={["#070201"]} />
+      {/* Fallback color while the panorama loads. */}
+      <color attach="background" args={["#f5f1ed"]} />
 
       <BlenderCamera />
       <ModelLights />
@@ -39,9 +42,13 @@ export function ModelScene({
       {/* Suspense waits for the HDR environment and GLB assets to finish loading. */}
       {/* TODO: Replace the null fallback with a visible 3D scene loading state. */}
       <Suspense fallback={null}>
+        {/* DayBackground fills the distance; DayGround is the physical surface.
+            A future day/night state can switch their images together. */}
+        <DayBackground />
+        <DayGround />
         {/*
-          The HDR image supplies realistic light and reflections. background=false
-          keeps the solid dark color above visible instead of showing the HDR image.
+          The HDR supplies light and reflections without replacing the visible
+          daylight panorama.
         */}
         <Environment
           files="/hdr/artist_workshop_1k.hdr"
@@ -77,12 +84,14 @@ export function ModelScene({
         // initial view. Compare it with nextCamera.position in BlenderCamera:
         // moving both upward keeps a similar viewing angle, while changing
         // only one changes how steeply the camera looks up or down.
-        target={[0, 0.7, 0]}
+        target={[0, 0.9, 0]}
         // Polar angle measures vertical orbit from the +Y direction in radians.
         // PI / 2 is level with the target, so this prevents orbiting below the
         // target and looking up at the underside of the coffee shop. This
         // limits rotation only; panning and zooming are separate controls.
-        maxPolarAngle={Math.PI/2}
+        maxPolarAngle={Math.PI / 2}
+        minDistance={3}
+        maxDistance={5.5}
         onEnd={() => {
           // Reading the camera only after interaction ends avoids logging every frame.
           const camera = getThreeState().camera;
